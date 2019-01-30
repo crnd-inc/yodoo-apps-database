@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- module views -->
+    <record model="ir.ui.view" id="yodoo_module_search">
+        <field name="model">yodoo.module</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="serie_ids"/>
+                <field name="system_name"/>
+                <field name="category"/>
+                <field name="author"/>
+
+                <filter name="filter_installable" string="Installable" domain="[('installable','=',True)]"/>
+                <separator/>
+
+                <filter name="filter_application" string="Apps" domain="[('application', '=', True)]"/>
+                <separator/>
+
+                <group expand="0" string="Group By">
+                    <filter name="group_by_author"
+                            string="Author"
+                            domain="[]"
+                            context="{'group_by':'autor'}"/>
+                    <filter name="group_by_category"
+                            string="Category"
+                            domain="[]"
+                            context="{'group_by':'category'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="yodoo_module_tree">
+        <field name="model">yodoo.module</field>
+        <field name="arch" type="xml">
+            <tree create="false" edit="false" delete="false">
+                <field name="system_name"/>
+                <field name="name"/>
+                <field name="serie_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="version"/>
+                <field name="author"/>
+                <field name="license"/>
+                <field name="summary"/>
+                <field name="category"/>
+                <field name="website"/>
+                <field name="application"/>
+                <field name="installable"/>
+                <field name="auto_install"/>
+                <field name="version_count"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="yodoo_module_form">
+        <field name="model">yodoo.module</field>
+        <field name="arch" type="xml">
+            <form create="false" edit="false" delete="false">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button"
+                                type="object"
+                                icon="fa-cubes"
+                                name="action_show_versions">
+                            <field name="version_count"
+                                   string="Versions"
+                                   widget="statinfo"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                        <h3><field name="summary"/></h3>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="system_name"/>
+                            <field name="serie_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="version"/>
+                        </group>
+                        <group>
+                            <field name="author"/>
+                            <field name="license"/>
+                            <field name="category"/>
+                        </group>
+                        <group>
+                            <field name="application"/>
+                            <field name="installable"/>
+                            <field name="auto_install"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="summary"/>
+                        <field name="website"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_yodoo_module_view" model="ir.actions.act_window">
+        <field name="name">Modules</field>
+        <field name="res_model">yodoo.module</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem action="action_yodoo_module_view"
+              id="menu_root_apps_all"
+              parent="menu_root_apps"
+              sequence="10"/>
+</odoo>

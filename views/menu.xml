@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Top menu item -->
+    <menuitem name="Yodoo Apps DB"
+              id="menu_root"/>
+
+    <!-- menu categories -->
+    <menuitem name="Apps"
+              id="menu_root_apps"
+              parent="menu_root"
+              sequence="20"/>
+
+    <menuitem name="Settings"
+              id="menu_root_settings"
+              parent="menu_root" sequence="40"/>
+
+</odoo>

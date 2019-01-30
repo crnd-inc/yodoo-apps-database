@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- module views -->
+    <record model="ir.ui.view" id="yodoo_module_version_search">
+        <field name="model">yodoo.module.version</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="module_id"/>
+                <field name="serie_id"/>
+
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter name="group_by_serie"
+                            string="Serie"
+                            domain="[]"
+                            context="{'group_by':'serie_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="yodoo_module_version_tree">
+        <field name="model">yodoo.module.version</field>
+        <field name="arch" type="xml">
+            <tree create="false" edit="false" delete="false">
+                <field name="system_name"/>
+                <field name="name"/>
+                <field name="serie_id"/>
+                <field name="version"/>
+                <field name="author"/>
+                <field name="license"/>
+                <field name="summary"/>
+                <field name="category"/>
+                <field name="website"/>
+                <field name="application"/>
+                <field name="installable"/>
+                <field name="auto_install"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="yodoo_module_version_form">
+        <field name="model">yodoo.module.version</field>
+        <field name="arch" type="xml">
+            <form create="false" edit="false" delete="false">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                        <h3><field name="summary"/></h3>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="system_name"/>
+                            <field name="serie_id"/>
+                            <field name="version"/>
+                        </group>
+                        <group>
+                            <field name="author"/>
+                            <field name="license"/>
+                            <field name="category"/>
+                        </group>
+                        <group>
+                            <field name="application"/>
+                            <field name="installable"/>
+                            <field name="auto_install"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="summary"/>
+                        <field name="website"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_yodoo_module_version_view" model="ir.actions.act_window">
+        <field name="name">Modules</field>
+        <field name="res_model">yodoo.module.version</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem action="action_yodoo_module_version_view"
+              id="menu_root_settings_versions"
+              parent="menu_root_settings"
+              sequence="30"/>
+</odoo>
+
