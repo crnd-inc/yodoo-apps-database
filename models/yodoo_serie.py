@@ -58,17 +58,26 @@ class OdooSerie(models.Model):
 
     @api.model
     @tools.ormcache('name')
+    def _get_serie(self, name):
+        serie = self.with_context(active_test=True).search(
+            [('name', '=', name)], limit=1)
+        if serie:
+            return serie.id
+        return False
+
+    @api.model
+    @tools.ormcache('name')
     def get_or_create(self, name):
         if not RE_SERIE.match(name):
             raise exceptions.ValidationError(_(
                 "Serie name ('%s') is not valid") % name)
-        serie = self.with_context(active_test=True).search(
-            [('name', '=', name)], limit=1)
-        if not serie:
-            serie = self.create({
+        serie_id = self._get_serie(name)
+        if not serie_id:
+            serie_id = self.create({
                 'name': name,
-            })
-        return serie.id
+            }).id
+            self._get_serie.clear_cache(self)
+        return serie_id
 
     @api.multi
     def action_show_modules(self):

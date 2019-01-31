@@ -11,6 +11,19 @@ RE_VERSION = re.compile(
     r"(\.(?P<version_patch>\d+))?"
     r"$")
 
+RE_VERSION_EXT = re.compile(
+    r"^"
+    r"(?P<serie>\d+\.\d+)\."
+    r"(?P<version_major>\d+)\.(?P<version_minor>\d+)"
+    r"(\.(?P<version_patch>\d+))?"
+    r"(\.(?P<version_extra>[a-zA-Z0-9\.\-_]+))?"
+    r"$")
+RE_VERSION_NOT_STANDARD = re.compile(
+    r"^"
+    r"(?P<serie>\d+\.\d+)\."
+    r"(?P<version>.+)"
+    r"$")
+
 
 class OdooModuleVersion(models.Model):
     _name = 'yodoo.module.version'
@@ -42,6 +55,8 @@ class OdooModuleVersion(models.Model):
     version_major = fields.Integer(index=True, readonly=True)
     version_minor = fields.Integer(index=True, readonly=True)
     version_patch = fields.Integer(index=True, readonly=True)
+    version_extra = fields.Char(readonly=True)
+    version_non_standard = fields.Boolean(readonly=True)
 
     # Module info
     name = fields.Char(readonly=True, index=True)
@@ -67,6 +82,8 @@ class OdooModuleVersion(models.Model):
             - version_major
             - version_minor
             - version_patch
+            - version_extra
+            - version_non_standard : bool
         """
         res = RE_VERSION.match(version)
         if res:
@@ -76,7 +93,33 @@ class OdooModuleVersion(models.Model):
                 'version_major': groups['version_major'],
                 'version_minor': groups['version_minor'],
                 'version_patch': groups.get('version_patch', 0),
+                'version_extra': False,
+                'version_non_standard': False,
             }
+        res = RE_VERSION_EXT.match(version)
+        if res:
+            groups = res.groupdict()
+            return {
+                'serie': groups['serie'],
+                'version_major': groups['version_major'],
+                'version_minor': groups['version_minor'],
+                'version_patch': groups.get('version_patch', 0),
+                'version_extra': groups.get('version_extra', False),
+                'version_non_standard': False,
+            }
+
+        res = RE_VERSION_NOT_STANDARD.match(version)
+        if res:
+            groups = res.groupdict()
+            return {
+                'serie': groups['serie'],
+                'version_major': False,
+                'version_minor': False,
+                'version_patch': False,
+                'version_extra': False,
+                'version_non_standard': True,
+            }
+
         return False
 
     @api.multi
@@ -113,11 +156,13 @@ class OdooModuleVersion(models.Model):
                 'version_major': parsed_version['version_major'],
                 'version_minor': parsed_version['version_minor'],
                 'version_patch': parsed_version['version_patch'],
+                'version_extra': parsed_version['version_extra'],
+                'version_non_standard': parsed_version['version_non_standard'],
             })
         else:
             raise exceptions.ValidationError(_(
-                'Cannot parse version (%s) for module %s') % (
-                    data['version'], module.display_name))
+                'Cannot parse version (%s) for module %s [%s]') % (
+                    data['version'], module.display_name, module.system_name))
 
         version_data.update({
             'name': data.get('name', False),

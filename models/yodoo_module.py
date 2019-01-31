@@ -87,7 +87,11 @@ class OdooModule(models.Model):
         module = self.with_context(active_test=False).search(
             [('system_name', '=', system_name)], limit=1)
         if not module:
-            module = self.create({
+            module = self.with_context(
+                mail_create_nosubscribe=True,
+                mail_create_nolog=True,
+                mail_notrack=True,
+            ).create({
                 'system_name': system_name,
             })
         version = self.env['yodoo.module.version'].create_or_update_version(

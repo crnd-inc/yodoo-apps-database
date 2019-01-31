@@ -27,6 +27,7 @@
                 <field name="name"/>
                 <field name="serie_id"/>
                 <field name="version"/>
+                <field name="version_non_standard"/>
                 <field name="author"/>
                 <field name="license"/>
                 <field name="summary"/>
@@ -55,6 +56,7 @@
                             <field name="system_name"/>
                             <field name="serie_id"/>
                             <field name="version"/>
+                            <field name="version_non_standard"/>
                         </group>
                         <group>
                             <field name="author"/>
