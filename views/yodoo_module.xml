@@ -59,7 +59,7 @@
     <record model="ir.ui.view" id="yodoo_module_form">
         <field name="model">yodoo.module</field>
         <field name="arch" type="xml">
-            <form create="false" edit="false" delete="false">
+            <form create="false" delete="false">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button class="oe_stat_button"
