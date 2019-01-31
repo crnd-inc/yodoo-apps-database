@@ -30,7 +30,8 @@ class OdooModule(models.Model):
         readonly=True, store=True,
         compute='_compute_serie_ids', compute_sudo=True)
     serie_count = fields.Integer(
-        compute='_compute_serie_ids', readonly=True, compute_sudo=True)
+        compute='_compute_serie_ids', store=True,
+        readonly=True, compute_sudo=True)
 
     name = fields.Char(
         related='last_version_id.name', store=True,
@@ -85,6 +86,7 @@ class OdooModule(models.Model):
     def _compute_serie_ids(self):
         for record in self:
             record.serie_ids = record.module_serie_ids.mapped('serie_id')
+            record.serie_count = len(record.serie_ids)
 
     @api.multi
     def name_get(self):

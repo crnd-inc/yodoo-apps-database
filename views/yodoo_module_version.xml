@@ -5,6 +5,7 @@
         <field name="model">yodoo.module.version</field>
         <field name="arch" type="xml">
             <search>
+                <field name="version"/>
                 <field name="module_id"/>
                 <field name="serie_id"/>
 
@@ -14,6 +15,10 @@
                             string="Serie"
                             domain="[]"
                             context="{'group_by':'serie_id'}"/>
+                    <filter name="group_by_module"
+                            string="Serie"
+                            domain="[]"
+                            context="{'group_by':'module_id'}"/>
                 </group>
             </search>
         </field>
@@ -27,15 +32,11 @@
                 <field name="name"/>
                 <field name="serie_id"/>
                 <field name="version"/>
-                <field name="version_non_standard"/>
                 <field name="author"/>
                 <field name="license"/>
-                <field name="summary"/>
                 <field name="category"/>
-                <field name="website"/>
                 <field name="application"/>
-                <field name="installable"/>
-                <field name="auto_install"/>
+                <field name="version_non_standard"/>
             </tree>
         </field>
     </record>
@@ -54,7 +55,10 @@
                     <group>
                         <group>
                             <field name="system_name"/>
+                            <field name="module_id"/>
                             <field name="serie_id"/>
+                        </group>
+                        <group>
                             <field name="version"/>
                             <field name="version_non_standard"/>
                         </group>

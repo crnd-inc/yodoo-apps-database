@@ -41,7 +41,7 @@ class OdooModuleVersion(models.Model):
         store=True, index=True, readonly=True)
     serie_id = fields.Many2one(
         'yodoo.serie', related='module_serie_id.serie_id',
-        store=True, required=True, index=True)
+        store=True, index=True, readonly=True)
 
     # Odoo Serie info
     system_name = fields.Char(

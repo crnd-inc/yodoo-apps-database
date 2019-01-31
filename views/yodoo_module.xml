@@ -45,9 +45,7 @@
                 <field name="author"/>
                 <field name="license"/>
                 <field name="category"/>
-                <field name="website"/>
                 <field name="application"/>
-                <field name="installable"/>
                 <field name="version_count"/>
                 <field name="tag_ids"
                        options="{'color_field': 'color'}"
