@@ -19,7 +19,10 @@ class OdooModule(models.Model):
         'yodoo.module.version', readonly=True, store=True,
         compute='_compute_last_version')
     serie_ids = fields.Many2many(
-        'yodoo.serie', readonly=True, store=True,
+        comodel_name='yodoo.serie',
+        relation="yodoo_module_serie_rel",
+        column1="module_id", column2='serie_id',
+        readonly=True, store=True,
         compute='_compute_serie_ids')
 
     name = fields.Char(

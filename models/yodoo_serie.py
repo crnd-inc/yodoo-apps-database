@@ -17,6 +17,15 @@ class OdooSerie(models.Model):
     minor = fields.Integer(readonly=True)
     color = fields.Integer()
 
+    module_ids = fields.Many2many(
+        comodel_name='yodoo.module',
+        relation="yodoo_module_serie_rel",
+        column1="serie_id", column2='module_id',
+        readonly=True)
+    module_count = fields.Integer(
+        compute="_compute_module_count",
+        readonly=True)
+
     _sql_constraints = [
         ('name_uniq',
          'unique(name)',
@@ -42,6 +51,11 @@ class OdooSerie(models.Model):
                     'monor': 0,
                 })
 
+    @api.depends('module_ids')
+    def _compute_module_count(self):
+        for record in self:
+            record.module_count = len(record.module_ids)
+
     @api.model
     @tools.ormcache('name')
     def get_or_create(self, name):
@@ -55,3 +69,13 @@ class OdooSerie(models.Model):
                 'name': name,
             })
         return serie.id
+
+    @api.multi
+    def action_show_modules(self):
+        self.ensure_one()
+        action = self.env.ref(
+            'yodoo_apps_database.action_yodoo_module_view').read()[0]
+        action.update({
+            'domain': [('serie_ids.id', '=', self.id)],
+        })
+        return action
