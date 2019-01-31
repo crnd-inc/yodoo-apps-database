@@ -10,6 +10,9 @@
                 <field name="system_name"/>
                 <field name="category"/>
                 <field name="author"/>
+                <field name="tag_ids"/>
+                <field name="search_tag_id"/>
+                <field name="search_no_tag_id"/>
 
                 <filter name="filter_installable" string="Installable" domain="[('installable','=',True)]"/>
                 <separator/>
@@ -41,13 +44,14 @@
                 <field name="version"/>
                 <field name="author"/>
                 <field name="license"/>
-                <field name="summary"/>
                 <field name="category"/>
                 <field name="website"/>
                 <field name="application"/>
                 <field name="installable"/>
-                <field name="auto_install"/>
                 <field name="version_count"/>
+                <field name="tag_ids"
+                       options="{'color_field': 'color'}"
+                       widget="many2many_tags"/>
             </tree>
         </field>
     </record>
@@ -78,6 +82,11 @@
                     <div class="oe_title">
                         <h1><field name="name"/></h1>
                         <h3><field name="summary"/></h3>
+                        <h4><field name="tag_ids"
+                                   widget="many2many_tags"
+                                   options="{'color_field': 'color'}"
+                                   context="{'default_model': 'yodoo.module'}"
+                                   placeholder="Tags..."/></h4>
                     </div>
                     <group>
                         <group>

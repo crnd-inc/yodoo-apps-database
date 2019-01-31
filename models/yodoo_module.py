@@ -6,6 +6,7 @@ class OdooModule(models.Model):
     _inherit = [
         'mail.thread',
         'mail.activity.mixin',
+        'generic.tag.mixin',
     ]
     _description = "Odoo Module"
     _order = 'name, system_name'

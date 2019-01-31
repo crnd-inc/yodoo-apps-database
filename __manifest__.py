@@ -12,12 +12,14 @@
     # any module necessary for this one to work correctly
     'depends': [
         'mail',
+        'generic_tag',
     ],
 
     # always loaded
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'data/generic_tag_model.xml',
         'views/menu.xml',
         'views/yodoo_module.xml',
         'views/yodoo_module_serie.xml',
