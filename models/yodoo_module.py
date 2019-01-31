@@ -5,6 +5,7 @@ class OdooModule(models.Model):
     _name = 'yodoo.module'
     _inherit = [
         'mail.thread',
+        'mail.activity.mixin',
     ]
     _description = "Odoo Module"
     _order = 'name, system_name'
