@@ -38,10 +38,10 @@ class OdooModuleVersion(models.Model):
         ondelete='cascade')
     module_id = fields.Many2one(
         'yodoo.module', related='module_serie_id.module_id',
-        index=True, readonly=True)
+        store=True, index=True, readonly=True)
     serie_id = fields.Many2one(
         'yodoo.serie', related='module_serie_id.serie_id',
-        required=True, index=True)
+        store=True, required=True, index=True)
 
     # Odoo Serie info
     system_name = fields.Char(
