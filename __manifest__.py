@@ -20,6 +20,7 @@
         'security/ir.model.access.csv',
         'views/menu.xml',
         'views/yodoo_module.xml',
+        'views/yodoo_module_serie.xml',
         'views/yodoo_module_version.xml',
         'views/yodoo_serie.xml',
     ],

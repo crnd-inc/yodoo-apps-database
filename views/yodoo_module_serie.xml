@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="yodoo_module_serie_search">
+        <field name="model">yodoo.module.serie</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="module_id"/>
+                <field name="serie_id"/>
+
+                <group expand="0" string="Group By">
+                    <filter name="group_by_serie"
+                            string="Serie"
+                            domain="[]"
+                            context="{'group_by':'serie_id'}"/>
+                    <filter name="group_by_module"
+                            string="Module"
+                            domain="[]"
+                            context="{'group_by':'module_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="yodoo_module_serie_tree">
+        <field name="model">yodoo.module.serie</field>
+        <field name="arch" type="xml">
+            <tree create="false" edit="false" delete="false">
+                <field name="module_id"/>
+                <field name="serie_id"/>
+                <field name="last_version_id"/>
+                <field name="version_count"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="yodoo_module_serie_form">
+        <field name="model">yodoo.module.serie</field>
+        <field name="arch" type="xml">
+            <form create="false" edit="false" delete="false">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button"
+                                type="object"
+                                icon="fa-cubes"
+                                name="action_show_versions">
+                            <field name="version_count"
+                                   string="Versions"
+                                   widget="statinfo"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="module_id"/>
+                        </group>
+                        <group>
+                            <field name="serie_id"/>
+                            <field name="last_version_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_yodoo_module_serie_view" model="ir.actions.act_window">
+        <field name="name">Module Series</field>
+        <field name="res_model">yodoo.module.serie</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem action="action_yodoo_module_serie_view"
+              id="menu_root_settings_module_series"
+              parent="menu_root_settings"
+              sequence="20"/>
+</odoo>
+

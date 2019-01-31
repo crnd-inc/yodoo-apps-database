@@ -1,4 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_yodoo_serie_all,yodoo_serie_all,model_yodoo_serie,,1,0,0,0
 access_yodoo_module_all,yodoo_module_all,model_yodoo_module,,1,0,0,0
+access_yodoo_module_serie_all,yodoo_module_serie_all,model_yodoo_module_serie,,1,0,0,0
 access_yodoo_module_version_all,yodoo_module_version_all,model_yodoo_module_version,,1,0,0,0

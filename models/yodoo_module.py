@@ -11,6 +11,8 @@ class OdooModule(models.Model):
     _order = 'name, system_name'
 
     system_name = fields.Char(required=True, readonly=True, index=True)
+    module_serie_ids = fields.One2many(
+        'yodoo.module.serie', 'module_id', readonly=True)
     version_ids = fields.One2many(
         'yodoo.module.version', 'module_id', readonly=True)
     version_count = fields.Integer(
@@ -20,11 +22,14 @@ class OdooModule(models.Model):
         'yodoo.module.version', readonly=True, store=True,
         compute='_compute_last_version')
     serie_ids = fields.Many2many(
+        string="Series",
         comodel_name='yodoo.serie',
         relation="yodoo_module_serie_rel",
         column1="module_id", column2='serie_id',
         readonly=True, store=True,
-        compute='_compute_serie_ids')
+        compute='_compute_serie_ids', compute_sudo=True)
+    serie_count = fields.Integer(
+        compute='_compute_serie_ids', readonly=True, compute_sudo=True)
 
     name = fields.Char(
         related='last_version_id.name', store=True,
@@ -75,10 +80,20 @@ class OdooModule(models.Model):
                 record.last_version_id = False
             record.version_count = len(record.version_ids)
 
-    @api.depends('version_ids.serie_id')
+    @api.depends('module_serie_ids')
     def _compute_serie_ids(self):
         for record in self:
-            record.serie_ids = record.version_ids.mapped('serie_id')
+            record.serie_ids = record.module_serie_ids.mapped('serie_id')
+
+    @api.multi
+    def name_get(self):
+        res = []
+        for record in self:
+            res += [(
+                record.id,
+                "%s" % (record.name or record.system_name),
+            )]
+        return res
 
     @api.model
     @api.returns('yodoo.module.version')
@@ -104,6 +119,16 @@ class OdooModule(models.Model):
         self.ensure_one()
         action = self.env.ref(
             'yodoo_apps_database.action_yodoo_module_version_view').read()[0]
+        action.update({
+            'domain': [('module_id', '=', self.id)],
+        })
+        return action
+
+    @api.multi
+    def action_show_module_series(self):
+        self.ensure_one()
+        action = self.env.ref(
+            'yodoo_apps_database.action_yodoo_module_serie_view').read()[0]
         action.update({
             'domain': [('module_id', '=', self.id)],
         })

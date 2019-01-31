@@ -33,21 +33,28 @@ class OdooModuleVersion(models.Model):
         "version_major DESC, version_minor DESC, version_patch DESC"
     )
 
+    module_serie_id = fields.Many2one(
+        'yodoo.module.serie', required=True, readonly=True, index=True,
+        ondelete='cascade')
     module_id = fields.Many2one(
-        'yodoo.module', required=True,
-        ondelete='cascade', index=True, readonly=True)
-    system_name = fields.Char(
-        related='module_id.system_name', readonly=True, store=True)
+        'yodoo.module', related='module_serie_id.module_id',
+        index=True, readonly=True)
+    serie_id = fields.Many2one(
+        'yodoo.serie', related='module_serie_id.serie_id',
+        required=True, index=True)
 
     # Odoo Serie info
-    serie_id = fields.Many2one('yodoo.serie', required=True, index=True)
+    system_name = fields.Char(
+        related='module_serie_id.module_id.system_name',
+        readonly=True, store=True)
     serie = fields.Char(
-        related='serie_id.name', store=True, index=True, readonly=True)
+        related='module_serie_id.serie_id.name', store=True,
+        index=True, readonly=True)
     serie_major = fields.Integer(
-        related='serie_id.major', store=True,
+        related='module_serie_id.serie_id.major', store=True,
         index=True, readonly=True)
     serie_minor = fields.Integer(
-        related='serie_id.minor', store=True,
+        related='module_serie_id.serie_id.minor', store=True,
         index=True, readonly=True)
 
     # Version parts
@@ -151,8 +158,10 @@ class OdooModuleVersion(models.Model):
         if parsed_version:
             serie_id = self.env['yodoo.serie'].get_or_create(
                 parsed_version['serie'])
+            module_serie = self.env['yodoo.module.serie'].get_or_create(
+                module.id, serie_id)
             version_data.update({
-                'serie_id': serie_id,
+                'module_serie_id': module_serie.id,
                 'version_major': parsed_version['version_major'],
                 'version_minor': parsed_version['version_minor'],
                 'version_patch': parsed_version['version_patch'],

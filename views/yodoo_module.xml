@@ -60,6 +60,14 @@
                     <div class="oe_button_box" name="button_box">
                         <button class="oe_stat_button"
                                 type="object"
+                                icon="fa-cube"
+                                name="action_show_module_series">
+                            <field name="serie_count"
+                                   string="Series"
+                                   widget="statinfo"/>
+                        </button>
+                        <button class="oe_stat_button"
+                                type="object"
                                 icon="fa-cubes"
                                 name="action_show_versions">
                             <field name="version_count"
