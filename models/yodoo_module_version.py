@@ -77,7 +77,6 @@ class OdooModuleVersion(models.Model):
                 'version_minor': groups['version_minor'],
                 'version_patch': groups.get('version_patch', 0),
             }
-            return res.groupdict()
         return False
 
     @api.multi
@@ -117,8 +116,8 @@ class OdooModuleVersion(models.Model):
             })
         else:
             raise exceptions.ValidationError(_(
-                'Cannot parse version (%s) for module %s' % (
-                    data['version'], module.display_name)))
+                'Cannot parse version (%s) for module %s') % (
+                    data['version'], module.display_name))
 
         version_data.update({
             'name': data.get('name', False),
