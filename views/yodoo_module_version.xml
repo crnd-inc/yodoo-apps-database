@@ -77,7 +77,7 @@
     </record>
 
     <record id="action_yodoo_module_version_view" model="ir.actions.act_window">
-        <field name="name">Modules</field>
+        <field name="name">Module Versions</field>
         <field name="res_model">yodoo.module.version</field>
         <field name="view_mode">tree,form</field>
     </record>

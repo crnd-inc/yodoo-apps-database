@@ -2,7 +2,8 @@
 <odoo>
     <!-- Top menu item -->
     <menuitem name="Yodoo Apps DB"
-              id="menu_root"/>
+              id="menu_root"
+              groups="group_yodoo_apps_user"/>
 
     <!-- menu categories -->
     <menuitem name="Apps"

@@ -6,7 +6,7 @@
     'author': "Center of Research & Development",
     'website': "https://crnd.pro",
 
-    'category': 'Odoo Infrastructure',
+    'category': 'Yodoo Apps',
     'version': '11.0.0.0.1',
 
     # any module necessary for this one to work correctly
@@ -16,6 +16,8 @@
 
     # always loaded
     'data': [
+        'security/security.xml',
+        'security/ir.model.access.csv',
         'views/menu.xml',
         'views/yodoo_module.xml',
         'views/yodoo_module_version.xml',
