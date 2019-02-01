@@ -22,8 +22,12 @@ class OdooModuleSerie(models.Model):
         'yodoo.module.version', readonly=True, store=True,
         compute='_compute_last_version')
     license_id = fields.Many2one(
-        'yodoo.module.license', index=True,
-        related='last_version_id.license_id', store=True,
+        'yodoo.module.license', index=True, store=True,
+        related='last_version_id.license_id',
+        readonly=True)
+    category_id = fields.Many2one(
+        'yodoo.module.category', index=True, store=True,
+        related='last_version_id.category_id',
         readonly=True)
 
     _sql_constraints = [

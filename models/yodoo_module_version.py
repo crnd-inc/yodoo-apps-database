@@ -67,17 +67,17 @@ class OdooModuleVersion(models.Model):
 
     # License
     license_id = fields.Many2one(
-        'yodoo.module.license', index=True, readonly=True,
-        ondelete='restrict')
+        'yodoo.module.license', readonly=True, ondelete='restrict')
+    category_id = fields.Many2one(
+        'yodoo.module.category', readonly=True, ondelete='restrict')
 
     # Module info
-    name = fields.Char(readonly=True, index=True)
-    author = fields.Char(readonly=True, index=True)
+    name = fields.Char(readonly=True)
+    author = fields.Char(readonly=True)
     summary = fields.Char(readonly=True)
     application = fields.Boolean(readonly=True)
     installable = fields.Boolean(readonly=True)
     auto_install = fields.Boolean(readonly=True)
-    category = fields.Char(readonly=True)
     website = fields.Char(readonly=True)
 
     _sql_constraints = [
@@ -184,6 +184,13 @@ class OdooModuleVersion(models.Model):
         else:
             version_data['license_id'] = False
 
+        if data.get('category'):
+            version_data['category_id'] = (
+                self.env['yodoo.module.category'].get_or_create(
+                    data['category']))
+        else:
+            version_data['category_id'] = False
+
         version_data.update({
             'name': data.get('name', False),
             'author': data.get('author', False),
@@ -191,7 +198,6 @@ class OdooModuleVersion(models.Model):
             'application': data.get('application', False),
             'installable': data.get('installable', False),
             'auto_install': data.get('auto_install', False),
-            'category': data.get('category', False),
             'website': data.get('website', False),
         })
 

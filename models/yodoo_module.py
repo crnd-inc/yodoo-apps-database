@@ -37,6 +37,10 @@ class OdooModule(models.Model):
         'yodoo.module.license', index=True,
         related='last_version_id.license_id', store=True,
         readonly=True)
+    category_id = fields.Many2one(
+        'yodoo.module.category', index=True,
+        related='last_version_id.category_id', store=True,
+        readonly=True)
 
     name = fields.Char(
         related='last_version_id.name', store=True,
@@ -58,9 +62,6 @@ class OdooModule(models.Model):
         readonly=True)
     auto_install = fields.Boolean(
         related='last_version_id.auto_install', store=True,
-        readonly=True)
-    category = fields.Char(
-        related='last_version_id.category', store=True,
         readonly=True)
     # icon = fields.Char(readonly=True)
     website = fields.Char(

@@ -8,7 +8,7 @@
                 <field name="name"/>
                 <field name="serie_ids"/>
                 <field name="system_name"/>
-                <field name="category"/>
+                <field name="category_id"/>
                 <field name="author"/>
                 <field name="license_id"/>
                 <field name="tag_ids"/>
@@ -33,7 +33,7 @@
                     <filter name="group_by_category"
                             string="Category"
                             domain="[]"
-                            context="{'group_by':'category'}"/>
+                            context="{'group_by':'category_id'}"/>
                 </group>
             </search>
         </field>
@@ -49,7 +49,7 @@
                 <field name="version"/>
                 <field name="author"/>
                 <field name="license_id"/>
-                <field name="category"/>
+                <field name="category_id"/>
                 <field name="application"/>
                 <field name="version_count"/>
                 <field name="tag_ids"
@@ -100,7 +100,7 @@
                         <group>
                             <field name="author"/>
                             <field name="license_id"/>
-                            <field name="category"/>
+                            <field name="category_id"/>
                         </group>
                         <group>
                             <field name="application"/>

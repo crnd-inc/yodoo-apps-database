@@ -28,6 +28,7 @@
                 <field name="module_id"/>
                 <field name="serie_id"/>
                 <field name="last_version_id"/>
+                <field name="category_id"/>
                 <field name="license_id"/>
                 <field name="version_count"/>
             </tree>
@@ -53,6 +54,7 @@
                         <group>
                             <field name="module_id"/>
                             <field name="license_id"/>
+                            <field name="category_id"/>
                         </group>
                         <group>
                             <field name="serie_id"/>
