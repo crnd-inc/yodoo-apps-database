@@ -121,6 +121,7 @@
         <field name="name">Modules</field>
         <field name="res_model">yodoo.module</field>
         <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_filter_application': True}</field>
     </record>
 
     <menuitem action="action_yodoo_module_view"
