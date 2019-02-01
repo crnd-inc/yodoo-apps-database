@@ -33,6 +33,11 @@ class OdooModule(models.Model):
         compute='_compute_serie_ids', store=True,
         readonly=True, compute_sudo=True)
 
+    license_id = fields.Many2one(
+        'yodoo.module.license', index=True,
+        related='last_version_id.license_id', store=True,
+        readonly=True)
+
     name = fields.Char(
         related='last_version_id.name', store=True,
         readonly=True, index=True)
@@ -44,9 +49,6 @@ class OdooModule(models.Model):
         readonly=True, index=True)
     summary = fields.Char(
         related='last_version_id.summary', store=True,
-        readonly=True)
-    license = fields.Char(
-        related='last_version_id.license', store=True,
         readonly=True)
     application = fields.Boolean(
         related='last_version_id.application', store=True,

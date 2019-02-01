@@ -21,6 +21,10 @@ class OdooModuleSerie(models.Model):
     last_version_id = fields.Many2one(
         'yodoo.module.version', readonly=True, store=True,
         compute='_compute_last_version')
+    license_id = fields.Many2one(
+        'yodoo.module.license', index=True,
+        related='last_version_id.license_id', store=True,
+        readonly=True)
 
     _sql_constraints = [
         ('module_serie_uniq',

@@ -10,6 +10,7 @@
                 <field name="system_name"/>
                 <field name="category"/>
                 <field name="author"/>
+                <field name="license_id"/>
                 <field name="tag_ids"/>
                 <field name="search_tag_id"/>
                 <field name="search_no_tag_id"/>
@@ -21,10 +22,14 @@
                 <separator/>
 
                 <group expand="0" string="Group By">
+                    <filter name="group_by_license"
+                            string="License"
+                            domain="[]"
+                            context="{'group_by':'license_id'}"/>
                     <filter name="group_by_author"
                             string="Author"
                             domain="[]"
-                            context="{'group_by':'autor'}"/>
+                            context="{'group_by':'author'}"/>
                     <filter name="group_by_category"
                             string="Category"
                             domain="[]"
@@ -43,7 +48,7 @@
                 <field name="serie_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="version"/>
                 <field name="author"/>
-                <field name="license"/>
+                <field name="license_id"/>
                 <field name="category"/>
                 <field name="application"/>
                 <field name="version_count"/>
@@ -94,7 +99,7 @@
                         </group>
                         <group>
                             <field name="author"/>
-                            <field name="license"/>
+                            <field name="license_id"/>
                             <field name="category"/>
                         </group>
                         <group>

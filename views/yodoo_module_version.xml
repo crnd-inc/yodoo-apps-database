@@ -16,9 +16,13 @@
                             domain="[]"
                             context="{'group_by':'serie_id'}"/>
                     <filter name="group_by_module"
-                            string="Serie"
+                            string="Module"
                             domain="[]"
                             context="{'group_by':'module_id'}"/>
+                    <filter name="group_by_license"
+                            string="License"
+                            domain="[]"
+                            context="{'group_by':'license_id'}"/>
                 </group>
             </search>
         </field>
@@ -33,7 +37,7 @@
                 <field name="serie_id"/>
                 <field name="version"/>
                 <field name="author"/>
-                <field name="license"/>
+                <field name="license_id"/>
                 <field name="category"/>
                 <field name="application"/>
                 <field name="version_non_standard"/>
@@ -64,7 +68,7 @@
                         </group>
                         <group>
                             <field name="author"/>
-                            <field name="license"/>
+                            <field name="license_id"/>
                             <field name="category"/>
                         </group>
                         <group>

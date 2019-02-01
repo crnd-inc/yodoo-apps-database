@@ -66,7 +66,6 @@ class OdooSerie(models.Model):
         return False
 
     @api.model
-    @tools.ormcache('name')
     def get_or_create(self, name):
         if not RE_SERIE.match(name):
             raise exceptions.ValidationError(_(

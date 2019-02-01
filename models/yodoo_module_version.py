@@ -65,11 +65,15 @@ class OdooModuleVersion(models.Model):
     version_extra = fields.Char(readonly=True)
     version_non_standard = fields.Boolean(readonly=True)
 
+    # License
+    license_id = fields.Many2one(
+        'yodoo.module.license', index=True, readonly=True,
+        ondelete='restrict')
+
     # Module info
     name = fields.Char(readonly=True, index=True)
     author = fields.Char(readonly=True, index=True)
     summary = fields.Char(readonly=True)
-    license = fields.Char(readonly=True)
     application = fields.Boolean(readonly=True)
     installable = fields.Boolean(readonly=True)
     auto_install = fields.Boolean(readonly=True)
@@ -173,11 +177,17 @@ class OdooModuleVersion(models.Model):
                 'Cannot parse version (%s) for module %s [%s]') % (
                     data['version'], module.display_name, module.system_name))
 
+        if data.get('license'):
+            version_data['license_id'] = (
+                self.env['yodoo.module.license'].get_or_create(
+                    data['license']))
+        else:
+            version_data['license_id'] = False
+
         version_data.update({
             'name': data.get('name', False),
             'author': data.get('author', False),
             'summary': data.get('summary', False),
-            'license': data.get('license', False),
             'application': data.get('application', False),
             'installable': data.get('installable', False),
             'auto_install': data.get('auto_install', False),
