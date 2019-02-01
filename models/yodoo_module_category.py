@@ -1,8 +1,7 @@
 from odoo import models, fields, api, tools
-from odoo.osv import expression
 
 
-class YodooModuleLicense(models.Model):
+class YodooModuleCategory(models.Model):
     _name = 'yodoo.module.category'
     _description = "Yodoo Module Category"
     _order = 'name'

@@ -50,10 +50,10 @@ class YodooModuleLicense(models.Model):
     @api.model
     @tools.ormcache('code')
     def _get_license(self, code):
-        license = self.with_context(active_test=False).search(
+        license_ = self.with_context(active_test=False).search(
             [('code', '=', code)], limit=1)
-        if license:
-            return license.id
+        if license_:
+            return license_.id
         return False
 
     @api.model
