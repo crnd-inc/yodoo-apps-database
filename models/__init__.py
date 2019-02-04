@@ -5,4 +5,5 @@ from . import (
     yodoo_module_version,
     yodoo_module_license,
     yodoo_module_category,
+    yodoo_module_author,
 )

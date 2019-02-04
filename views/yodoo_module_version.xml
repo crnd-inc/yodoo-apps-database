@@ -40,7 +40,7 @@
                 <field name="name"/>
                 <field name="serie_id"/>
                 <field name="version"/>
-                <field name="author"/>
+                <field name="author_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="license_id"/>
                 <field name="category_id"/>
                 <field name="application"/>
@@ -71,7 +71,7 @@
                             <field name="version_non_standard"/>
                         </group>
                         <group>
-                            <field name="author"/>
+                            <field name="author_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="license_id"/>
                             <field name="category_id"/>
                         </group>

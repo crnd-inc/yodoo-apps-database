@@ -71,10 +71,14 @@ class OdooModuleVersion(models.Model):
         'yodoo.module.license', readonly=True, ondelete='restrict')
     category_id = fields.Many2one(
         'yodoo.module.category', readonly=True, ondelete='restrict')
+    author_ids = fields.Many2many(
+        comodel_name='yodoo.module.author',
+        relation='yodoo_module_version_author_rel',
+        column1='version_id', column2='author_id',
+        readonly=True)
 
     # Module info
     name = fields.Char(readonly=True)
-    author = fields.Char(readonly=True)
     summary = fields.Char(readonly=True)
     application = fields.Boolean(readonly=True)
     installable = fields.Boolean(readonly=True)
@@ -134,6 +138,34 @@ class OdooModuleVersion(models.Model):
 
         return False
 
+    def _prepare_author(self, author):
+        if not author:
+            return []
+
+        if isinstance(author, str):
+            author_names = author.split(',')
+        elif isinstance(author, (list, tuple, set)):
+            author_names = author
+        else:
+            author_names = [str(author)]
+
+        res = []
+        for author_name in author_names:
+            author_id = self.env['yodoo.module.author'].get_or_create(
+                author_name.strip())
+            res.append(author_id)
+        return res
+
+    def _prepare_license(self, license_name):
+        if license_name:
+            return self.env['yodoo.module.license'].get_or_create(license_name)
+        return False
+
+    def _prepare_category(self, category):
+        if category:
+            return self.env['yodoo.module.category'].get_or_create(category)
+        return False
+
     @api.multi
     def name_get(self):
         result = []
@@ -178,23 +210,11 @@ class OdooModuleVersion(models.Model):
                 'Cannot parse version (%s) for module %s [%s]') % (
                     data['version'], module.display_name, module.system_name))
 
-        if data.get('license'):
-            version_data['license_id'] = (
-                self.env['yodoo.module.license'].get_or_create(
-                    data['license']))
-        else:
-            version_data['license_id'] = False
-
-        if data.get('category'):
-            version_data['category_id'] = (
-                self.env['yodoo.module.category'].get_or_create(
-                    data['category']))
-        else:
-            version_data['category_id'] = False
-
         version_data.update({
             'name': data.get('name', False),
-            'author': data.get('author', False),
+            'license_id': self._prepare_license(data.get('license')),
+            'category_id': self._prepare_category(data.get('category')),
+            'author_ids': [(6, 0, self._prepare_author(data.get('author')))],
             'summary': data.get('summary', False),
             'application': data.get('application', False),
             'installable': data.get('installable', False),

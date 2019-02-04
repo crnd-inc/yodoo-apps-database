@@ -1,5 +1,7 @@
 from odoo import models, fields, api
 
+from ..fields import Many2manyView
+
 
 class OdooModule(models.Model):
     _name = 'yodoo.module'
@@ -35,11 +37,14 @@ class OdooModule(models.Model):
 
     license_id = fields.Many2one(
         'yodoo.module.license', index=True,
-        related='last_version_id.license_id', store=True,
-        readonly=True)
+        related='last_version_id.license_id', store=True, readonly=True)
     category_id = fields.Many2one(
         'yodoo.module.category', index=True,
-        related='last_version_id.category_id', store=True,
+        related='last_version_id.category_id', store=True, readonly=True)
+    author_ids = Many2manyView(
+        comodel_name='yodoo.module.author',
+        relation='yodoo_module_author_rel_view',
+        column1='module_id', column2='author_id',
         readonly=True)
 
     name = fields.Char(
@@ -48,9 +53,6 @@ class OdooModule(models.Model):
     version = fields.Char(
         related='last_version_id.version', store=True,
         readonly=True)
-    author = fields.Char(
-        related='last_version_id.author', store=True,
-        readonly=True, index=True)
     summary = fields.Char(
         related='last_version_id.summary', store=True,
         readonly=True)

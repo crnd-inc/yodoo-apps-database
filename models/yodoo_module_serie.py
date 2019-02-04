@@ -21,6 +21,8 @@ class OdooModuleSerie(models.Model):
     last_version_id = fields.Many2one(
         'yodoo.module.version', readonly=True, store=True,
         compute='_compute_last_version')
+
+    # TODO: Do we need this fields?
     license_id = fields.Many2one(
         'yodoo.module.license', index=True, store=True,
         related='last_version_id.license_id',

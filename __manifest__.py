@@ -26,6 +26,7 @@
         'views/yodoo_module_version.xml',
         'views/yodoo_module_license.xml',
         'views/yodoo_module_category.xml',
+        'views/yodoo_module_author.xml',
         'views/yodoo_serie.xml',
     ],
     # only loaded in demonstration mode
