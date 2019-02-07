@@ -3,7 +3,8 @@
     <!-- Top menu item -->
     <menuitem name="Yodoo Apps DB"
               id="menu_root"
-              groups="group_yodoo_apps_user"/>
+              groups="group_yodoo_apps_user"
+              web_icon="yodoo_apps_database,static/description/icon.png"/>
 
     <!-- menu categories -->
     <menuitem name="Apps"
