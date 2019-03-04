@@ -1,6 +1,5 @@
 from psycopg2 import sql
 from odoo import models, fields, api, tools
-from ..fields import Many2manyView
 
 
 class YodooModuleAuthor(models.Model):
@@ -16,7 +15,7 @@ class YodooModuleAuthor(models.Model):
         relation='yodoo_module_version_author_rel',
         column1='author_id', column2='version_id',
         readonly=True)
-    module_ids = Many2manyView(
+    module_ids = fields.Many2manyView(
         comodel_name='yodoo.module',
         relation='yodoo_module_author_rel_view',
         column1='author_id', column2='module_id',

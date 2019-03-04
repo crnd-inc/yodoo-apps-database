@@ -7,12 +7,13 @@
     'website': "https://crnd.pro",
 
     'category': 'Yodoo Apps',
-    'version': '11.0.0.0.2',
+    'version': '11.0.0.0.3',
 
     # any module necessary for this one to work correctly
     'depends': [
         'mail',
         'generic_tag',
+        'base_field_m2m_view',
     ],
 
     # always loaded
