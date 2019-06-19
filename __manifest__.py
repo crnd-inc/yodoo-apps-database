@@ -3,7 +3,7 @@
 
     'summary': """Apps database""",
 
-    'author': "Center of Research & Development",
+    'author': "Center of Research and Development",
     'website': "https://crnd.pro",
 
     'category': 'Yodoo Apps',
