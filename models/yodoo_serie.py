@@ -39,11 +39,12 @@ class OdooSerie(models.Model):
 
     def _inverse_name(self):
         for record in self:
-            res = RE_SERIE.match(self.name)
-            if res:
+            match = RE_SERIE.match(self.name)
+            if match:
+                res = match.groupdict()
                 record.update({
-                    'major': res['serie_major'],
-                    'minor': res['serie_minor'],
+                    'major': res.get('serie_major', 0),
+                    'minor': res.get('serie_minor', 0),
                 })
             else:
                 record.update({
