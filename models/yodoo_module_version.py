@@ -206,9 +206,14 @@ class OdooModuleVersion(models.Model):
                 'version_non_standard': parsed_version['version_non_standard'],
             })
         else:
-            raise exceptions.ValidationError(_(
-                'Cannot parse version (%s) for module %s [%s]') % (
-                    data['version'], module.display_name, module.system_name))
+            version_data.update({
+                'module_serie_id': module_serie.id,
+                'version_major': 0,
+                'version_minor': 0,
+                'version_patch': 0,
+                'version_extra': 0,
+                'version_non_standard': True,
+            })
 
         version_data.update({
             'name': data.get('name', False),
