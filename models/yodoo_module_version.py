@@ -210,7 +210,6 @@ class OdooModuleVersion(models.Model):
                 'Cannot parse version (%s) for module %s [%s]') % (
                     data['version'], module.display_name, module.system_name))
 
-
         version_data.update({
             'name': data.get('name', False),
             'license_id': self._prepare_license(data.get('license')),
