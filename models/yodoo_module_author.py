@@ -46,6 +46,9 @@ class YodooModuleAuthor(models.Model):
                 FROM yodoo_module_version_author_rel AS va_rel
                 LEFT JOIN yodoo_module_version AS mv
                     ON mv.id = va_rel.version_id
+                LEFT JOIN yodoo_module AS mod
+                    ON mv.module_id = mod.id
+                WHERE mv.id = mod.last_version_id
             )
         """))
 
