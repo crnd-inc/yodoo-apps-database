@@ -1,4 +1,5 @@
-from odoo import models, fields, api
+from psycopg2 import sql
+from odoo import models, fields, api, tools
 
 
 class OdooModule(models.Model):
@@ -43,6 +44,11 @@ class OdooModule(models.Model):
         comodel_name='yodoo.module.author',
         relation='yodoo_module_author_rel_view',
         column1='module_id', column2='author_id',
+        readonly=True)
+    dependency_ids = fields.Many2manyView(
+        comodel_name='yodoo.module',
+        relation='yodoo_module_dependency_rel_view',
+        column1='module_id', column2='dependency_id',
         readonly=True)
 
     name = fields.Char(
@@ -97,6 +103,24 @@ class OdooModule(models.Model):
             record.serie_ids = record.module_serie_ids.mapped('serie_id')
             record.serie_count = len(record.serie_ids)
 
+    @api.model_cr
+    def init(self):
+        """ Create relation (module <-> dependency) as PG View
+        """
+        # pylint: disable=sql-injection
+        tools.drop_view_if_exists(
+            self.env.cr, 'yodoo_module_dependency_rel_view')
+        self.env.cr.execute(sql.SQL("""
+            CREATE or REPLACE VIEW yodoo_module_dependency_rel_view AS (
+                SELECT DISTINCT
+                    mv.module_id,
+                    vd_rel.dependency_module_id AS dependency_id
+                FROM yodoo_module_version_dependency_rel AS vd_rel
+                LEFT JOIN yodoo_module_version AS mv
+                    ON mv.id = vd_rel.module_version_id
+            )
+        """))
+
     @api.multi
     def name_get(self):
         res = []
@@ -108,20 +132,35 @@ class OdooModule(models.Model):
         return res
 
     @api.model
+    @tools.ormcache('system_name')
+    def _get_module_id(self, system_name):
+        module = self.with_context(active_test=False).search(
+            [('system_name', '=', system_name)], limit=1)
+        if module:
+            return module.id
+        return False
+
+    @api.model
+    def get_or_create_module(self, system_name):
+        module_id = self._get_module_id(system_name)
+        if module_id:
+            return self.browse(module_id)
+        module = self.with_context(
+            mail_create_nosubscribe=True,
+            mail_create_nolog=True,
+            mail_notrack=True,
+        ).create({
+            'system_name': system_name,
+        })
+        self._get_module_id.clear_cache(self)
+        return module
+
+    @api.model
     @api.returns('yodoo.module.version')
     def create_or_update_module(self, system_name, data, no_update=False):
         """ Create or update module and return created/updated version
         """
-        module = self.with_context(active_test=False).search(
-            [('system_name', '=', system_name)], limit=1)
-        if not module:
-            module = self.with_context(
-                mail_create_nosubscribe=True,
-                mail_create_nolog=True,
-                mail_notrack=True,
-            ).create({
-                'system_name': system_name,
-            })
+        module = self.get_or_create_module(system_name)
         version = self.env['yodoo.module.version'].create_or_update_version(
             module, data, no_update=no_update)
         return version

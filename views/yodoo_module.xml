@@ -99,6 +99,7 @@
                             <field name="author_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="license_id"/>
                             <field name="category_id"/>
+                            <field name="dependency_ids" widget="many2many_tags"/>
                         </group>
                         <group>
                             <field name="application"/>

@@ -66,7 +66,7 @@ class OdooModuleVersion(models.Model):
     version_extra = fields.Char(readonly=True)
     version_non_standard = fields.Boolean(readonly=True)
 
-    # License
+    # References
     license_id = fields.Many2one(
         'yodoo.module.license', readonly=True, ondelete='restrict')
     category_id = fields.Many2one(
@@ -75,6 +75,12 @@ class OdooModuleVersion(models.Model):
         comodel_name='yodoo.module.author',
         relation='yodoo_module_version_author_rel',
         column1='version_id', column2='author_id',
+        readonly=True)
+    dependency_ids = fields.Many2many(
+        comodel_name='yodoo.module',
+        relation='yodoo_module_version_dependency_rel',
+        column1='module_version_id',
+        column2='dependency_module_id',
         readonly=True)
 
     # Module info
@@ -153,9 +159,10 @@ class OdooModuleVersion(models.Model):
 
         res = []
         for author_name in author_names:
-            author_id = self.env['yodoo.module.author'].get_or_create(
-                author_name.strip())
-            res.append(author_id)
+            if author_name.strip():
+                author_id = self.env['yodoo.module.author'].get_or_create(
+                    author_name.strip())
+                res.append(author_id)
         return res
 
     def _prepare_license(self, license_name):
@@ -186,6 +193,17 @@ class OdooModuleVersion(models.Model):
         except (ValueError, TypeError):
             price = 0.0
         return price
+
+    def _prepare_depends(self, depends):
+        if not isinstance(depends, (list, tuple)):
+            _logger.warning(
+                "Cannot parse dependencies for version: %s",
+                self.display_name)
+        res = []
+        for dep in depends:
+            module = self.env['yodoo.module'].get_or_create_module(dep)
+            res += [module.id]
+        return res
 
     @api.multi
     def name_get(self):
@@ -243,6 +261,8 @@ class OdooModuleVersion(models.Model):
             'website': data.get('website', False),
             'price': self._prepare_price(data.get('price')),
             'currency_id': self._prepare_currency(data.get('currency')),
+            'dependency_ids': [
+                (6, 0, self._prepare_depends(data.get('depends', [])))],
         })
 
         if version:
