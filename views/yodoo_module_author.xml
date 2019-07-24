@@ -50,6 +50,6 @@
 
     <menuitem action="action_yodoo_module_author_view"
               id="menu_root_settings_module_authors"
-              parent="menu_root_settings"
+              parent="menu_root"
               sequence="60"/>
 </odoo>

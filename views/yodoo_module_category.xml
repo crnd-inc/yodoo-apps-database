@@ -14,6 +14,7 @@
         <field name="arch" type="xml">
             <tree create="false" edit="false" delete="false">
                 <field name="name"/>
+                <field name="module_count"/>
             </tree>
         </field>
     </record>
@@ -24,6 +25,14 @@
             <form create="false" edit="false" delete="false">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button"
+                                type="object"
+                                icon="fa-cubes"
+                                name="action_show_modules">
+                            <field name="module_count"
+                                   string="Modules"
+                                   widget="statinfo"/>
+                        </button>
                     </div>
                     <div class="oe_title">
                         <h1><field name="name" placeholder="Name..."/></h1>
@@ -41,6 +50,6 @@
 
     <menuitem action="action_yodoo_module_category_view"
               id="menu_root_settings_module_categorys"
-              parent="menu_root_settings"
-              sequence="60"/>
+              parent="menu_root"
+              sequence="30"/>
 </odoo>

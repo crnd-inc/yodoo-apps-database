@@ -84,6 +84,8 @@ class OdooModuleVersion(models.Model):
     installable = fields.Boolean(readonly=True)
     auto_install = fields.Boolean(readonly=True)
     website = fields.Char(readonly=True)
+    price = fields.Monetary(readonly=True)
+    currency_id = fields.Many2one('res.currency', readonly=True)
 
     _sql_constraints = [
         ('module_version_uniq',
@@ -166,6 +168,25 @@ class OdooModuleVersion(models.Model):
             return self.env['yodoo.module.category'].get_or_create(category)
         return False
 
+    def _prepare_currency(self, currency_name):
+        if not currency_name:
+            return False
+        currency = self.env['res.currency'].sudo().with_context(
+            active_test=False
+        ).search([('name', '=ilike', currency_name)], limit=1)
+        if currency:
+            return currency.id
+        return False
+
+    def _prepare_price(self, price):
+        if not price:
+            return 0.0
+        try:
+            price = float(price)
+        except (ValueError, TypeError):
+            price = 0.0
+        return price
+
     @api.multi
     def name_get(self):
         result = []
@@ -220,6 +241,8 @@ class OdooModuleVersion(models.Model):
             'installable': data.get('installable', False),
             'auto_install': data.get('auto_install', False),
             'website': data.get('website', False),
+            'price': self._prepare_price(data.get('price')),
+            'currency_id': self._prepare_currency(data.get('currency')),
         })
 
         if version:

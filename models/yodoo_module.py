@@ -67,6 +67,12 @@ class OdooModule(models.Model):
     website = fields.Char(
         related='last_version_id.website', store=True,
         readonly=True)
+    price = fields.Monetary(
+        related='last_version_id.price', store=True,
+        readonly=True)
+    currency_id = fields.Many2one(
+        'res.currency', related='last_version_id.currency_id', store=True,
+        readonly=True)
 
     _sql_constraints = [
         ('system_name_uniq',

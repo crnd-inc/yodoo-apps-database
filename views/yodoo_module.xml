@@ -39,6 +39,7 @@
         <field name="model">yodoo.module</field>
         <field name="arch" type="xml">
             <tree create="false" edit="false" delete="false">
+                <field name="currency_id" invisible="1"/>
                 <field name="system_name"/>
                 <field name="name"/>
                 <field name="serie_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
@@ -48,6 +49,7 @@
                 <field name="category_id"/>
                 <field name="application"/>
                 <field name="version_count"/>
+                <field name="price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                 <field name="tag_ids"
                        options="{'color_field': 'color'}"
                        widget="many2many_tags"/>
@@ -102,6 +104,10 @@
                             <field name="application"/>
                             <field name="installable"/>
                             <field name="auto_install"/>
+                        </group>
+                        <group name="group_price">
+                            <field name="currency_id" invisible="1"/>
+                            <field name="price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                         </group>
                     </group>
                     <group>
