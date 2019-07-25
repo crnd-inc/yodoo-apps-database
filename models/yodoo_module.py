@@ -140,6 +140,24 @@ class OdooModule(models.Model):
     def _setup_complete(self):
         res = super(OdooModule, self)._setup_complete()
         # pylint: disable=sql-injection
+
+        # Create view to find all deps for version
+        dep_view_name = "yodoo_module_version_dependency_all_rel_view"
+        tools.drop_view_if_exists(self.env.cr, dep_view_name)
+        self.env.cr.execute(sql.SQL("""
+            CREATE or REPLACE VIEW {} AS (
+                SELECT DISTINCT
+                    mv.module_id,
+                    vd_rel.dependency_module_id AS dependency_id
+                FROM yodoo_module_version_dependency_rel AS vd_rel
+                LEFT JOIN yodoo_module_version AS mv
+                    ON mv.id = vd_rel.module_version_id
+                LEFT JOIN yodoo_module AS mod
+                    ON mv.module_id = mod.id
+                WHERE mv.id = mod.last_version_id
+            )
+        """).format(sql.Identifier(dep_view_name)))
+
         tools.drop_view_if_exists(
             self.env.cr, 'yodoo_module_dependency_rel_view')
         tools.drop_view_if_exists(
