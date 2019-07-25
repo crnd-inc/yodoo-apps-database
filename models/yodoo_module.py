@@ -1,5 +1,8 @@
+import logging
 from psycopg2 import sql
 from odoo import models, fields, api, tools
+
+_logger = logging.getLogger(__name__)
 
 
 class OdooModule(models.Model):
@@ -82,6 +85,8 @@ class OdooModule(models.Model):
     price = fields.Monetary(
         related='last_version_id.price', store=True,
         readonly=True)
+    total_price = fields.Monetary(
+        compute='_compute_total_price', readonly=True)
     currency_id = fields.Many2one(
         'res.currency', related='last_version_id.currency_id', store=True,
         readonly=True)
@@ -108,6 +113,28 @@ class OdooModule(models.Model):
         for record in self:
             record.serie_ids = record.module_serie_ids.mapped('serie_id')
             record.serie_count = len(record.serie_ids)
+
+    @api.depends('dependency_ids', 'dependency_all_ids.price',
+                 'dependency_all_ids.currency_id',
+                 'dependency_all_ids.last_version_id.dependency_ids',
+                 'last_version_id.dependency_ids')
+    def _compute_total_price(self):
+        Version = self.env['yodoo.module.version']
+        default_currency = Version.get_default_currency()
+        date = self._context.get('date', fields.Date.today())
+        company = self.env['res.company'].browse(
+            self._context.get(
+                'company_id', self.env.user.company_id.id))
+        for record in self:
+            price = record.price
+            currency = record.currency_id or default_currency
+            for dep in record.dependency_all_ids:
+                if not dep.price:
+                    continue
+                dep_currency = dep.currency_id or default_currency
+                price += dep_currency._convert(
+                    dep.price, currency, company, date)
+            record.total_price = price
 
     @api.model
     def _setup_complete(self):

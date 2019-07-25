@@ -196,15 +196,29 @@ class OdooModuleVersion(models.Model):
             return self.env['yodoo.module.category'].get_or_create(category)
         return False
 
-    def _prepare_currency(self, currency_name):
-        if not currency_name:
-            return False
-        currency = self.env['res.currency'].sudo().with_context(
+    @api.model
+    @tools.ormcache()
+    def _get_default_currency_id(self):
+        return self.env['res.currency'].with_context(active_test=False).search(
+            [('name', '=', 'EUR')], limit=1).id
+
+    @api.model
+    def get_default_currency(self):
+        return self.env['res.currency'].browse(self._get_default_currency_id())
+
+    @api.model
+    @tools.ormcache('currency_name')
+    def _get_currency_id_by_name(self, currency_name):
+        return self.env['res.currency'].sudo().with_context(
             active_test=False
-        ).search([('name', '=ilike', currency_name)], limit=1)
-        if currency:
-            return currency.id
-        return False
+        ).search([('name', '=ilike', currency_name)], limit=1).id
+
+    def _prepare_currency(self, currency_name):
+        if currency_name:
+            currency_id = self._get_currency_id_by_name(currency_name)
+            if currency_id:
+                return currency_id
+        return self._get_default_currency_id()
 
     def _prepare_price(self, price):
         if not price:

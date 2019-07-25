@@ -113,6 +113,8 @@
                                 <group name="group_price">
                                     <field name="currency_id" invisible="1"/>
                                     <field name="price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                    <field name="total_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+
                                 </group>
                             </group>
                             <group>
