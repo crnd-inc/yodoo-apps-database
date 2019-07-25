@@ -1,6 +1,7 @@
 import re
 import logging
-from odoo import models, fields, api, exceptions, _
+from psycopg2 import sql
+from odoo import models, fields, api, tools, exceptions, _
 
 _logger = logging.getLogger(__name__)
 
@@ -98,6 +99,26 @@ class OdooModuleVersion(models.Model):
          'unique(module_id, version)',
          '(version, module) pair must be unique!')
     ]
+
+    @api.model
+    def _setup_complete(self):
+        super(OdooModuleVersion, self)._setup_complete()
+        # pylint: disable=sql-injection
+        view_name = "yodoo_module_version_dependency_all_rel_view"
+        tools.drop_view_if_exists(self.env.cr, view_name)
+        self.env.cr.execute(sql.SQL("""
+            CREATE or REPLACE VIEW {} AS (
+                SELECT DISTINCT
+                    mv.module_id,
+                    vd_rel.dependency_module_id AS dependency_id
+                FROM yodoo_module_version_dependency_rel AS vd_rel
+                LEFT JOIN yodoo_module_version AS mv
+                    ON mv.id = vd_rel.module_version_id
+                LEFT JOIN yodoo_module AS mod
+                    ON mv.module_id = mod.id
+                WHERE mv.id = mod.last_version_id
+            )
+        """).format(sql.Identifier(view_name)))
 
     @api.model
     def _parse_version(self, version):

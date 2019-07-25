@@ -50,6 +50,12 @@ class OdooModule(models.Model):
         relation='yodoo_module_dependency_rel_view',
         column1='module_id', column2='dependency_id',
         readonly=True)
+    dependency_all_ids = fields.Many2many(
+        comodel_name='yodoo.module',
+        relation='yodoo_module_dependency_all_rel_view',
+        column1='module_id',
+        column2='dependency_id',
+        readonly=True)
 
     name = fields.Char(
         related='last_version_id.name', store=True,
@@ -103,13 +109,14 @@ class OdooModule(models.Model):
             record.serie_ids = record.module_serie_ids.mapped('serie_id')
             record.serie_count = len(record.serie_ids)
 
-    @api.model_cr
-    def init(self):
-        """ Create relation (module <-> dependency) as PG View
-        """
+    @api.model
+    def _setup_complete(self):
+        super(OdooModule, self)._setup_complete()
         # pylint: disable=sql-injection
         tools.drop_view_if_exists(
             self.env.cr, 'yodoo_module_dependency_rel_view')
+        tools.drop_view_if_exists(
+            self.env.cr, 'yodoo_module_dependency_all_rel_view')
         self.env.cr.execute(sql.SQL("""
             CREATE or REPLACE VIEW yodoo_module_dependency_rel_view AS (
                 SELECT DISTINCT
@@ -121,7 +128,23 @@ class OdooModule(models.Model):
                 LEFT JOIN yodoo_module AS mod
                     ON mv.module_id = mod.id
                 WHERE mv.id = mod.last_version_id
-            )
+            );
+
+            CREATE or REPLACE VIEW yodoo_module_dependency_all_rel_view AS (
+                WITH RECURSIVE all_deps AS (
+                    SELECT module_id,
+                           dependency_id
+                    FROM yodoo_module_dependency_rel_view
+
+                    UNION
+
+                    SELECT DISTINCT v.module_id,
+                        all_deps.dependency_id
+                    FROM yodoo_module_dependency_rel_view AS v
+                    JOIN all_deps ON all_deps.module_id = v.dependency_id
+                )
+                SELECT * FROM all_deps
+            );
         """))
 
     @api.multi

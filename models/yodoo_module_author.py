@@ -34,10 +34,11 @@ class YodooModuleAuthor(models.Model):
         for record in self:
             record.module_count = len(record.module_ids)
 
-    @api.model_cr
-    def init(self):
+    @api.model
+    def _setup_complete(self):
         """ Create relation (module <-> author) as PG View
         """
+        super(YodooModuleAuthor, self)._setup_complete()
         # pylint: disable=sql-injection
         tools.drop_view_if_exists(self.env.cr, 'yodoo_module_author_rel_view')
         self.env.cr.execute(sql.SQL("""
