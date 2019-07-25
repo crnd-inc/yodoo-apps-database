@@ -138,7 +138,7 @@ class OdooModule(models.Model):
 
     @api.model
     def _setup_complete(self):
-        super(OdooModule, self)._setup_complete()
+        res = super(OdooModule, self)._setup_complete()
         # pylint: disable=sql-injection
         tools.drop_view_if_exists(
             self.env.cr, 'yodoo_module_dependency_rel_view')
@@ -173,6 +173,7 @@ class OdooModule(models.Model):
                 SELECT * FROM all_deps
             );
         """))
+        return res
 
     @api.multi
     def name_get(self):

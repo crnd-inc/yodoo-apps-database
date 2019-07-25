@@ -38,7 +38,7 @@ class YodooModuleAuthor(models.Model):
     def _setup_complete(self):
         """ Create relation (module <-> author) as PG View
         """
-        super(YodooModuleAuthor, self)._setup_complete()
+        res = super(YodooModuleAuthor, self)._setup_complete()
         # pylint: disable=sql-injection
         tools.drop_view_if_exists(self.env.cr, 'yodoo_module_author_rel_view')
         self.env.cr.execute(sql.SQL("""
@@ -52,6 +52,7 @@ class YodooModuleAuthor(models.Model):
                 WHERE mv.id = mod.last_version_id
             )
         """))
+        return res
 
     @api.model
     @tools.ormcache('name')

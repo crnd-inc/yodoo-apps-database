@@ -102,7 +102,7 @@ class OdooModuleVersion(models.Model):
 
     @api.model
     def _setup_complete(self):
-        super(OdooModuleVersion, self)._setup_complete()
+        res = super(OdooModuleVersion, self)._setup_complete()
         # pylint: disable=sql-injection
         view_name = "yodoo_module_version_dependency_all_rel_view"
         tools.drop_view_if_exists(self.env.cr, view_name)
@@ -119,6 +119,7 @@ class OdooModuleVersion(models.Model):
                 WHERE mv.id = mod.last_version_id
             )
         """).format(sql.Identifier(view_name)))
+        return res
 
     @api.model
     def _parse_version(self, version):
