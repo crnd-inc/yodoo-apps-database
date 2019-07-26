@@ -23,7 +23,7 @@
     <record model="ir.ui.view" id="yodoo_serie_form">
         <field name="model">yodoo.serie</field>
         <field name="arch" type="xml">
-            <form create="false" edit="false" delete="false">
+            <form create="false" edit="true" delete="false">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button class="oe_stat_button"
@@ -42,6 +42,9 @@
                         <group>
                             <field name="major"/>
                             <field name="minor" widget="many2many_tags"/>
+                        </group>
+                        <group>
+                            <field name="color"/>
                         </group>
                     </group>
                 </sheet>

@@ -15,7 +15,18 @@ class OdooSerie(models.Model):
         readonly=True, store=True, index=True)
     major = fields.Integer(readonly=True)
     minor = fields.Integer(readonly=True)
-    color = fields.Integer()
+    color = fields.Selection([
+        (1, "Red"),
+        (2, "Orange"),
+        (3, "Yellow"),
+        (4, "Light blue"),
+        (5, "Dark purple"),
+        (6, "Salmon pink"),
+        (7, "Medium blue"),
+        (8, "Dark blue"),
+        (9, "Fushia"),
+        (10, "Green"),
+        (11, "Purple")])
 
     module_ids = fields.Many2many(
         comodel_name='yodoo.module',

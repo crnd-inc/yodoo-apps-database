@@ -10,6 +10,11 @@
         <field name="name">User</field>
         <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
         <field name="category_id" ref="module_category_yodoo_apps"/>
+    </record>
+    <record id="group_yodoo_apps_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="implied_ids" eval="[(4, ref('yodoo_apps_database.group_yodoo_apps_user'))]"/>
+        <field name="category_id" ref="module_category_yodoo_apps"/>
         <field name="users" eval="[(4, ref('base.user_root')),(4, ref('base.user_admin'))]"/>
     </record>
 </odoo>

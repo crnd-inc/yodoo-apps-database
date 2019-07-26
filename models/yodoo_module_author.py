@@ -8,7 +8,18 @@ class YodooModuleAuthor(models.Model):
     _order = 'name'
 
     name = fields.Char(required=True, index=True)
-    color = fields.Integer()
+    color = fields.Selection([
+        (1, "Red"),
+        (2, "Orange"),
+        (3, "Yellow"),
+        (4, "Light blue"),
+        (5, "Dark purple"),
+        (6, "Salmon pink"),
+        (7, "Medium blue"),
+        (8, "Dark blue"),
+        (9, "Fushia"),
+        (10, "Green"),
+        (11, "Purple")])
 
     version_ids = fields.Many2many(
         comodel_name='yodoo.module.author',
