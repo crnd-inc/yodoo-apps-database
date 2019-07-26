@@ -1,5 +1,4 @@
 import logging
-from psycopg2 import sql
 from odoo import models, fields, api, tools
 
 _logger = logging.getLogger(__name__)
@@ -53,7 +52,7 @@ class OdooModule(models.Model):
         relation='yodoo_module_dependency_rel_view',
         column1='module_id', column2='dependency_id',
         readonly=True)
-    dependency_all_ids = fields.Many2many(
+    dependency_all_ids = fields.Many2manyView(
         comodel_name='yodoo.module',
         relation='yodoo_module_dependency_all_rel_view',
         column1='module_id',
@@ -135,63 +134,6 @@ class OdooModule(models.Model):
                 price += dep_currency._convert(
                     dep.price, currency, company, date)
             record.total_price = price
-
-    @api.model
-    def _setup_complete(self):
-        res = super(OdooModule, self)._setup_complete()
-        # pylint: disable=sql-injection
-
-        # Create view to find all deps for version
-        dep_view_name = "yodoo_module_version_dependency_all_rel_view"
-        tools.drop_view_if_exists(self.env.cr, dep_view_name)
-        self.env.cr.execute(sql.SQL("""
-            CREATE or REPLACE VIEW {} AS (
-                SELECT DISTINCT
-                    mv.module_id,
-                    vd_rel.dependency_module_id AS dependency_id
-                FROM yodoo_module_version_dependency_rel AS vd_rel
-                LEFT JOIN yodoo_module_version AS mv
-                    ON mv.id = vd_rel.module_version_id
-                LEFT JOIN yodoo_module AS mod
-                    ON mv.module_id = mod.id
-                WHERE mv.id = mod.last_version_id
-            )
-        """).format(sql.Identifier(dep_view_name)))
-
-        tools.drop_view_if_exists(
-            self.env.cr, 'yodoo_module_dependency_rel_view')
-        tools.drop_view_if_exists(
-            self.env.cr, 'yodoo_module_dependency_all_rel_view')
-        self.env.cr.execute(sql.SQL("""
-            CREATE or REPLACE VIEW yodoo_module_dependency_rel_view AS (
-                SELECT DISTINCT
-                    mv.module_id,
-                    vd_rel.dependency_module_id AS dependency_id
-                FROM yodoo_module_version_dependency_rel AS vd_rel
-                LEFT JOIN yodoo_module_version AS mv
-                    ON mv.id = vd_rel.module_version_id
-                LEFT JOIN yodoo_module AS mod
-                    ON mv.module_id = mod.id
-                WHERE mv.id = mod.last_version_id
-            );
-
-            CREATE or REPLACE VIEW yodoo_module_dependency_all_rel_view AS (
-                WITH RECURSIVE all_deps AS (
-                    SELECT module_id,
-                           dependency_id
-                    FROM yodoo_module_dependency_rel_view
-
-                    UNION
-
-                    SELECT DISTINCT v.module_id,
-                        all_deps.dependency_id
-                    FROM yodoo_module_dependency_rel_view AS v
-                    JOIN all_deps ON all_deps.module_id = v.dependency_id
-                )
-                SELECT * FROM all_deps
-            );
-        """))
-        return res
 
     @api.multi
     def name_get(self):

@@ -34,16 +34,15 @@ class YodooModuleAuthor(models.Model):
         for record in self:
             record.module_count = len(record.module_ids)
 
-    @api.model
-    def _setup_complete(self):
-        """ Create relation (module <-> author) as PG View
-        """
-        res = super(YodooModuleAuthor, self)._setup_complete()
+    @api.model_cr
+    def init(self):
         # pylint: disable=sql-injection
         tools.drop_view_if_exists(self.env.cr, 'yodoo_module_author_rel_view')
         self.env.cr.execute(sql.SQL("""
             CREATE or REPLACE VIEW yodoo_module_author_rel_view AS (
-                SELECT DISTINCT mv.module_id, va_rel.author_id
+                SELECT DISTINCT
+                    mv.module_id,
+                    va_rel.author_id
                 FROM yodoo_module_version_author_rel AS va_rel
                 LEFT JOIN yodoo_module_version AS mv
                     ON mv.id = va_rel.version_id
@@ -51,8 +50,8 @@ class YodooModuleAuthor(models.Model):
                     ON mv.module_id = mod.id
                 WHERE mv.id = mod.last_version_id
             )
-        """))
-        return res
+        """).format(sql.Identifier(self._table)))
+        return super(YodooModuleAuthor, self).init()
 
     @api.model
     @tools.ormcache('name')
