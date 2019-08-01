@@ -7,13 +7,14 @@
     'website': "https://crnd.pro",
 
     'category': 'Yodoo Apps',
-    'version': '12.0.0.0.7',
+    'version': '12.0.0.1.0',
 
     # any module necessary for this one to work correctly
     'depends': [
         'mail',
         'generic_tag',
         'base_field_m2m_view',
+        'generic_resource',
     ],
 
     # always loaded
@@ -21,6 +22,7 @@
         'security/security.xml',
         'security/ir.model.access.csv',
         'data/generic_tag_model.xml',
+        'data/generic_resource_type.xml',
         'views/menu.xml',
         'views/yodoo_module.xml',
         'views/yodoo_module_serie.xml',

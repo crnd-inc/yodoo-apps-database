@@ -93,6 +93,7 @@ class OdooModuleVersion(models.Model):
     website = fields.Char(readonly=True)
     price = fields.Monetary(readonly=True)
     currency_id = fields.Many2one('res.currency', readonly=True)
+    icon = fields.Binary(attachment=True)
 
     _sql_constraints = [
         ('module_version_uniq',

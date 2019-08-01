@@ -10,6 +10,7 @@ class OdooModule(models.Model):
         'mail.thread',
         'mail.activity.mixin',
         'generic.tag.mixin',
+        'generic.resource.mixin',
     ]
     _description = "Odoo Module"
     _order = 'name, system_name'
