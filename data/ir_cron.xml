@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo noupdate="1">
     <record id="scheduler_check_modules_published_on_odoo_apps"
-            model="ir.cron" forcecreate="False">
+            model="ir.cron">
         <field name="name">Yodoo Apps: Update addons publication links</field>
         <field name="state">code</field>
         <field name="interval_number">7</field>
