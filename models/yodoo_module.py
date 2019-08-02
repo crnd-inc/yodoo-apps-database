@@ -90,6 +90,9 @@ class OdooModule(models.Model):
     currency_id = fields.Many2one(
         'res.currency', related='last_version_id.currency_id', store=True,
         readonly=True)
+    odoo_apps_link = fields.Char(
+        related='last_version_id.module_serie_id.odoo_apps_link',
+        store=True)
 
     _sql_constraints = [
         ('system_name_uniq',
@@ -179,6 +182,10 @@ class OdooModule(models.Model):
         version = self.env['yodoo.module.version'].create_or_update_version(
             module, data, no_update=no_update)
         return version
+
+    @api.multi
+    def check_odoo_apps_published_state(self):
+        self.mapped('module_serie_ids').check_odoo_apps_published_state()
 
     @api.multi
     def action_show_versions(self):

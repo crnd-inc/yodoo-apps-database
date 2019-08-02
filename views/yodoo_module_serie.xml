@@ -7,6 +7,14 @@
                 <field name="module_id"/>
                 <field name="serie_id"/>
 
+                <separator/>
+                <filter name="filter_published_on_odoo_apps"
+                        string="Published on Odoo Apps"
+                        domain="[('odoo_apps_link', '!=', False)]"/>
+                <filter name="filter_unpublished_on_odoo_apps"
+                        string="Unpublished on Odoo Apps"
+                        domain="[('odoo_apps_link', '=', False)]"/>
+
                 <group expand="0" string="Group By">
                     <filter name="group_by_serie"
                             string="Serie"
@@ -59,6 +67,15 @@
                         <group>
                             <field name="serie_id"/>
                             <field name="last_version_id"/>
+                            <label for="odoo_apps_link"/>
+                            <div class="o_row" style="min-width: 100%">
+                                <field name="odoo_apps_link" style="min-width: calc(100% - 40px);" widget="url"/>
+                                <button name="check_odoo_apps_published_state"
+                                        type="object"
+                                        class="btn-link btn-sm"
+                                        groups="yodoo_apps_database.group_yodoo_apps_manager"
+                                        icon="fa-refresh"/>
+                            </div>
                         </group>
                     </group>
                 </sheet>

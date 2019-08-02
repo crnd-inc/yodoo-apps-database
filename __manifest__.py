@@ -23,6 +23,7 @@
         'security/ir.model.access.csv',
         'data/generic_tag_model.xml',
         'data/generic_resource_type.xml',
+        'data/ir_cron.xml',
         'views/menu.xml',
         'views/yodoo_module.xml',
         'views/yodoo_module_serie.xml',

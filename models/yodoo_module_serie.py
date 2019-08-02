@@ -1,4 +1,7 @@
-from odoo import models, fields, api
+import logging
+from odoo import models, fields, api, tools
+
+_logger = logging.getLogger(__name__)
 
 
 class OdooModuleSerie(models.Model):
@@ -30,6 +33,10 @@ class OdooModuleSerie(models.Model):
     category_id = fields.Many2one(
         'yodoo.module.category', index=True, store=True,
         related='last_version_id.category_id',
+        readonly=True)
+
+    odoo_apps_link = fields.Char(
+        help="Link to addon's page on Odoo Apps",
         readonly=True)
 
     _sql_constraints = [
@@ -73,11 +80,45 @@ class OdooModuleSerie(models.Model):
         return module_serie
 
     @api.multi
-    def action_show_versions(self):
-        self.ensure_one()
-        action = self.env.ref(
-            'yodoo_apps_database.action_yodoo_module_version_view').read()[0]
-        action.update({
-            'domain': [('module_serie_id', '=', self.id)],
-        })
-        return action
+    def check_odoo_apps_published_state(self):
+        from requests_futures.sessions import FuturesSession
+
+        session = FuturesSession()
+        results = {}
+        links = {}
+        for record in self:
+            link = "https://apps.odoo.com/apps/modules/%(serie)s/%(name)s/" % {
+                'serie': record.serie_id.name,
+                'name': record.module_id.system_name,
+            }
+            links[record] = link
+            results[record] = session.head(link)
+
+        for record, future in results.items():
+            if future.result().status_code == 200:
+                record.odoo_apps_link = links[record]
+            else:
+                record.odoo_apps_link = False
+
+    @api.model
+    def scheduler_test_odoo_apps_link(self):
+        records = self.search(
+            [('odoo_apps_link', '=', False)]
+        )
+
+        for record_ids in tools.split_every(1000, records.ids):
+            with api.Environment.manage():
+                with self.env.registry.cursor() as new_cr:
+                    new_env = api.Environment(new_cr, self.env.uid,
+                                              self.env.context.copy())
+                    try:
+                        new_env[self._name].browse(
+                            record_ids).check_odoo_apps_published_state()
+                    except Exception:
+                        _logger.error(
+                            "Error caught when trying to check publishing "
+                            "state of module series %s",
+                            record_ids, exc_info=True)
+                        new_cr.rollback()
+                    else:
+                        new_cr.commit()
