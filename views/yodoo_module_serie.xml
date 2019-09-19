@@ -55,6 +55,8 @@
                                 name="action_show_versions">
                             <field name="version_count"
                                    string="Versions"
+                                   aria-label="Versions"
+                                   title="Versions"
                                    widget="statinfo"/>
                         </button>
                     </div>
@@ -74,6 +76,8 @@
                                         type="object"
                                         class="btn-link btn-sm"
                                         groups="yodoo_apps_database.group_yodoo_apps_manager"
+                                        aria-label="Check publication state"
+                                        title="Check publication state"
                                         icon="fa-refresh"/>
                             </div>
                         </group>
