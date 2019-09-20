@@ -313,7 +313,7 @@ class OdooModuleVersion(models.Model):
                 'serie_id': serie_id,
                 'serie': module_serie.serie_id.name,
                 'serie_major': module_serie.serie_id.major,
-                'serie_minor ': module_serie.serie_id.minor,
+                'serie_minor': module_serie.serie_id.minor,
                 'version_major': parsed_version['version_major'],
                 'version_minor': parsed_version['version_minor'],
                 'version_patch': parsed_version['version_patch'],

@@ -100,7 +100,7 @@ class OdooModule(models.Model):
     # TODO: Update when last version is updated to improve performance
     odoo_apps_link = fields.Char(
         related='last_version_id.module_serie_id.odoo_apps_link',
-        store=True)
+        store=False)
 
     _sql_constraints = [
         ('system_name_uniq',
