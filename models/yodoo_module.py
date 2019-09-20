@@ -3,6 +3,25 @@ from odoo import models, fields, api, tools
 
 _logger = logging.getLogger(__name__)
 
+# List of fields to sync from last version
+VERSION_TO_MODULE_SYNC_FIELDS = [
+    'license_id',
+    'category_id',
+    'name',
+    'version',
+    'summary',
+    'application',
+    'installable',
+    'auto_install',
+    # 'icon',
+    'website',
+    'price',
+    'currency_id',
+]
+
+# Check module_version for list of fields to be synced from module version
+# model
+
 
 class OdooModule(models.Model):
     _name = 'yodoo.module'
@@ -21,11 +40,9 @@ class OdooModule(models.Model):
     version_ids = fields.One2many(
         'yodoo.module.version', 'module_id', readonly=True)
     version_count = fields.Integer(
-        compute='_compute_last_version',
         store=True, readonly=True)
     last_version_id = fields.Many2one(
-        'yodoo.module.version', readonly=True, store=True,
-        compute='_compute_last_version')
+        'yodoo.module.version', readonly=True, store=True)
     serie_ids = fields.Many2many(
         string="Series",
         comodel_name='yodoo.serie',
@@ -38,11 +55,9 @@ class OdooModule(models.Model):
         readonly=True, compute_sudo=True)
 
     license_id = fields.Many2one(
-        'yodoo.module.license', index=True,
-        related='last_version_id.license_id', store=True, readonly=True)
+        'yodoo.module.license', index=True, store=True, readonly=True)
     category_id = fields.Many2one(
-        'yodoo.module.category', index=True,
-        related='last_version_id.category_id', store=True, readonly=True)
+        'yodoo.module.category', index=True, store=True, readonly=True)
     author_ids = fields.Many2manyView(
         comodel_name='yodoo.module.author',
         relation='yodoo_module_author_rel_view',
@@ -61,35 +76,28 @@ class OdooModule(models.Model):
         readonly=True)
 
     name = fields.Char(
-        related='last_version_id.name', store=True,
-        readonly=True, index=True)
+        store=True, readonly=True, index=True)
     version = fields.Char(
-        related='last_version_id.version', store=True,
-        readonly=True)
+        store=True, readonly=True)
     summary = fields.Char(
-        related='last_version_id.summary', store=True,
-        readonly=True)
+        store=True, readonly=True)
     application = fields.Boolean(
-        related='last_version_id.application', store=True,
-        readonly=True)
+        store=True, readonly=True)
     installable = fields.Boolean(
-        related='last_version_id.installable', store=True,
-        readonly=True)
+        store=True, readonly=True)
     auto_install = fields.Boolean(
-        related='last_version_id.auto_install', store=True,
-        readonly=True)
+        store=True, readonly=True)
     # icon = fields.Char(readonly=True)
     website = fields.Char(
-        related='last_version_id.website', store=True,
-        readonly=True)
+        store=True, readonly=True)
     price = fields.Monetary(
-        related='last_version_id.price', store=True,
-        readonly=True)
+        store=True, readonly=True)
     total_price = fields.Monetary(
         compute='_compute_total_price', readonly=True)
     currency_id = fields.Many2one(
-        'res.currency', related='last_version_id.currency_id', store=True,
-        readonly=True)
+        'res.currency', store=True, readonly=True)
+
+    # TODO: Update when last version is updated to improve performance
     odoo_apps_link = fields.Char(
         related='last_version_id.module_serie_id.odoo_apps_link',
         store=True)
@@ -99,17 +107,6 @@ class OdooModule(models.Model):
          'unique(system_name)',
          'Module system name must be uniqe!')
     ]
-
-    @api.depends('version_ids')
-    def _compute_last_version(self):
-        for record in self:
-            last_version = self.env['yodoo.module.version'].search(
-                [('module_id', '=', record.id)], limit=1)
-            if last_version:
-                record.last_version_id = last_version
-            else:
-                record.last_version_id = False
-            record.version_count = len(record.version_ids)
 
     @api.depends('module_serie_ids')
     def _compute_serie_ids(self):

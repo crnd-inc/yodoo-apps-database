@@ -1,5 +1,6 @@
 import re
 import logging
+from pkg_resources import parse_version as V
 from odoo import models, fields, api, tools, exceptions, _
 from ..tools import create_sql_view
 
@@ -25,6 +26,22 @@ RE_VERSION_NOT_STANDARD = re.compile(
     r"(?P<version>.+)"
     r"$")
 
+# List of fields to sync from last version to module
+VERSION_TO_MODULE_SYNC_FIELDS = [
+    'license_id',
+    'category_id',
+    'name',
+    'version',
+    'summary',
+    'application',
+    'installable',
+    'auto_install',
+    # 'icon',
+    'website',
+    'price',
+    'currency_id',
+]
+
 
 class OdooModuleVersion(models.Model):
     _name = 'yodoo.module.version'
@@ -38,26 +55,25 @@ class OdooModuleVersion(models.Model):
     module_serie_id = fields.Many2one(
         'yodoo.module.serie', required=True, readonly=True, index=True,
         ondelete='cascade')
+    # Updated when version created
     module_id = fields.Many2one(
-        'yodoo.module', related='module_serie_id.module_id',
-        store=True, index=True, readonly=True)
+        'yodoo.module',
+        store=True, index=True, readonly=True, required=True)
     serie_id = fields.Many2one(
-        'yodoo.serie', related='module_serie_id.serie_id',
-        store=True, index=True, readonly=True)
+        'yodoo.serie',
+        store=True, index=True, readonly=True, required=True)
 
     # Odoo Serie info
+    # Updated when version created
     system_name = fields.Char(
         related='module_serie_id.module_id.system_name',
         readonly=True, store=True)
     serie = fields.Char(
-        related='module_serie_id.serie_id.name', store=True,
-        index=True, readonly=True)
+        store=True, index=True, readonly=True)
     serie_major = fields.Integer(
-        related='module_serie_id.serie_id.major', store=True,
-        index=True, readonly=True)
+        store=True, index=True, readonly=True)
     serie_minor = fields.Integer(
-        related='module_serie_id.serie_id.minor', store=True,
-        index=True, readonly=True)
+        store=True, index=True, readonly=True)
 
     # Version parts
     version = fields.Char(readonly=True, index=True)
@@ -278,21 +294,13 @@ class OdooModuleVersion(models.Model):
             ]
         return result
 
-    @api.model
-    def create_or_update_version(self, module, data, no_update=False):
-        version = self.with_context(active_test=False).search(
-            [('module_id', '=', module.id),
-             ('version', '=', data['version'])],
-            limit=1)
-        if version and no_update:
-            return version
-
+    def _create_or_update_prepare_version_data(self, module, data):
         version_data = {
             'module_id': module.id,
             'version': data['version'],
         }
 
-        # Add version info to data
+        # add version info to data
         parsed_version = self._parse_version(data['version'])
         if parsed_version:
             serie_id = self.env['yodoo.serie'].get_or_create(
@@ -301,6 +309,11 @@ class OdooModuleVersion(models.Model):
                 module.id, serie_id)
             version_data.update({
                 'module_serie_id': module_serie.id,
+                'module_id': module.id,
+                'serie_id': serie_id,
+                'serie': module_serie.serie_id.name,
+                'serie_major': module_serie.serie_id.major,
+                'serie_minor ': module_serie.serie_id.minor,
                 'version_major': parsed_version['version_major'],
                 'version_minor': parsed_version['version_minor'],
                 'version_patch': parsed_version['version_patch'],
@@ -308,8 +321,8 @@ class OdooModuleVersion(models.Model):
                 'version_non_standard': parsed_version['version_non_standard'],
             })
         else:
-            raise exceptions.ValidationError(_(
-                'Cannot parse version (%s) for module %s [%s]') % (
+            raise exceptions.validationerror(_(
+                'cannot parse version (%s) for module %s [%s]') % (
                     data['version'], module.display_name, module.system_name))
 
         version_data.update({
@@ -327,9 +340,72 @@ class OdooModuleVersion(models.Model):
             'dependency_ids': [
                 (6, 0, self._prepare_depends(data.get('depends', [])))],
         })
+        return version_data
+
+    def _create_or_update_prepare_module_data(self, module,
+                                              version, version_data):
+        module_data = {}
+        if not module.last_version_id:
+            module_data['last_version_id'] = version.id
+        elif V(module.last_version_id.version) < V(version.version):
+            module_data['last_version_id'] = version.id
+
+        if module_data:
+            module_data['version_count'] = self.search_count(
+                [('module_id', '=', module.id)])
+            for field_name in VERSION_TO_MODULE_SYNC_FIELDS:
+                module_data[field_name] = version_data[field_name]
+        return module_data
+
+    def _create_or_update_prepare_module_serie_data(self, module_serie,
+                                                    version, version_data):
+        serie_data = {}
+        if not module_serie.last_version_id:
+            serie_data['last_version_id'] = version.id
+        elif V(module_serie.last_version_id.version) < V(version.version):
+            serie_data['last_version_id'] = version.id
+
+        if serie_data:
+            serie_data['version_count'] = self.search_count(
+                [('module_serie_id', '=', module_serie.id)])
+        return serie_data
+
+    @api.model
+    def create_or_update_version(self, module, data, no_update=False):
+        """ This method have to be the single point to
+            delete/update module versions
+
+            For performance reason this method also updates following models:
+                - module
+                - module serie
+
+            :param module: Recordset of single module to update
+            :param data: dictionary with data to update module with
+            :param no_update: do not update version if it is exists
+        """
+        version = self.with_context(active_test=False).search(
+            [('module_id', '=', module.id),
+             ('version', '=', data['version'])],
+            limit=1)
+        if version and no_update:
+            return version
+
+        version_data = self._create_or_update_prepare_version_data(
+            module, data)
 
         if version:
             version.write(version_data)
-            return version
+        else:
+            version = self.create(version_data)
 
-        return self.create(version_data)
+        module_data = self._create_or_update_prepare_module_data(
+            module, version, version_data)
+        if module_data:
+            module.write(module_data)
+
+        serie_data = self._create_or_update_prepare_module_serie_data(
+            version.module_serie_id, version, version_data)
+        if serie_data:
+            version.module_serie_id.update(serie_data)
+
+        return version

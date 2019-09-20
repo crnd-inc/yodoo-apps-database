@@ -19,19 +19,17 @@ class OdooModuleSerie(models.Model):
     version_ids = fields.One2many(
         'yodoo.module.version', 'module_serie_id', readonly=True)
     version_count = fields.Integer(
-        compute='_compute_last_version',
         store=True, readonly=True)
     last_version_id = fields.Many2one(
-        'yodoo.module.version', readonly=True, store=True,
-        compute='_compute_last_version')
+        'yodoo.module.version', readonly=True, store=True)
 
-    # TODO: Do we need this fields?
+    # Following fields are not stored for performance reasons
     license_id = fields.Many2one(
-        'yodoo.module.license', index=True, store=True,
+        'yodoo.module.license', index=False, store=False,
         related='last_version_id.license_id',
         readonly=True)
     category_id = fields.Many2one(
-        'yodoo.module.category', index=True, store=True,
+        'yodoo.module.category', index=False, store=False,
         related='last_version_id.category_id',
         readonly=True)
 
@@ -44,17 +42,6 @@ class OdooModuleSerie(models.Model):
          'unique(module_id, serie_id)',
          'Module and serie must be unique!'),
     ]
-
-    @api.depends('version_ids')
-    def _compute_last_version(self):
-        for record in self:
-            last_version = self.env['yodoo.module.version'].search(
-                [('module_serie_id', '=', record.id)], limit=1)
-            if last_version:
-                record.last_version_id = last_version
-            else:
-                record.last_version_id = False
-            record.version_count = len(record.version_ids)
 
     @api.multi
     def name_get(self):
