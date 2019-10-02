@@ -72,103 +72,110 @@
 
     <record model="ir.ui.view" id="yodoo_module_form">
         <field name="model">yodoo.module</field>
+        <field name="inherit_id" ref="generic_resource.generic_resource_view_form_base"/>
+        <field name="mode">primary</field>
         <field name="arch" type="xml">
-            <form create="false" delete="false">
-                <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <button class="oe_stat_button"
-                                type="object"
-                                icon="fa-cube"
-                                name="action_show_module_series">
-                            <field name="serie_count"
-                                   string="Series"
-                                   aria-label="Series"
-                                   title="Series"
-                                   widget="statinfo"/>
-                        </button>
-                        <button class="oe_stat_button"
-                                type="object"
-                                icon="fa-cubes"
-                                name="action_show_versions">
-                            <field name="version_count"
-                                   string="Versions"
-                                   aria-label="Versions"
-                                   title="Versions"
-                                   widget="statinfo"/>
-                        </button>
-                    </div>
-                    <div class="oe_title">
-                        <h1><field name="name"/></h1>
-                        <h3><field name="summary"/></h3>
-                        <h4><field name="tag_ids"
-                                   widget="many2many_tags"
-                                   options="{'color_field': 'color'}"
-                                   context="{'default_model': 'yodoo.module'}"
-                                   placeholder="Tags..."/></h4>
-                    </div>
+            <xpath expr="/form" position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="delete">false</attribute>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button class="oe_stat_button"
+                        type="object"
+                        icon="fa-cube"
+                        name="action_show_module_series">
+                    <field name="serie_count"
+                           string="Series"
+                           aria-label="Series"
+                           title="Series"
+                           widget="statinfo"/>
+                </button>
+                <button class="oe_stat_button"
+                        type="object"
+                        icon="fa-cubes"
+                        name="action_show_versions">
+                    <field name="version_count"
+                           string="Versions"
+                           aria-label="Versions"
+                           title="Versions"
+                           widget="statinfo"/>
+                </button>
+            </xpath>
+            <xpath expr="//h1[@name='h1_title']" position="inside">
+                <field name="name"/>
+            </xpath>
+            <xpath expr="//h1[@name='h1_title']" position="after">
+                <h3><field name="summary"/></h3>
+                <h4><field name="tag_ids"
+                           widget="many2many_tags"
+                           options="{'color_field': 'color'}"
+                           context="{'default_model': 'yodoo.module'}"
+                           placeholder="Tags..."/></h4>
+            </xpath>
+            <xpath expr="/form/sheet/notebook" position="before">
+                <group>
+                    <group>
+                        <field name="system_name"/>
+                        <field name="serie_ids" widget="many2many_tags" options="{'color_field': 'color', 'open': True}"/>
+                        <field name="version"/>
+                        <field name="resource_id" groups="base.group_no_one"/>
+                    </group>
+                    <group>
+                        <field name="website"/>
+                        <label for="odoo_apps_link"/>
+                        <div class="o_row" style="min-width: 100%">
+                            <field name="odoo_apps_link" style="min-width: calc(100% - 40px);" widget="url"/>
+                            <button name="check_odoo_apps_published_state"
+                                    type="object"
+                                    class="btn-link btn-sm"
+                                    groups="yodoo_apps_database.group_yodoo_apps_manager"
+                                    aria-label="Check publication state"
+                                    title="Check publication state"
+                                    icon="fa-refresh"/>
+                        </div>
+                        <field name="author_ids" widget="many2many_tags" options="{'color_field': 'color', 'open': True}"/>
+                        <field name="license_id"/>
+                        <field name="category_id"/>
+                    </group>
+                </group>
+            </xpath>
+            <xpath expr="//page[@name='page_resource_info']" position="before">
+                <page name="page_info" string="Info">
                     <group>
                         <group>
-                            <field name="system_name"/>
-                            <field name="serie_ids" widget="many2many_tags" options="{'color_field': 'color', 'open': True}"/>
-                            <field name="version"/>
-                            <field name="resource_visibility"/>
-                            <field name="resource_id" groups="base.group_no_one"/>
+                            <field name="application"/>
+                            <field name="installable"/>
+                            <field name="auto_install"/>
                         </group>
-                        <group>
-                            <field name="website"/>
-                            <label for="odoo_apps_link"/>
-                            <div class="o_row" style="min-width: 100%">
-                                <field name="odoo_apps_link" style="min-width: calc(100% - 40px);" widget="url"/>
-                                <button name="check_odoo_apps_published_state"
-                                        type="object"
-                                        class="btn-link btn-sm"
-                                        groups="yodoo_apps_database.group_yodoo_apps_manager"
-                                        aria-label="Check publication state"
-                                        title="Check publication state"
-                                        icon="fa-refresh"/>
-                            </div>
-                            <field name="author_ids" widget="many2many_tags" options="{'color_field': 'color', 'open': True}"/>
-                            <field name="license_id"/>
-                            <field name="category_id"/>
+                        <group name="group_price">
+                            <field name="currency_id" invisible="1"/>
+                            <field name="price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                            <field name="total_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+
                         </group>
                     </group>
-                    <notebook>
-                        <page name="page_info" string="Info">
-                            <group>
-                                <group>
-                                    <field name="application"/>
-                                    <field name="installable"/>
-                                    <field name="auto_install"/>
-                                </group>
-                                <group name="group_price">
-                                    <field name="currency_id" invisible="1"/>
-                                    <field name="price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-                                    <field name="total_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-
-                                </group>
-                            </group>
-                            <group>
-                                <field name="summary"/>
-                            </group>
-                        </page>
-                        <page name="page_dependencies" string="Dependencies">
-                            <group>
-                                <group name="group_direct_deps" string="Direct Dependencies">
-                                    <field name="dependency_ids" nolabel="1" widget="many2many_tags" options="{'open': True}"/>
-                                </group>
-                                <group name="group_recursive_deps" string="Recursive Dependencies">
-                                    <field name="dependency_all_ids" nolabel="1" widget="many2many_tags" options="{'open': True}"/>
-                                </group>
-                            </group>
-                        </page>
-                    </notebook>
-                </sheet>
+                    <group>
+                        <field name="summary"/>
+                    </group>
+                </page>
+                <page name="page_dependencies" string="Dependencies">
+                    <group>
+                        <group name="group_direct_deps" string="Direct Dependencies">
+                            <field name="dependency_ids" nolabel="1" widget="many2many_tags" options="{'open': True}"/>
+                        </group>
+                        <group name="group_recursive_deps" string="Recursive Dependencies">
+                            <field name="dependency_all_ids" nolabel="1" widget="many2many_tags" options="{'open': True}"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="/form/sheet" position="after">
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
                     <field name="activity_ids" widget="mail_activity"/>
                     <field name="message_ids" widget="mail_thread"/>
                 </div>
-            </form>
+            </xpath>
         </field>
     </record>
 
