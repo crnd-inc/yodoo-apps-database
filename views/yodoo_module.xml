@@ -118,7 +118,7 @@
                         <field name="system_name"/>
                         <field name="serie_ids" widget="many2many_tags" options="{'color_field': 'color', 'open': True}"/>
                         <field name="version"/>
-                        <field name="resource_id" groups="base.group_no_one"/>
+                        <field name="resource_id" readonly="1" required="0" groups="base.group_no_one"/>
                     </group>
                     <group>
                         <field name="website"/>

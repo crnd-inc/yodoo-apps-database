@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="yodoo_serie__8_0" model="yodoo.serie" forcecreate="False">
+        <field name="name">8.0</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="yodoo_serie__9_0" model="yodoo.serie" forcecreate="False">
+        <field name="name">9.0</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="yodoo_serie__10_0" model="yodoo.serie" forcecreate="False">
+        <field name="name">10.0</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="yodoo_serie__11_0" model="yodoo.serie" forcecreate="False">
+        <field name="name">11.0</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="yodoo_serie__12_0" model="yodoo.serie" forcecreate="False">
+        <field name="name">12.0</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="yodoo_serie__13_0" model="yodoo.serie" forcecreate="False">
+        <field name="name">13.0</field>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>
+

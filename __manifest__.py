@@ -7,7 +7,7 @@
     'website': "https://crnd.pro",
 
     'category': 'Yodoo Apps',
-    'version': '12.0.0.3.0',
+    'version': '12.0.0.4.0',
 
     # any module necessary for this one to work correctly
     'depends': [
@@ -22,8 +22,8 @@
         'security/security.xml',
         'security/ir.model.access.csv',
         'data/generic_tag_model.xml',
-        'data/generic_resource_type.xml',
         'data/ir_cron.xml',
+        'data/yodoo_serie.xml',
         'views/menu.xml',
         'views/yodoo_module.xml',
         'views/yodoo_module_serie.xml',
@@ -32,6 +32,8 @@
         'views/yodoo_module_category.xml',
         'views/yodoo_module_author.xml',
         'views/yodoo_serie.xml',
+        'views/res_config_settings.xml',
+        'data/generic_resource_type.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
