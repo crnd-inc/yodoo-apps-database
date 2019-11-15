@@ -121,7 +121,7 @@
                         <field name="resource_id" readonly="1" required="0" groups="base.group_no_one"/>
                     </group>
                     <group>
-                        <field name="website"/>
+                        <field name="website" widget="url"/>
                         <label for="odoo_apps_link"/>
                         <div class="o_row" style="min-width: 100%">
                             <field name="odoo_apps_link" style="min-width: calc(100% - 40px);" widget="url"/>

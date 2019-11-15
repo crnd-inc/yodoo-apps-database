@@ -89,7 +89,7 @@
                     </group>
                     <group>
                         <field name="summary"/>
-                        <field name="website"/>
+                        <field name="website" widget="url"/>
                     </group>
                 </sheet>
             </form>
