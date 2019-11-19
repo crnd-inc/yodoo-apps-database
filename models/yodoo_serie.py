@@ -82,6 +82,7 @@ class OdooSerie(models.Model):
     def _create_serie(self, name):
         serie = self.create({
             'name': name,
+            'active': True,
         })
         self.env['ir.model.data'].create({
             'module': 'yodoo_apps_database',

@@ -9,6 +9,31 @@
                 <div class="app_settings_block" data-string="Yodoo Apps" data-key="yodoo_apps"
                      groups="base.group_system">
                     <div name="yodoo_apps_settings">
+                        <h2>Install Yodoo Apps Features</h2>
+                        <div class="row mt16 o_settings_container" name="yodoo_apps_assembly_settings">
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="module_yodoo_apps_assembly"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="module_yodoo_apps_assembly" class="o_light_label"/>
+                                    <div class="text-muted">
+                                         Manage addons packs via Gitlab.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="module_yodoo_apps_sale"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="module_yodoo_apps_sale" class="o_light_label"/>
+                                    <div class="text-muted">
+                                        Convert yodoo modules to products and sale them.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </xpath>

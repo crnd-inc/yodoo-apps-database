@@ -1,0 +1,4 @@
+- Added options in yodoo apps settings to install:
+    - Yodoo Apps Assembly
+    - Yodoo Apps Sale
+- Enforce active=True on creation of Yodoo Serie
