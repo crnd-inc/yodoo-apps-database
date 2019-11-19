@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="yodoo_module_serie_form">
+        <field name="model">yodoo.module.serie</field>
+        <field name="inherit_id" ref="yodoo_apps_database.yodoo_module_serie_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page name="page_sales" string="Sales">
+                    <group>
+                        <group>
+                            <field name="product_variant_id"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

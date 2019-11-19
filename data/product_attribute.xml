@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_attribute_odoo_serie" model="product.attribute">
+        <field name="name">Odoo Serie</field>
+        <field name="create_variant">always</field>
+    </record>
+</odoo>
