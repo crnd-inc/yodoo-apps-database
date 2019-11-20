@@ -15,6 +15,14 @@
                         string="Unpublished on Odoo Apps"
                         domain="[('odoo_apps_link', '=', False)]"/>
 
+                <separator/>
+                <filter name="filter_odoo_community_modules"
+                        string="Odoo Community Modules"
+                        domain="[('is_odoo_community_addon', '=', True)]"/>
+                <filter name="filter_non_odoo_community_modules"
+                        string="Non Odoo Community Modules"
+                        domain="[('is_odoo_community_addon', '=', False)]"/>
+
                 <group expand="0" string="Group By">
                     <filter name="group_by_serie"
                             string="Serie"
@@ -38,6 +46,7 @@
                 <field name="last_version_id"/>
                 <field name="category_id"/>
                 <field name="license_id"/>
+                <field name="is_odoo_community_addon"/>
                 <field name="version_count"/>
             </tree>
         </field>
@@ -80,6 +89,7 @@
                                         title="Check publication state"
                                         icon="fa-refresh"/>
                             </div>
+                            <field name="is_odoo_community_addon"/>
                         </group>
                     </group>
                     <notebook>

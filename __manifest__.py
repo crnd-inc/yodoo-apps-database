@@ -24,6 +24,8 @@
         'data/generic_tag_model.xml',
         'data/ir_cron.xml',
         'data/yodoo_serie.xml',
+        'data/yodoo.module.csv',
+        'data/yodoo.module.serie.csv',
         'views/menu.xml',
         'views/yodoo_module.xml',
         'views/yodoo_module_serie.xml',

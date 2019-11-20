@@ -15,19 +15,34 @@
                 <field name="search_tag_id"/>
                 <field name="search_no_tag_id"/>
 
-                <filter name="filter_installable" string="Installable" domain="[('installable','=',True)]"/>
                 <separator/>
+                <filter name="filter_installable"
+                        string="Installable"
+                        domain="[('installable','=',True)]"/>
 
+                <separator/>
+                <filter name="filter_auto_install"
+                        string="Auto Install"
+                        domain="[('auto_install','=',True)]"/>
+
+                <separator/>
                 <filter name="filter_application" string="Apps" domain="[('application', '=', True)]"/>
-                <separator/>
 
+                <separator/>
                 <filter name="filter_published_on_odoo_apps"
                         string="Published on Odoo Apps"
                         domain="[('odoo_apps_link', '!=', False)]"/>
                 <filter name="filter_unpublished_on_odoo_apps"
                         string="Unpublished on Odoo Apps"
                         domain="[('odoo_apps_link', '=', False)]"/>
+
                 <separator/>
+                <filter name="filter_odoo_community_modules"
+                        string="Odoo Community Modules"
+                        domain="[('is_odoo_community_addon', '=', True)]"/>
+                <filter name="filter_non_odoo_community_modules"
+                        string="Non Odoo Community Modules"
+                        domain="[('is_odoo_community_addon', '=', False)]"/>
 
                 <group expand="0" string="Group By">
                     <filter name="group_by_license"
@@ -61,7 +76,8 @@
                 <field name="category_id"/>
                 <field name="application"/>
                 <field name="resource_visibility"/>
-                <field name="version_count"/>
+                <field name="version_count"
+                       string="versions"/>
                 <field name="price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                 <field name="tag_ids"
                        options="{'color_field': 'color'}"
@@ -119,6 +135,8 @@
                         <field name="serie_ids" widget="many2many_tags" options="{'color_field': 'color', 'open': True}"/>
                         <field name="version"/>
                         <field name="resource_id" readonly="1" required="0" groups="base.group_no_one"/>
+                        <field name="is_odoo_community_addon"
+                               string="Odoo Community Addon"/>
                     </group>
                     <group>
                         <field name="website" widget="url"/>

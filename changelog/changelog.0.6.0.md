@@ -2,3 +2,5 @@
     - Yodoo Apps Assembly
     - Yodoo Apps Sale
 - Enforce active=True on creation of Yodoo Serie
+- Added checkbox to distihguish modules from Odoo Cummunity version
+- Added initial data for all Odoo Community modules for Odoo 8.0-13.0

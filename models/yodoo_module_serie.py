@@ -7,6 +7,8 @@ _logger = logging.getLogger(__name__)
 class OdooModuleSerie(models.Model):
     _name = 'yodoo.module.serie'
     _description = "Odoo Module Serie"
+    _order = "serie_major DESC, serie_minor DESC"
+    _log_access = False
 
     module_id = fields.Many2one(
         'yodoo.module', required=True, readonly=True, index=True,
@@ -14,6 +16,10 @@ class OdooModuleSerie(models.Model):
     serie_id = fields.Many2one(
         'yodoo.serie', required=True, readonly=True, index=True,
         ondelete='cascade')
+    serie_major = fields.Integer(
+        related='serie_id.major', store=True, index=True, readonly=True)
+    serie_minor = fields.Integer(
+        related='serie_id.minor', store=True, index=True, readonly=True)
 
     # Version
     version_ids = fields.One2many(
@@ -36,6 +42,7 @@ class OdooModuleSerie(models.Model):
     odoo_apps_link = fields.Char(
         help="Link to addon's page on Odoo Apps",
         readonly=True)
+    is_odoo_community_addon = fields.Boolean(default=False, readonly=True)
 
     _sql_constraints = [
         ('module_serie_uniq',

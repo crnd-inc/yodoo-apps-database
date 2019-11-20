@@ -33,6 +33,7 @@ class OdooModule(models.Model):
     ]
     _description = "Odoo Module"
     _order = 'name, system_name'
+    _log_access = False
 
     system_name = fields.Char(required=True, readonly=True, index=True)
     module_serie_ids = fields.One2many(
@@ -75,6 +76,7 @@ class OdooModule(models.Model):
         column2='dependency_id',
         readonly=True)
 
+    # This fields will be computed automatically on version update
     name = fields.Char(
         store=True, readonly=True, index=True)
     version = fields.Char(
@@ -102,6 +104,11 @@ class OdooModule(models.Model):
         related='last_version_id.module_serie_id.odoo_apps_link',
         store=False)
 
+    is_odoo_community_addon = fields.Boolean(
+        store=True, readonly=True,
+        compute='_compute_is_odoo_community_addon',
+        help='If set, then this module is part of Odoo Community')
+
     _sql_constraints = [
         ('system_name_uniq',
          'unique(system_name)',
@@ -113,6 +120,18 @@ class OdooModule(models.Model):
         for record in self:
             record.serie_ids = record.module_serie_ids.mapped('serie_id')
             record.serie_count = len(record.serie_ids)
+
+    @api.depends('module_serie_ids.is_odoo_community_addon')
+    def _compute_is_odoo_community_addon(self):
+        for record in self:
+            module_series = record.with_context(
+                active_test=False
+            ).module_serie_ids
+            if not module_series:
+                record.is_odoo_community_addon = False
+            else:
+                record.is_odoo_community_addon = (
+                    module_series.sorted()[0].is_odoo_community_addon)
 
     @api.depends('dependency_ids', 'dependency_all_ids.price',
                  'dependency_all_ids.currency_id',
