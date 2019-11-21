@@ -24,8 +24,6 @@
         'data/generic_tag_model.xml',
         'data/ir_cron.xml',
         'data/yodoo_serie.xml',
-        'data/yodoo.module.csv',
-        'data/yodoo.module.serie.csv',
         'views/menu.xml',
         'views/yodoo_module.xml',
         'views/yodoo_module_serie.xml',
@@ -36,6 +34,8 @@
         'views/yodoo_serie.xml',
         'views/res_config_settings.xml',
         'data/generic_resource_type.xml',
+        'data/yodoo.module.csv',
+        'data/yodoo.module.serie.csv',
     ],
     # only loaded in demonstration mode
     'demo': [
