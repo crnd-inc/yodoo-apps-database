@@ -51,5 +51,5 @@
     <menuitem action="action_yodoo_module_category_view"
               id="menu_root_settings_module_categorys"
               parent="menu_root"
-              sequence="30"/>
+              sequence="20"/>
 </odoo>

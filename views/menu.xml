@@ -10,11 +10,11 @@
     <menuitem name="Apps"
               id="menu_root_apps"
               parent="menu_root"
-              sequence="20"/>
+              sequence="10"/>
 
     <menuitem name="Settings"
               id="menu_root_settings"
               parent="menu_root"
-              sequence="140"/>
+              sequence="240"/>
 
 </odoo>
