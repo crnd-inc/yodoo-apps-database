@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo noupdate="1">
+    <record id="yodoo_serie__6_0" model="yodoo.serie" forcecreate="False">
+        <field name="name">6.0</field>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="yodoo_serie__6_1" model="yodoo.serie" forcecreate="False">
+        <field name="name">6.1</field>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="yodoo_serie__7_0" model="yodoo.serie" forcecreate="False">
+        <field name="name">7.0</field>
+        <field name="active" eval="False"/>
+    </record>
     <record id="yodoo_serie__8_0" model="yodoo.serie" forcecreate="False">
         <field name="name">8.0</field>
         <field name="active" eval="True"/>
