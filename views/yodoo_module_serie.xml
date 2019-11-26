@@ -74,6 +74,7 @@
                             <field name="module_id"/>
                             <field name="license_id"/>
                             <field name="category_id"/>
+                            <field name="is_odoo_community_addon"/>
                         </group>
                         <group>
                             <field name="serie_id"/>
@@ -89,7 +90,6 @@
                                         title="Check publication state"
                                         icon="fa-refresh"/>
                             </div>
-                            <field name="is_odoo_community_addon"/>
                         </group>
                     </group>
                     <notebook>

@@ -116,3 +116,13 @@ class OdooModuleSerie(models.Model):
                         new_cr.rollback()
                     else:
                         new_cr.commit()
+
+    def action_show_versions(self):
+        self.ensure_one()
+        action = self.env.ref(
+            'yodoo_apps_database.action_yodoo_module_version_view'
+        ).read()[0]
+
+        return dict(
+            action,
+            domain=[('module_serie_id', '=', self.id)])
