@@ -185,6 +185,7 @@ class OdooModule(models.Model):
             mail_notrack=True,
         ).create({
             'system_name': system_name,
+            'active': True,
         })
         self._get_module_id.clear_cache(self)
         return module

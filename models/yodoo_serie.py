@@ -4,7 +4,7 @@ from odoo import models, fields, api, tools, exceptions, _
 RE_SERIE = re.compile(r"^(?P<serie_major>\d+)\.(?P<serie_minor>\d+)$")
 
 
-class OdooSerie(models.Model):
+class YodooSerie(models.Model):
     _name = 'yodoo.serie'
     _description = "Odoo Serie"
     _order = "major DESC, minor DESC"
