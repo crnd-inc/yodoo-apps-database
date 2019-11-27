@@ -5,6 +5,7 @@
         <field name="arch" type="xml">
             <search>
                 <field name="name"/>
+                <field name="partner_id"/>
             </search>
         </field>
     </record>
@@ -14,6 +15,7 @@
         <field name="arch" type="xml">
             <tree create="false" edit="false" delete="false">
                 <field name="name"/>
+                <field name="partner_id"/>
                 <field name="module_count"/>
             </tree>
         </field>
@@ -38,6 +40,9 @@
                         <h1><field name="name" placeholder="Name..."/></h1>
                     </div>
                     <group>
+                        <group>
+                            <field name="partner_id"/>
+                        </group>
                         <group>
                             <field name="color"/>
                         </group>

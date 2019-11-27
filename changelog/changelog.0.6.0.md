@@ -4,3 +4,5 @@
 - Enforce active=True on creation of Yodoo Serie
 - Added checkbox to distihguish modules from Odoo Cummunity version
 - Added initial data for all Odoo Community modules for Odoo 8.0-13.0
+- Disable `_log_access` in models
+- Add `partner_id` (Associated Partner) to module author model
