@@ -75,6 +75,12 @@ class OdooModule(models.Model):
         column1='module_id',
         column2='dependency_id',
         readonly=True)
+    dependency_of_ids = fields.Many2manyView(
+        comodel_name='yodoo.module',
+        relation='yodoo_module_dependency_all_rel_view',
+        column1='dependency_id',
+        column2='module_id',
+        readonly=True)
 
     # This fields will be computed automatically on version update
     name = fields.Char(

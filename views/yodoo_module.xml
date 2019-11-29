@@ -186,6 +186,13 @@
                         </group>
                     </group>
                 </page>
+                <page name="page_dependency_of" string="Dependency of">
+                    <field name="dependency_of_ids"
+                            nolabel="1"
+                            colspan="4"
+                            widget="many2many_tags"
+                            options="{'open': True}"/>
+                </page>
             </xpath>
             <xpath expr="/form/sheet" position="after">
                 <div class="oe_chatter">
