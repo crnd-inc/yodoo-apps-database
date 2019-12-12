@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Top menu item -->
-    <menuitem name="Yodoo Apps DB"
+    <menuitem name="Yodoo Apps"
               id="menu_root"
               groups="group_yodoo_apps_user"
               web_icon="yodoo_apps_database,static/description/icon.png"/>
