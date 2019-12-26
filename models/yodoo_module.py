@@ -105,10 +105,8 @@ class OdooModule(models.Model):
     currency_id = fields.Many2one(
         'res.currency', store=True, readonly=True)
 
-    # TODO: Update when last version is updated to improve performance
     odoo_apps_link = fields.Char(
-        related='last_version_id.module_serie_id.odoo_apps_link',
-        store=False)
+        compute='_compute_odoo_apps_link', store=True, readonly=True)
 
     is_odoo_community_addon = fields.Boolean(
         store=True, readonly=True,
@@ -120,6 +118,16 @@ class OdooModule(models.Model):
          'unique(system_name)',
          'Module system name must be uniqe!')
     ]
+
+    @api.depends('module_serie_ids', 'module_serie_ids.odoo_apps_link')
+    def _compute_odoo_apps_link(self):
+        for record in self:
+            odoo_apps_link = False
+            for serie in record.module_serie_ids.sorted():
+                if serie.odoo_apps_link:
+                    odoo_apps_link = serie.odoo_apps_link
+                    break
+            record.odoo_apps_link = odoo_apps_link
 
     @api.depends('module_serie_ids')
     def _compute_serie_ids(self):
