@@ -46,7 +46,6 @@ VERSION_TO_MODULE_SYNC_FIELDS = [
 class OdooModuleVersion(models.Model):
     _name = 'yodoo.module.version'
     _description = 'Odoo Module Version'
-    _log_acces = False
     _order = (
         "module_id, serie_major DESC, serie_minor DESC, "
         "version_major DESC, version_minor DESC, version_patch DESC"

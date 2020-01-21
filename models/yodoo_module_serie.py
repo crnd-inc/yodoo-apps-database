@@ -8,7 +8,6 @@ class OdooModuleSerie(models.Model):
     _name = 'yodoo.module.serie'
     _description = "Odoo Module Serie"
     _order = "serie_major DESC, serie_minor DESC"
-    _log_access = False
 
     module_id = fields.Many2one(
         'yodoo.module', required=True, readonly=True, index=True,

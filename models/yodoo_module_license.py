@@ -6,7 +6,6 @@ class YodooModuleLicense(models.Model):
     _name = 'yodoo.module.license'
     _description = "Yodoo Module License"
     _order = 'code'
-    _log_access = False
 
     name = fields.Char(index=True)
     code = fields.Char(required=True, index=True)
