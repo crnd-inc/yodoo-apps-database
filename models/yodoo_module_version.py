@@ -65,8 +65,7 @@ class OdooModuleVersion(models.Model):
     # Odoo Serie info
     # Updated when version created
     system_name = fields.Char(
-        related='module_serie_id.module_id.system_name',
-        readonly=True, store=True)
+        required=True, readonly=True, store=True)
     serie = fields.Char(
         store=True, index=True, readonly=True)
     serie_major = fields.Integer(
@@ -296,6 +295,7 @@ class OdooModuleVersion(models.Model):
     def _create_or_update_prepare_version_data(self, module, data):
         version_data = {
             'module_id': module.id,
+            'system_name': module.system_name,
             'version': data['version'],
         }
 
@@ -405,6 +405,6 @@ class OdooModuleVersion(models.Model):
         serie_data = self._create_or_update_prepare_module_serie_data(
             version.module_serie_id, version, version_data)
         if serie_data:
-            version.module_serie_id.update(serie_data)
+            version.module_serie_id.write(serie_data)
 
         return version
