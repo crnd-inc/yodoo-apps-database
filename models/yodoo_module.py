@@ -33,6 +33,7 @@ class OdooModule(models.Model):
     ]
     _description = "Odoo Module"
     _order = 'name, system_name'
+    _log_access = False
 
     system_name = fields.Char(required=True, readonly=True, index=True)
     module_serie_ids = fields.One2many(

@@ -8,6 +8,7 @@ class YodooSerie(models.Model):
     _name = 'yodoo.serie'
     _description = "Odoo Serie"
     _order = "major DESC, minor DESC"
+    _log_access = False
 
     name = fields.Char(
         compute='_compute_name',

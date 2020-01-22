@@ -6,6 +6,7 @@ class YodooModuleAuthor(models.Model):
     _name = 'yodoo.module.author'
     _description = "Yodoo Module Author"
     _order = 'name'
+    _log_access = False
 
     name = fields.Char(required=True, index=True)
     color = fields.Selection([
