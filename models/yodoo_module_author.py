@@ -1,5 +1,5 @@
-from psycopg2 import sql
 from odoo import models, fields, api, tools
+from ..tools import create_sql_view
 
 
 class YodooModuleAuthor(models.Model):
@@ -50,10 +50,10 @@ class YodooModuleAuthor(models.Model):
 
     @api.model_cr
     def init(self):
-        # pylint: disable=sql-injection
         tools.drop_view_if_exists(self.env.cr, 'yodoo_module_author_rel_view')
-        self.env.cr.execute(sql.SQL("""
-            CREATE or REPLACE VIEW yodoo_module_author_rel_view AS (
+        create_sql_view(
+            self.env.cr, 'yodoo_module_author_rel_view',
+            """
                 SELECT DISTINCT
                     mv.module_id,
                     va_rel.author_id
@@ -63,8 +63,7 @@ class YodooModuleAuthor(models.Model):
                 LEFT JOIN yodoo_module AS mod
                     ON mv.module_id = mod.id
                 WHERE mv.id = mod.last_version_id
-            )
-        """).format(sql.Identifier(self._table)))
+        """)
         return super(YodooModuleAuthor, self).init()
 
     @api.model
