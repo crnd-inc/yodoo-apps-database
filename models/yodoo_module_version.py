@@ -386,7 +386,7 @@ class OdooModuleVersion(models.Model):
             'sequence': data.get('sequence', False),
             'price': data.get('price'),
             'currency': data.get('currency'),
-            'depends': data.get('depends'),
+            'depends': data.get('depends', []),
         }
 
     @api.model
