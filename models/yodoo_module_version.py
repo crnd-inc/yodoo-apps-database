@@ -370,6 +370,25 @@ class OdooModuleVersion(models.Model):
                 [('module_serie_id', '=', module_serie.id)])
         return serie_data
 
+    def _preprocess_module_data(self, data):
+        return {
+            'name': data.get('name', False),
+            'version': data.get('version', '0.0.0'),
+            'author': data.get('author', False),
+            'summary': data.get('summary', False),
+            'license': data.get('license', False),
+            'application': data.get('application', False),
+            'installable': data.get('installable', False),
+            'auto_install': data.get('auto_install', False),
+            'category': data.get('category', False),
+            'icon': data.get('icon'),
+            'website': data.get('website', False),
+            'sequence': data.get('sequence', False),
+            'price': data.get('price'),
+            'currency': data.get('currency'),
+            'depends': data.get('depends'),
+        }
+
     @api.model
     def create_or_update_version(self, module, data, no_update=False):
         """ This method have to be the single point to
@@ -383,6 +402,7 @@ class OdooModuleVersion(models.Model):
             :param data: dictionary with data to update module with
             :param no_update: do not update version if it is exists
         """
+        data = self._preprocess_module_data(data)
         version = self.with_context(active_test=False).search(
             [('module_id', '=', module.id),
              ('version', '=', data['version'])],
