@@ -5,7 +5,7 @@
         <field name="model">yodoo.module</field>
         <field name="arch" type="xml">
             <search>
-                <field name="name"/>
+                <field name="name" filter_domain="['|', ('name', 'ilike', self), ('system_name', 'ilike', self)]"/>
                 <field name="serie_ids"/>
                 <field name="system_name"/>
                 <field name="category_id"/>
