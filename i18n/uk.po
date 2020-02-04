@@ -7,13 +7,17 @@ msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-03 17:27+0000\n"
-"PO-Revision-Date: 2020-02-03 17:27+0000\n"
-"Last-Translator: <>\n"
-"Language-Team: \n"
+"PO-Revision-Date: 2020-02-06 08:26+0000\n"
+"Last-Translator: Ostap Yakovenko <ceo@crnd.pro>\n"
+"Language-Team: Ukrainian <http://weblate.crnd.pro/projects/"
+"odoo-infrastructure/yodoo_apps_database/uk/>\n"
+"Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: \n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
+"4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 3.10.3\n"
 
 #. module: yodoo_apps_database
 #: sql_constraint:yodoo.module.version:0
@@ -29,7 +33,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__active
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_serie__active
 msgid "Active"
-msgstr ""
+msgstr "Активно"
 
 #. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__activity_ids
@@ -153,13 +157,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_category__create_uid
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_version__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Створив"
 
 #. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_category__create_date
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_version__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Створено"
 
 #. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__currency_id
@@ -970,4 +974,3 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_tree
 msgid "versions"
 msgstr ""
-
