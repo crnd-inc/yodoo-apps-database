@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-03 17:27+0000\n"
-"PO-Revision-Date: 2020-02-06 08:26+0000\n"
+"PO-Revision-Date: 2020-02-12 15:16+0000\n"
 "Last-Translator: Ostap Yakovenko <ceo@crnd.pro>\n"
 "Language-Team: Ukrainian <http://weblate.crnd.pro/projects/"
 "odoo-infrastructure/yodoo_apps_database/uk/>\n"
@@ -283,7 +283,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_version__id
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_serie__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_version__icon
@@ -615,7 +615,7 @@ msgstr ""
 #. module: yodoo_apps_database
 #: model:ir.model,name:yodoo_apps_database.model_yodoo_serie
 msgid "Odoo Serie"
-msgstr ""
+msgstr "Серія Odoo"
 
 #. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__resource_request_open_count
