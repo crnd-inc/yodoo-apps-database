@@ -371,9 +371,12 @@ class OdooModuleVersion(models.Model):
         return serie_data
 
     def _preprocess_module_data(self, data):
+        version = data.get('version', '0.0.0')
+        if not version:
+            version = '0.0.0'
         return {
             'name': data.get('name', False),
-            'version': data.get('version', '0.0.0'),
+            'version': version,
             'author': data.get('author', False),
             'summary': data.get('summary', False),
             'license': data.get('license', False),
