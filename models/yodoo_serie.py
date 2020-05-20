@@ -104,7 +104,6 @@ class YodooSerie(models.Model):
             self._get_serie.clear_cache(self)
         return serie_id
 
-    @api.multi
     def action_show_modules(self):
         self.ensure_one()
         action = self.env.ref(

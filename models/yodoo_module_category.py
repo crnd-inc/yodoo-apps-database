@@ -42,7 +42,6 @@ class YodooModuleCategory(models.Model):
             self._get_category.clear_cache(self)
         return category_id
 
-    @api.multi
     def action_show_modules(self):
         self.ensure_one()
         action = self.env.ref(

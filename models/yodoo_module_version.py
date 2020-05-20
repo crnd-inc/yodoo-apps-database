@@ -283,7 +283,6 @@ class OdooModuleVersion(models.Model):
             res += [module.id]
         return res
 
-    @api.multi
     def name_get(self):
         result = []
         for record in self:

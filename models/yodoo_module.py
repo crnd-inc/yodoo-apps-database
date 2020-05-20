@@ -169,7 +169,6 @@ class OdooModule(models.Model):
                     dep.price, currency, company, date)
             record.total_price = price
 
-    @api.multi
     def name_get(self):
         res = []
         for record in self:
@@ -214,11 +213,9 @@ class OdooModule(models.Model):
             module, data, no_update=no_update)
         return version
 
-    @api.multi
     def check_odoo_apps_published_state(self):
         self.mapped('module_serie_ids').check_odoo_apps_published_state()
 
-    @api.multi
     def action_show_versions(self):
         self.ensure_one()
         action = self.env.ref(
@@ -228,7 +225,6 @@ class OdooModule(models.Model):
         })
         return action
 
-    @api.multi
     def action_show_module_series(self):
         self.ensure_one()
         action = self.env.ref(

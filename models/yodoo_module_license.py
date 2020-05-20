@@ -17,7 +17,6 @@ class YodooModuleLicense(models.Model):
          'License code must be unique!'),
     ]
 
-    @api.multi
     def name_get(self):
         res = []
         for record in self:

@@ -85,7 +85,6 @@ class YodooModuleAuthor(models.Model):
             self._get_author.clear_cache(self)
         return author_id
 
-    @api.multi
     def action_show_modules(self):
         self.ensure_one()
         action = self.env.ref(

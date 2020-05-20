@@ -50,7 +50,6 @@ class OdooModuleSerie(models.Model):
          'Module and serie must be unique!'),
     ]
 
-    @api.multi
     def name_get(self):
         res = []
         for record in self:
@@ -73,7 +72,6 @@ class OdooModuleSerie(models.Model):
             })
         return module_serie
 
-    @api.multi
     def check_odoo_apps_published_state(self):
         from requests_futures.sessions import FuturesSession
 
