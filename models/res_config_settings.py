@@ -8,3 +8,5 @@ class ResConfigSettings(models.TransientModel):
         "Manage Yodoo Assemblies")
     module_yodoo_apps_sale = fields.Boolean(
         "Sale Yodoo Modules")
+    module_yodoo_apps_assembly_sale = fields.Boolean(
+        "Sale Yodoo Assemblies")
