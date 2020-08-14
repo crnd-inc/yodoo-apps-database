@@ -44,6 +44,17 @@ class OdooModuleSerie(models.Model):
         readonly=True)
     is_odoo_community_addon = fields.Boolean(default=False, readonly=True)
 
+    dependency_ids = fields.Many2manyView(
+        comodel_name='yodoo.module.serie',
+        relation='yodoo_module_serie_dependency_rel_view',
+        column1='module_serie_id', column2='dependency_module_serie_id',
+        readonly=True)
+    dependency_all_ids = fields.Many2manyView(
+        comodel_name='yodoo.module.serie',
+        relation='yodoo_module_serie_dependency_all_rel_view',
+        column1='module_serie_id', column2='dependency_module_serie_id',
+        readonly=True)
+
     _sql_constraints = [
         ('module_serie_uniq',
          'unique(module_id, serie_id)',

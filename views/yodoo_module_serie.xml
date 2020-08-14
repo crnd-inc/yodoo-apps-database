@@ -91,6 +91,8 @@
                                         icon="fa-refresh"/>
                             </div>
                         </group>
+                        <field name="dependency_ids" colspan="4"/>
+                        <field name="dependency_all_ids" colspan="4"/>
                     </group>
                     <notebook>
                     </notebook>

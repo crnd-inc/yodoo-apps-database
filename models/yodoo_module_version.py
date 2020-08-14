@@ -119,19 +119,6 @@ class OdooModuleVersion(models.Model):
     @api.model_cr
     def init(self):
         create_sql_view(
-            self.env.cr, 'yodoo_module_version_dependency_all_rel_view',
-            """
-                SELECT DISTINCT
-                    mv.module_id,
-                    vd_rel.dependency_module_id AS dependency_id
-                FROM yodoo_module_version_dependency_rel AS vd_rel
-                LEFT JOIN yodoo_module_version AS mv
-                    ON mv.id = vd_rel.module_version_id
-                LEFT JOIN yodoo_module AS mod
-                    ON mv.module_id = mod.id
-                WHERE mv.id = mod.last_version_id
-            """)
-        create_sql_view(
             self.env.cr, 'yodoo_module_dependency_rel_view',
             """
                 SELECT DISTINCT
@@ -158,6 +145,42 @@ class OdooModuleVersion(models.Model):
                         all_deps.dependency_id
                     FROM yodoo_module_dependency_rel_view AS v
                     JOIN all_deps ON all_deps.module_id = v.dependency_id
+                )
+                SELECT * FROM all_deps
+            """)
+        create_sql_view(
+            self.env.cr, 'yodoo_module_serie_dependency_rel_view',
+            """
+                SELECT DISTINCT
+                    mos.id   AS module_serie_id,
+                    mosd.id  AS dependency_module_serie_id
+                FROM yodoo_module_version_dependency_rel AS vd_rel
+                LEFT JOIN yodoo_module_version AS mv
+                    ON mv.id = vd_rel.module_version_id
+                LEFT JOIN yodoo_module_serie AS mos
+                    ON mv.module_serie_id = mos.id
+                LEFT JOIN yodoo_module AS mod
+                    ON vd_rel.dependency_module_id = mod.id
+                LEFT JOIN yodoo_module_serie AS mosd
+                    ON mod.id = mosd.module_id AND mv.serie_id = mosd.serie_id
+                WHERE mv.id = mos.last_version_id
+            """)
+        create_sql_view(
+            self.env.cr, 'yodoo_module_serie_dependency_all_rel_view',
+            """
+                WITH RECURSIVE all_deps AS (
+                    SELECT module_serie_id,
+                           dependency_module_serie_id
+                    FROM yodoo_module_serie_dependency_rel_view
+
+                    UNION
+
+                    SELECT DISTINCT v.module_serie_id,
+                        all_deps.dependency_module_serie_id
+                    FROM yodoo_module_serie_dependency_rel_view AS v
+                    JOIN all_deps
+                        ON (all_deps.module_serie_id =
+                            v.dependency_module_serie_id)
                 )
                 SELECT * FROM all_deps
             """)
