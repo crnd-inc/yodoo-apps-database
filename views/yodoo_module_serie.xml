@@ -69,14 +69,14 @@
                                    widget="statinfo"/>
                         </button>
                     </div>
-                    <group>
-                        <group>
+                    <group name="group_main">
+                        <group name="group_main_left">
                             <field name="module_id"/>
                             <field name="license_id"/>
                             <field name="category_id"/>
                             <field name="is_odoo_community_addon"/>
                         </group>
-                        <group>
+                        <group name="group_main_right">
                             <field name="serie_id"/>
                             <field name="last_version_id"/>
                             <label for="odoo_apps_link"/>
@@ -91,8 +91,16 @@
                                         icon="fa-refresh"/>
                             </div>
                         </group>
-                        <field name="dependency_ids" colspan="4"/>
-                        <field name="dependency_all_ids" colspan="4"/>
+                        <group name="group_main_direct_deps"
+                               string="Direct dependencies"
+                               colspan="4">
+                            <field name="dependency_ids" nolabel="1"/>
+                        </group>
+                        <group name="group_main_recursive_deps"
+                               string="Recursive dependencies"
+                               colspan="4">
+                            <field name="dependency_all_ids" nolabel="1"/>
+                        </group>
                     </group>
                     <notebook>
                     </notebook>
