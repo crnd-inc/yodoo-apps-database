@@ -36,5 +36,9 @@
         <field name="name">13.0</field>
         <field name="active" eval="True"/>
     </record>
+    <record id="yodoo_serie__14_0" model="yodoo.serie" forcecreate="False">
+        <field name="name">14.0</field>
+        <field name="active" eval="True"/>
+    </record>
 </odoo>
 

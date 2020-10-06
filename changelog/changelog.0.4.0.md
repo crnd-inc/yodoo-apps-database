@@ -1,3 +1,3 @@
 - Added `active` field to yodoo serie
-- Added predefined Odoo series to default data (8.0 - 13.0)
+- Added predefined Odoo series to default data (8.0 - 14.0)
 - Added settings screen for Odoo Apps
