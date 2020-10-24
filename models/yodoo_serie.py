@@ -45,6 +45,23 @@ class YodooSerie(models.Model):
          'Serie name must be uniqe!')
     ]
 
+    @api.model
+    def _parse_serie_name(self, name):
+        """ Parse serie by name and return dict with major and minor numbers
+        """
+        match = RE_SERIE.match(name)
+        if match:
+            res = match.groupdict()
+            return {
+                'major': res.get('serie_major', 0),
+                'minor': res.get('serie_minor', 0),
+            }
+        else:
+            return {
+                'major': 0,
+                'monor': 0,
+            }
+
     @api.depends('major', 'minor')
     def _compute_name(self):
         for record in self:
@@ -52,18 +69,7 @@ class YodooSerie(models.Model):
 
     def _inverse_name(self):
         for record in self:
-            match = RE_SERIE.match(self.name)
-            if match:
-                res = match.groupdict()
-                record.update({
-                    'major': res.get('serie_major', 0),
-                    'minor': res.get('serie_minor', 0),
-                })
-            else:
-                record.update({
-                    'major': 0,
-                    'monor': 0,
-                })
+            record.update(self._parse_serie_name(self.name))
 
     @api.depends('module_ids')
     def _compute_module_count(self):
@@ -87,10 +93,13 @@ class YodooSerie(models.Model):
         return self.browse()
 
     def _create_serie(self, name):
-        serie = self.create({
+        serie_data = {
             'name': name,
             'active': True,
-        })
+        }
+        serie_data.update(self._parse_serie_name(name))
+        serie = self.create(serie_data)
+
         self.env['ir.model.data'].create({
             'module': 'yodoo_apps_database',
             'name': 'yodoo_serie__%s_%s' % (serie.major, serie.minor),
