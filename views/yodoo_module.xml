@@ -177,21 +177,17 @@
                     </group>
                 </page>
                 <page name="page_dependencies" string="Dependencies">
-                    <group>
-                        <group name="group_direct_deps" string="Direct Dependencies">
-                            <field name="dependency_ids" nolabel="1" widget="many2many_tags" options="{'open': True}"/>
-                        </group>
-                        <group name="group_recursive_deps" string="Recursive Dependencies">
-                            <field name="dependency_all_ids" nolabel="1" widget="many2many_tags" options="{'open': True}"/>
-                        </group>
+                    <group name="group_direct_deps" string="Direct Dependencies">
+                        <field name="dependency_ids" nolabel="1"/>
+                    </group>
+                    <group name="group_recursive_deps" string="Recursive Dependencies">
+                        <field name="dependency_all_ids" nolabel="1"/>
                     </group>
                 </page>
                 <page name="page_dependency_of" string="Dependency of">
                     <field name="dependency_of_ids"
                             nolabel="1"
-                            colspan="4"
-                            widget="many2many_tags"
-                            options="{'open': True}"/>
+                            colspan="4"/>
                 </page>
             </xpath>
             <xpath expr="/form/sheet" position="after">
