@@ -1,13 +1,13 @@
 {
     'name': "Yodoo Apps Database",
 
-    'summary': """Apps database""",
+    'summary': """Manage all odoo apps inside your infrastructure""",
 
     'author': "Center of Research and Development",
     'website': "https://crnd.pro",
 
     'category': 'Yodoo Apps',
-    'version': '12.0.0.17.0',
+    'version': '12.0.0.18.0',
 
     # any module necessary for this one to work correctly
     'depends': [
@@ -42,5 +42,5 @@
     ],
     'installable': True,
     'application': True,
-    'license': 'Other proprietary',
+    'license': 'LGPL-3',
 }
