@@ -7,7 +7,7 @@ _logger = logging.getLogger(__name__)
 class OdooModuleSerie(models.Model):
     _name = 'yodoo.module.serie'
     _description = "Odoo Module Serie"
-    _order = "serie_major DESC, serie_minor DESC"
+    _order = "module_id, serie_major DESC, serie_minor DESC"
     _log_access = False
 
     module_id = fields.Many2one(
@@ -72,10 +72,15 @@ class OdooModuleSerie(models.Model):
         return res
 
     @api.model
-    def get_or_create(self, module_id, serie_id):
-        module_serie = self.with_context(active_test=False).search(
+    def get_module_serie(self, module_id, serie_id):
+        return self.with_context(active_test=False).search(
             [('module_id', '=', module_id),
-             ('serie_id', '=', serie_id)], limit=1)
+             ('serie_id', '=', serie_id)],
+            limit=1)
+
+    @api.model
+    def get_or_create(self, module_id, serie_id):
+        module_serie = self.get_module_serie(module_id, serie_id)
         if not module_serie:
             module_serie = self.create({
                 'module_id': module_id,

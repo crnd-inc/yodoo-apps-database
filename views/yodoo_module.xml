@@ -129,8 +129,8 @@
                            placeholder="Tags..."/></h4>
             </xpath>
             <xpath expr="/form/sheet/notebook" position="before">
-                <group>
-                    <group>
+                <group name="group_root_info">
+                    <group name="group_root_info_left">
                         <field name="system_name"/>
                         <field name="serie_ids" widget="many2many_tags" options="{'color_field': 'color', 'open': True}"/>
                         <field name="version"/>
@@ -138,7 +138,7 @@
                         <field name="is_odoo_community_addon"
                                string="Odoo Community Addon"/>
                     </group>
-                    <group>
+                    <group name="group_root_info_right">
                         <field name="website" widget="url"/>
                         <label for="odoo_apps_link"/>
                         <div class="o_row" style="min-width: 100%">
@@ -175,6 +175,16 @@
                     <group>
                         <field name="summary"/>
                     </group>
+                </page>
+                <page name="page_series" string="Series">
+                    <field name="module_serie_ids" nolabel="1" mode="tree">
+                        <tree editable="bottom" create="false" delete="false" options="{'no_open': True}">
+                            <field name="serie_id"/>
+                            <field name="last_version_id"/>
+                            <field name="license_id"/>
+                            <field name="is_odoo_community_addon"/>
+                        </tree>
+                    </field>
                 </page>
                 <page name="page_dependencies" string="Dependencies">
                     <group name="group_direct_deps" string="Direct Dependencies">

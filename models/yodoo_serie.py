@@ -79,6 +79,13 @@ class YodooSerie(models.Model):
             return serie.id
         return False
 
+    @api.model
+    def get_serie(self, name):
+        serie_id = self._get_serie(name)
+        if serie_id:
+            return self.browse(serie_id)
+        return self.browse()
+
     def _create_serie(self, name):
         serie = self.create({
             'name': name,

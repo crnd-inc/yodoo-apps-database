@@ -37,7 +37,7 @@ class OdooModule(models.Model):
 
     system_name = fields.Char(required=True, readonly=True, index=True)
     module_serie_ids = fields.One2many(
-        'yodoo.module.serie', 'module_id', readonly=True)
+        'yodoo.module.serie', 'module_id', readonly=False)
     version_ids = fields.One2many(
         'yodoo.module.version', 'module_id', readonly=True)
     version_count = fields.Integer(
@@ -202,6 +202,25 @@ class OdooModule(models.Model):
         })
         self._get_module_id.clear_cache(self)
         return module
+
+    def get_module_serie(self, serie):
+        """ Get 'yodoo.module.serie' for specified serie
+
+            :param serie: could be ID, name, or record for corresponding
+                          yodoo.serie model
+            :return: instance of yodoo.module.serie. Could be empty recordset
+                     if such module serie was not found
+        """
+        self.ensure_one()
+        if isinstance(serie, int):
+            serie_obj = self.env['yodoo.serie'].browse(serie)
+        elif isinstance(serie, str):
+            serie_obj = self.env['yodoo.serie'].get_serie(serie)
+        elif isinstance(serie, models.Model) and serie._name == 'yodoo.serie':
+            serie_obj = serie
+
+        return self.env['yodoo.module.serie'].get_module_serie(
+            self.id, serie_obj.id)
 
     @api.model
     @api.returns('yodoo.module.version')

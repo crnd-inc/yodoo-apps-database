@@ -40,7 +40,7 @@
     <record model="ir.ui.view" id="yodoo_module_serie_tree">
         <field name="model">yodoo.module.serie</field>
         <field name="arch" type="xml">
-            <tree create="false" edit="false" delete="false">
+            <tree create="false" edit="true" delete="false">
                 <field name="module_id"/>
                 <field name="serie_id"/>
                 <field name="last_version_id"/>
@@ -55,7 +55,7 @@
     <record model="ir.ui.view" id="yodoo_module_serie_form">
         <field name="model">yodoo.module.serie</field>
         <field name="arch" type="xml">
-            <form create="false" edit="false" delete="false">
+            <form create="false" edit="true" delete="false">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button class="oe_stat_button"
