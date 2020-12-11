@@ -25,7 +25,7 @@ class YodooModuleAuthor(models.Model):
         'res.partner', 'Associated Partner')
 
     version_ids = fields.Many2many(
-        comodel_name='yodoo.module.author',
+        comodel_name='yodoo.module.version',
         relation='yodoo_module_version_author_rel',
         column1='author_id', column2='version_id',
         readonly=True)
