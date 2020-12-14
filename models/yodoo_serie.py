@@ -56,11 +56,10 @@ class YodooSerie(models.Model):
                 'major': res.get('serie_major', 0),
                 'minor': res.get('serie_minor', 0),
             }
-        else:
-            return {
-                'major': 0,
-                'monor': 0,
-            }
+        return {
+            'major': 0,
+            'monor': 0,
+        }
 
     @api.depends('major', 'minor')
     def _compute_name(self):
