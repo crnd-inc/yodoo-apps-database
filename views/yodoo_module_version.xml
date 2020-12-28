@@ -5,9 +5,17 @@
         <field name="model">yodoo.module.version</field>
         <field name="arch" type="xml">
             <search>
-                <field name="version"/>
+                <field name="system_name"/>
                 <field name="module_id"/>
                 <field name="serie_id"/>
+
+                <separator/>
+                <filter name="filter_odoo_community_modules"
+                        string="Odoo Community Modules"
+                        domain="[('is_odoo_community_addon', '=', True)]"/>
+                <filter name="filter_non_odoo_community_modules"
+                        string="Non Odoo Community Modules"
+                        domain="[('is_odoo_community_addon', '=', False)]"/>
 
                 <separator/>
                 <group expand="0" string="Group By">
@@ -45,6 +53,7 @@
                 <field name="license_id"/>
                 <field name="category_id"/>
                 <field name="application"/>
+                <field name="is_odoo_community_addon"/>
                 <field name="price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
             </tree>
         </field>
@@ -70,6 +79,7 @@
                         <group>
                             <field name="version"/>
                             <field name="version_non_standard"/>
+                            <field name="is_odoo_community_addon"/>
                         </group>
                         <group>
                             <field name="author_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>

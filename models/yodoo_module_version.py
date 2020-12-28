@@ -110,6 +110,10 @@ class OdooModuleVersion(models.Model):
     currency_id = fields.Many2one('res.currency', readonly=True)
     icon = fields.Binary(attachment=True)
 
+    # Module Serie info
+    is_odoo_community_addon = fields.Boolean(
+        related='module_serie_id.is_odoo_community_addon', readonly=True)
+
     _sql_constraints = [
         ('module_version_uniq',
          'unique(module_id, version)',
