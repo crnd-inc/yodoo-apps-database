@@ -38,6 +38,8 @@ class OdooModuleSerie(models.Model):
         'yodoo.module.category', index=False, store=False,
         related='last_version_id.category_id',
         readonly=True)
+    installable = fields.Boolean(
+        related='last_version_id.installable', readonly=True)
 
     odoo_apps_link = fields.Char(
         help="Link to addon's page on Odoo Apps",

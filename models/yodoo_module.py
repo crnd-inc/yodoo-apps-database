@@ -235,6 +235,34 @@ class OdooModule(models.Model):
     def check_odoo_apps_published_state(self):
         self.mapped('module_serie_ids').check_odoo_apps_published_state()
 
+    @api.model
+    def resolve_module_deps_for_serie(self, modules, serie):
+        """ Resolve module dependencies for specified serie
+
+            :param RecordSet('yodoo.module') modules: List of modules
+                to resolve dependencies for
+            :param RecordSet('yodoo.serie') serie: Serie to resolve deps for
+            :return typle: tuple (modules, module_series) that containse all
+                resolved modules and module_series, except odoo's standard
+                modules
+        """
+        module_series = modules.mapped('module_serie_ids').filtered(
+            lambda r: r.serie_id == serie)
+        all_module_series = module_series + module_series.mapped(
+            'dependency_all_ids')
+
+        res_modules = self.env['yodoo.module'].browse()
+        res_module_series = self.env['yodoo.module.serie'].browse()
+        for module_serie in all_module_series:
+            if module_serie.is_odoo_community_addon:
+                # Skip community modules
+                continue
+            if module_serie.module_id not in res_modules:
+                res_modules += module_serie.module_id
+                res_module_series += module_serie
+
+        return res_modules, res_module_series
+
     def action_show_versions(self):
         self.ensure_one()
         action = self.env.ref(
