@@ -87,9 +87,6 @@ class YodooModuleAuthor(models.Model):
 
     def action_show_modules(self):
         self.ensure_one()
-        action = self.env.ref(
-            'yodoo_apps_database.action_yodoo_module_view').read()[0]
-        action.update({
-            'domain': [('author_ids.id', '=', self.id)],
-        })
-        return action
+        return self.env['generic.mixin.get.action'].get_action_by_xmlid(
+            'yodoo_apps_database.action_yodoo_module_view',
+            domain=[('author_ids.id', '=', self.id)])

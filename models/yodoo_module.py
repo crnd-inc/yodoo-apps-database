@@ -265,18 +265,12 @@ class OdooModule(models.Model):
 
     def action_show_versions(self):
         self.ensure_one()
-        action = self.env.ref(
-            'yodoo_apps_database.action_yodoo_module_version_view').read()[0]
-        action.update({
-            'domain': [('module_id', '=', self.id)],
-        })
-        return action
+        return self.env['generic.mixin.get.action'].get_action_by_xmlid(
+            'yodoo_apps_database.action_yodoo_module_version_view',
+            domain=[('module_id', '=', self.id)])
 
     def action_show_module_series(self):
         self.ensure_one()
-        action = self.env.ref(
-            'yodoo_apps_database.action_yodoo_module_serie_view').read()[0]
-        action.update({
-            'domain': [('module_id', '=', self.id)],
-        })
-        return action
+        return self.env['generic.mixin.get.action'].get_action_by_xmlid(
+            'yodoo_apps_database.action_yodoo_module_serie_view',
+            domain=[('module_id', '=', self.id)])
