@@ -348,8 +348,13 @@ class OdooModuleVersion(models.Model):
             })
         else:
             raise exceptions.validationerror(_(
-                'cannot parse version (%s) for module %s [%s]') % (
-                    data['version'], module.display_name, module.system_name))
+                'cannot parse version (%(version)s) '
+                'for module %(module_display_name)s [%(module_system_name)s]'
+            ) % (
+                'version': data['version'],
+                'module_display_name': module.display_name,
+                'module_system_name': module.system_name,
+            })
 
         version_data.update({
             'name': data.get('name', False),
