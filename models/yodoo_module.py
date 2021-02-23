@@ -1,4 +1,5 @@
 import logging
+from odoo.osv import expression
 from odoo import models, fields, api, tools
 
 _logger = logging.getLogger(__name__)
@@ -169,6 +170,20 @@ class OdooModule(models.Model):
                     dep.price, currency, company, date)
             record.total_price = price
 
+    @api.model
+    def name_search(self, name, args=None, operator='ilike', limit=100):
+        if not args:
+            args = []
+
+        args = expression.AND([
+            args,
+            expression.OR([
+                [('name', operator, name)],
+                [('system_name', operator, name)],
+            ]),
+        ])
+        return self.search(args, limit=limit).sudo().name_get()
+
     def name_get(self):
         res = []
         for record in self:
@@ -236,16 +251,23 @@ class OdooModule(models.Model):
         self.mapped('module_serie_ids').check_odoo_apps_published_state()
 
     @api.model
-    def resolve_module_deps_for_serie(self, modules, serie):
+    def resolve_module_deps_for_serie(self, modules, serie,
+                                      known_modules=None):
         """ Resolve module dependencies for specified serie
 
             :param RecordSet('yodoo.module') modules: List of modules
                 to resolve dependencies for
             :param RecordSet('yodoo.serie') serie: Serie to resolve deps for
+            :param RecordSet('yodoo.module') known_modules: List of knonw
+                modules that assumed already available, and do not need
+                to be mentioned in result
             :return typle: tuple (modules, module_series) that containse all
                 resolved modules and module_series, except odoo's standard
                 modules
         """
+        if not known_modules:
+            known_modules = self.env['yodoo.module'].browse()
+
         module_series = modules.mapped('module_serie_ids').filtered(
             lambda r: r.serie_id == serie)
         all_module_series = module_series + module_series.mapped(
@@ -256,6 +278,9 @@ class OdooModule(models.Model):
         for module_serie in all_module_series:
             if module_serie.is_odoo_community_addon:
                 # Skip community modules
+                continue
+            if module_serie.module_id in known_modules:
+                # Skip known modules
                 continue
             if module_serie.module_id not in res_modules:
                 res_modules += module_serie.module_id
