@@ -1,5 +1,4 @@
 import logging
-from odoo.osv import expression
 from odoo import models, fields, api, tools
 
 _logger = logging.getLogger(__name__)
@@ -31,10 +30,13 @@ class OdooModule(models.Model):
         'mail.activity.mixin',
         'generic.tag.mixin',
         'generic.resource.mixin',
+        'generic.mixin.namesearch.by.fields',
     ]
     _description = "Odoo Module"
     _order = 'name, system_name'
     _log_access = False
+
+    _generic_namesearch_fields = ['name', 'system_name']
 
     system_name = fields.Char(required=True, readonly=True, index=True)
     module_serie_ids = fields.One2many(
@@ -169,20 +171,6 @@ class OdooModule(models.Model):
                 price += dep_currency._convert(
                     dep.price, currency, company, date)
             record.total_price = price
-
-    @api.model
-    def name_search(self, name='', args=None, operator='ilike', limit=100):
-        if not args:
-            args = []
-
-        args = expression.AND([
-            args,
-            expression.OR([
-                [('name', operator, name)],
-                [('system_name', operator, name)],
-            ]),
-        ])
-        return self.search(args, limit=limit).sudo().name_get()
 
     def name_get(self):
         res = []

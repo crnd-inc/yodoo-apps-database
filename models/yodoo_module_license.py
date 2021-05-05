@@ -1,12 +1,14 @@
 from odoo import models, fields, api, tools
-from odoo.osv import expression
 
 
 class YodooModuleLicense(models.Model):
     _name = 'yodoo.module.license'
+    _inherit = 'generic.mixin.namesearch.by.fields'
     _description = "Yodoo Module License"
     _order = 'code'
     _log_access = False
+
+    _generic_namesearch_fields = ['name', 'code']
 
     name = fields.Char(index=True)
     code = fields.Char(required=True, index=True)
@@ -25,27 +27,6 @@ class YodooModuleLicense(models.Model):
             else:
                 res += [(record.id, record.code)]
         return res
-
-    @api.model
-    def name_search(self, name='', args=None, operator='ilike', limit=100):
-        if not args:
-            args = []
-        if name:
-            domain = [
-                [('name', operator, name)],
-                [('code', operator, name)],
-            ]
-            if operator in expression.NEGATIVE_TERM_OPERATORS:
-                domain = expression.AND(domain)
-            else:
-                domain = expression.OR(domain)
-
-            domain = expression.AND([domain, args])
-            records = self.search(domain, limit=limit)
-        else:
-            records = self.search(args, limit=limit)
-
-        return records.name_get()
 
     @api.model
     @tools.ormcache('code')
