@@ -101,6 +101,22 @@ class OdooModule(models.Model):
         column2='module_id',
         readonly=True)
 
+    # External dependencies
+    dependency_python_ids = fields.Many2manyView(
+        comodel_name='yodoo.module.dependency.python',
+        relation='yodoo_module_dependency_python_rel_view',
+        column1='module_id',
+        column2='dependency_id',
+        string="Python dependencies",
+        readonly=True)
+    dependency_bin_ids = fields.Many2manyView(
+        comodel_name='yodoo.module.dependency.binary',
+        relation='yodoo_module_dependency_binary_rel_view',
+        column1='module_id',
+        column2='dependency_id',
+        string="Binary dependencies",
+        readonly=True)
+
     # This fields will be computed automatically on version update
     # They are not related nor computed because of performance reasons
     name = fields.Char(

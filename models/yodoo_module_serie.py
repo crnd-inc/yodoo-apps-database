@@ -57,6 +57,22 @@ class OdooModuleSerie(models.Model):
         column1='module_serie_id', column2='dependency_module_serie_id',
         readonly=True)
 
+    # External dependencies
+    dependency_python_ids = fields.Many2manyView(
+        comodel_name='yodoo.module.dependency.python',
+        relation='yodoo_module_serie_dependency_python_rel_view',
+        column1='module_serie_id',
+        column2='dependency_id',
+        string="Python dependencies",
+        readonly=True)
+    dependency_bin_ids = fields.Many2manyView(
+        comodel_name='yodoo.module.dependency.binary',
+        relation='yodoo_module_serie_dependency_binary_rel_view',
+        column1='module_serie_id',
+        column2='dependency_id',
+        string="Binary dependencies",
+        readonly=True)
+
     _sql_constraints = [
         ('module_serie_uniq',
          'unique(module_id, serie_id)',

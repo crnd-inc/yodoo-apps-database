@@ -101,6 +101,16 @@
                                colspan="4">
                             <field name="dependency_all_ids" nolabel="1"/>
                         </group>
+                        <group name="group_main_python_deps"
+                               string="Python dependencies"
+                               colspan="4">
+                            <field name="dependency_python_ids" nolabel="1"/>
+                        </group>
+                        <group name="group_main_binary_deps"
+                               string="Binary dependencies"
+                               colspan="4">
+                            <field name="dependency_bin_ids" nolabel="1"/>
+                        </group>
                     </group>
                     <notebook>
                     </notebook>

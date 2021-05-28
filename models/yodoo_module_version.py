@@ -99,6 +99,22 @@ class OdooModuleVersion(models.Model):
         column2='dependency_module_id',
         readonly=True)
 
+    # External dependencies
+    dependency_python_ids = fields.Many2many(
+        comodel_name='yodoo.module.dependency.python',
+        relation='yodoo_module_version_dependency_python_rel',
+        column1='module_version_id',
+        column2='dependency_id',
+        string="Python dependencies",
+        readonly=True)
+    dependency_bin_ids = fields.Many2many(
+        comodel_name='yodoo.module.dependency.binary',
+        relation='yodoo_module_version_dependency_binary_rel',
+        column1='module_version_id',
+        column2='dependency_id',
+        string="Binary dependencies",
+        readonly=True)
+
     # Module info
     name = fields.Char(readonly=True)
     summary = fields.Char(readonly=True)
@@ -188,6 +204,62 @@ class OdooModuleVersion(models.Model):
                 )
                 SELECT * FROM all_deps
             """)
+
+        # External dependencies (module)
+        create_sql_view(
+            self.env.cr, 'yodoo_module_dependency_binary_rel_view',
+            """
+                SELECT DISTINCT
+                    mv.module_id,
+                    vd_rel.dependency_id AS dependency_id
+                FROM yodoo_module_version_dependency_binary_rel AS vd_rel
+                LEFT JOIN yodoo_module_version AS mv
+                    ON mv.id = vd_rel.module_version_id
+                LEFT JOIN yodoo_module AS mod
+                    ON mv.module_id = mod.id
+                WHERE mv.id = mod.last_version_id
+            """)
+        create_sql_view(
+            self.env.cr, 'yodoo_module_dependency_python_rel_view',
+            """
+                SELECT DISTINCT
+                    mv.module_id,
+                    vd_rel.dependency_id AS dependency_id
+                FROM yodoo_module_version_dependency_python_rel AS vd_rel
+                LEFT JOIN yodoo_module_version AS mv
+                    ON mv.id = vd_rel.module_version_id
+                LEFT JOIN yodoo_module AS mod
+                    ON mv.module_id = mod.id
+                WHERE mv.id = mod.last_version_id
+            """)
+
+        # External dependencies (module serie)
+        create_sql_view(
+            self.env.cr, 'yodoo_module_serie_dependency_binary_rel_view',
+            """
+                SELECT DISTINCT
+                    mv.module_serie_id,
+                    vd_rel.dependency_id AS dependency_id
+                FROM yodoo_module_version_dependency_binary_rel AS vd_rel
+                LEFT JOIN yodoo_module_version AS mv
+                    ON mv.id = vd_rel.module_version_id
+                LEFT JOIN yodoo_module_serie AS mos
+                    ON mv.module_serie_id = mos.id
+                WHERE mv.id = mos.last_version_id
+            """)
+        create_sql_view(
+            self.env.cr, 'yodoo_module_serie_dependency_python_rel_view',
+            """
+                SELECT DISTINCT
+                    mv.module_serie_id,
+                    vd_rel.dependency_id AS dependency_id
+                FROM yodoo_module_version_dependency_python_rel AS vd_rel
+                LEFT JOIN yodoo_module_version AS mv
+                    ON mv.id = vd_rel.module_version_id
+                LEFT JOIN yodoo_module_serie AS mos
+                    ON mv.module_serie_id = mos.id
+                WHERE mv.id = mos.last_version_id
+            """)
         return super(OdooModuleVersion, self).init()
 
     @api.model
@@ -254,6 +326,69 @@ class OdooModuleVersion(models.Model):
                 author_id = self.env['yodoo.module.author'].get_or_create(
                     author_name.strip())
                 res.append(author_id)
+        return res
+
+    def _prepare_python_dependencies(self, python_dependencies):
+        if not python_dependencies:
+            return []
+
+        if not isinstance(python_dependencies, (list, tuple, set)):
+            _logger.warning(
+                "Cannot parse python dependencies: %r", python_dependencies)
+            return []
+
+        return [
+            self.env['yodoo.module.dependency.python'].get_or_create(py_dep)
+            for py_dep in python_dependencies
+            if py_dep.strip()
+        ]
+
+    def _prepare_binary_dependencies(self, bin_dependencies):
+        if not bin_dependencies:
+            return []
+
+        return [
+            self.env['yodoo.module.dependency.binary'].get_or_create(bin_dep)
+            for bin_dep in bin_dependencies
+            if bin_dep.strip()
+        ]
+
+    def _prepare_external_dependencies(self, data):
+        """ Parse external dependencies and return dictionary with
+            write-ready info about dependencies
+        """
+        external_dependencies = data.get('external_dependencies', {})
+        if not external_dependencies:
+            return {}
+        if not isinstance(external_dependencies, dict):
+            _logger.warning(
+                "Cannot parse external dependencies (%r) in manifest:\n%r".
+                external_dependencies, data)
+            return {}
+
+        try:
+            py_deps = self._prepare_python_dependencies(
+                external_dependencies.get('python', []))
+        except Exception:
+            _logger.warning(
+                "Cannot parse python dependencies (%r) in manifest:\n%r",
+                external_dependencies.get('python', []), data, exc_info=True)
+            py_deps = []
+
+        try:
+            bin_deps = self._prepare_binary_dependencies(
+                external_dependencies.get('bin', []))
+        except Exception:
+            _logger.warning(
+                "Cannot parse binary dependencies (%r) in manifest:\n%r",
+                external_dependencies.get('bin', []), data, exc_info=True)
+            bin_deps = []
+
+        res = {}
+        if py_deps:
+            res['dependency_python_ids'] = [(6, 0, py_deps)]
+        if bin_deps:
+            res['dependency_bin_ids'] = [(6, 0, bin_deps)]
         return res
 
     def _prepare_license(self, license_name):
@@ -356,6 +491,7 @@ class OdooModuleVersion(models.Model):
                 'module_system_name': module.system_name,
             })
 
+        # TODO: wrap parsing of each param in try/except
         version_data.update({
             'name': data.get('name', False),
             'license_id': self._prepare_license(data.get('license')),
@@ -371,6 +507,7 @@ class OdooModuleVersion(models.Model):
             'dependency_ids': [
                 (6, 0, self._prepare_depends(data.get('depends', [])))],
         })
+        version_data.update(self._prepare_external_dependencies(data))
         return version_data
 
     def _create_or_update_prepare_module_data(self, module,
@@ -421,6 +558,7 @@ class OdooModuleVersion(models.Model):
             'price': data.get('price'),
             'currency': data.get('currency'),
             'depends': data.get('depends', []),
+            'external_dependencies': data.get('external_dependencies', []),
         }
 
     @api.model

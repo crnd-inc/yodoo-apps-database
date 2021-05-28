@@ -209,6 +209,14 @@
                             nolabel="1"
                             colspan="4"/>
                 </page>
+                <page name="page_external_dependencies" string="External Dependencies">
+                    <group name="group_python_dependencies" string="Python Dependencies">
+                        <field name="dependency_python_ids" nolabel="1"/>
+                    </group>
+                    <group name="group_binary_dependencies" string="Binary Dependencies">
+                        <field name="dependency_bin_ids" nolabel="1"/>
+                    </group>
+                </page>
             </xpath>
             <xpath expr="/form/sheet" position="after">
                 <div class="oe_chatter">

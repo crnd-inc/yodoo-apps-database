@@ -7,7 +7,7 @@
     'website': "https://crnd.pro",
 
     'category': 'Yodoo Apps',
-    'version': '12.0.0.30.0',
+    'version': '12.0.0.31.0',
 
     # any module necessary for this one to work correctly
     'depends': [
@@ -31,6 +31,8 @@
         'views/yodoo_module_license.xml',
         'views/yodoo_module_category.xml',
         'views/yodoo_module_author.xml',
+        'views/yodoo_module_dependency_bin.xml',
+        'views/yodoo_module_dependency_py.xml',
         'views/yodoo_serie.xml',
         'views/res_config_settings.xml',
         'data/generic_resource_type.xml',
