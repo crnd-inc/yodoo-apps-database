@@ -62,11 +62,27 @@ class OdooModule(models.Model):
         'yodoo.module.license', index=True, store=True, readonly=True)
     category_id = fields.Many2one(
         'yodoo.module.category', index=True, store=True, readonly=True)
+
     author_ids = fields.Many2manyView(
         comodel_name='yodoo.module.author',
         relation='yodoo_module_author_rel_view',
         column1='module_id', column2='author_id',
         readonly=True)
+
+    # Additional search capabilities for author
+    search_author_id = fields.Many2one(
+        'yodoo.module.author', string='Author',
+        compute='_compute_search_author',
+        search='_search_author_id',
+        store=False, readonly=True,
+        help="Find all modules of this author.")
+    search_no_author_id = fields.Many2one(
+        'yodoo.module.author', string='No Author',
+        compute='_compute_search_author',
+        search='_search_no_author_id',
+        store=False, readonly=True,
+        help="Find all modules that do not have this author")
+
     dependency_ids = fields.Many2manyView(
         comodel_name='yodoo.module',
         relation='yodoo_module_dependency_rel_view',
@@ -86,6 +102,7 @@ class OdooModule(models.Model):
         readonly=True)
 
     # This fields will be computed automatically on version update
+    # They are not related nor computed because of performance reasons
     name = fields.Char(
         store=True, readonly=True, index=True)
     version = fields.Char(
@@ -171,6 +188,19 @@ class OdooModule(models.Model):
                 price += dep_currency._convert(
                     dep.price, currency, company, date)
             record.total_price = price
+
+    def _search_no_author_id(self, operator, value):
+        with_author = self.search([('author_ids', operator, value)])
+        return [('id', 'not in', with_author.mapped('id'))]
+
+    def _search_author_id(self, operator, value):
+        return [('author_ids', operator, value)]
+
+    @api.depends()
+    def _compute_search_tag(self):
+        for rec in self:
+            rec.search_author_id = False
+            rec.search_no_author_id = False
 
     def name_get(self):
         res = []

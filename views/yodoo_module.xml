@@ -10,6 +10,8 @@
                 <field name="system_name"/>
                 <field name="category_id"/>
                 <field name="author_ids"/>
+                <field name="search_author_id"/>
+                <field name="search_no_author_id"/>
                 <field name="license_id"/>
                 <field name="tag_ids"/>
                 <field name="search_tag_id"/>
@@ -43,6 +45,14 @@
                 <filter name="filter_non_odoo_community_modules"
                         string="Non Odoo Community Modules"
                         domain="[('is_odoo_community_addon', '=', False)]"/>
+
+                <separator/>
+                <filter name="filter_non_archived"
+                        string="Active"
+                        domain="[('active', '=', True)]"/>
+                <filter name="filter_archived"
+                        string="Archived"
+                        domain="[('active', '=', False)]"/>
 
                 <group expand="0" string="Group By">
                     <filter name="group_by_license"
