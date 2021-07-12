@@ -237,19 +237,25 @@ class OdooModule(models.Model):
         return False
 
     @api.model
-    def get_or_create_module(self, system_name):
+    def get_module(self, system_name):
         module_id = self._get_module_id(system_name)
         if module_id:
             return self.browse(module_id)
-        module = self.with_context(
-            mail_create_nosubscribe=True,
-            mail_create_nolog=True,
-            mail_notrack=True,
-        ).create({
-            'system_name': system_name,
-            'active': True,
-        })
-        self._get_module_id.clear_cache(self)
+        return self.browse()
+
+    @api.model
+    def get_or_create_module(self, system_name):
+        module = self.get_module(system_name)
+        if not module:
+            module = self.with_context(
+                mail_create_nosubscribe=True,
+                mail_create_nolog=True,
+                mail_notrack=True,
+            ).create({
+                'system_name': system_name,
+                'active': True,
+            })
+            self._get_module_id.clear_cache(self)
         return module
 
     def get_module_serie(self, serie):
