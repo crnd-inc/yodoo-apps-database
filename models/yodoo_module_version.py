@@ -510,13 +510,30 @@ class OdooModuleVersion(models.Model):
         version_data.update(self._prepare_external_dependencies(data))
         return version_data
 
+    def _choose_last_version(self, for_obj, old_version, new_version):
+        """ Determine last version between provided versions
+
+            :param Record for_obj: compute last version for this object
+            :param Record old_version: Record that represents old version
+            :param Record new_version: Record that represents new version
+            :returns Record: Record of computed last version
+        """
+        if not old_version:
+            return new_version
+        if V(old_version.version) < V(new_version.version):
+            return new_version
+        return old_version
+
     def _create_or_update_prepare_module_data(self, module,
                                               version, version_data):
+        new_version = self._choose_last_version(
+            module, module.last_version_id, version)
+
         module_data = {}
-        if not module.last_version_id:
-            module_data['last_version_id'] = version.id
-        elif V(module.last_version_id.version) < V(version.version):
-            module_data['last_version_id'] = version.id
+        if module.last_version_id != new_version:
+            module_data = {
+                'last_version_id': new_version.id
+            }
 
         if module_data:
             module_data['version_count'] = self.search_count(
@@ -527,11 +544,11 @@ class OdooModuleVersion(models.Model):
 
     def _create_or_update_prepare_module_serie_data(self, module_serie,
                                                     version, version_data):
+        new_version = self._choose_last_version(
+            module_serie, module_serie.last_version_id, version)
         serie_data = {}
-        if not module_serie.last_version_id:
-            serie_data['last_version_id'] = version.id
-        elif V(module_serie.last_version_id.version) < V(version.version):
-            serie_data['last_version_id'] = version.id
+        if module_serie.last_version_id != new_version:
+            serie_data['last_version_id'] = new_version.id
 
         if serie_data:
             serie_data['version_count'] = self.search_count(
