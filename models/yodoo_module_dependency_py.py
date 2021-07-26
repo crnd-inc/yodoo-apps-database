@@ -85,8 +85,19 @@ class YodooModuleDependencyPython(models.Model):
         """ Check if this package is available on PyPI
         """
         for record in self:
+            # Try to split version from specifications like
+            # algoliasearch>=2.0,<3.0
+            #
+            # TODO: may be it have sense to add version specification as
+            # separate fields to this model?
+            m = re.match(r'([\w\-\+\.]+)(?:[><=~]+.*)?', record.name)
+            if m:
+                package_name = m.groups()[0]
+            else:
+                package_name = record.name
+
             res = requests.head(
-                "https://pypi.org/project/%s/" % record.name,
+                "https://pypi.org/project/%s/" % package_name,
                 allow_redirects=True)
             if res.status_code == 200:
                 m = re.match("https://pypi.org/project/(.+)/", res.url)
