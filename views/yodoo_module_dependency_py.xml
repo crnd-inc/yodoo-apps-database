@@ -16,6 +16,8 @@
             <tree create="false" delete="false">
                 <field name="display_name" string="Name"/>
                 <field name="pypi_package"/>
+                <field name="pypi_url" widget="url" text='View at PyPI'/>
+                <field name="module_count" string="Modules"/>
             </tree>
         </field>
     </record>
@@ -26,6 +28,16 @@
             <form create="false" delete="false">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button"
+                                type="object"
+                                icon="fa-cubes"
+                                name="action_show_modules">
+                            <field name="module_count"
+                                   string="Modules"
+                                   aria-label="Modules"
+                                   title="Modules"
+                                   widget="statinfo"/>
+                        </button>
                     </div>
                     <div class="oe_title">
                         <h1><field name="name" placeholder="Name..."/></h1>
@@ -33,6 +45,17 @@
                     <group>
                         <group>
                             <field name="pypi_package"/>
+                            <button name="action_check_pypi"
+                                    type="object"
+                                    string="Guess"
+                                    icon="fa-question"
+                                    class="btn-sm btn-warning"
+                                    attrs="{'invisible': [('pypi_package', '!=', False)]}"/>
+                        </group>
+                        <group>
+                            <field name="pypi_url"
+                                   widget="url"
+                                   text='View at PyPI'/>
                         </group>
                     </group>
                 </sheet>
