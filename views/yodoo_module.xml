@@ -182,9 +182,6 @@
 
                         </group>
                     </group>
-                    <group>
-                        <field name="summary"/>
-                    </group>
                 </page>
                 <page name="page_series" string="Series">
                     <field name="module_serie_ids" nolabel="1" mode="tree">

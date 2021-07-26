@@ -130,6 +130,12 @@ class OdooModuleVersion(models.Model):
     is_odoo_community_addon = fields.Boolean(
         related='module_serie_id.is_odoo_community_addon', readonly=True)
 
+    # Date added & updated
+    date_added = fields.Datetime(
+        default=fields.Datetime.now, readonly=True)
+    date_updated = fields.Datetime(
+        default=fields.Datetime.now, readonly=True)
+
     _sql_constraints = [
         ('module_version_uniq',
          'unique(module_id, version)',
@@ -603,7 +609,8 @@ class OdooModuleVersion(models.Model):
             module, data)
 
         if version:
-            version.write(version_data)
+            version.write(
+                dict(version_data, date_updated=fields.Datetime.now()))
         else:
             version = self.create(version_data)
 

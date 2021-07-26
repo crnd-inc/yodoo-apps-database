@@ -81,30 +81,43 @@
                             <field name="version_non_standard"/>
                             <field name="is_odoo_community_addon"/>
                         </group>
-                        <group>
-                            <field name="author_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                            <field name="license_id"/>
-                            <field name="category_id"/>
-                            <field name="dependency_ids" widget="many2many_tags"/>
-                        </group>
-                        <group>
-                            <field name="application"/>
-                            <field name="installable"/>
-                            <field name="auto_install"/>
-                        </group>
-                        <group name="group_price">
-                            <field name="price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-                            <field name="currency_id" invisible="1"/>
-                        </group>
-                        <group name="group_dependencies">
-                            <field name="dependency_python_ids" widget="many2many_tags"/>
-                            <field name="dependency_bin_ids" widget="many2many_tags"/>
-                        </group>
                     </group>
-                    <group>
-                        <field name="summary"/>
-                        <field name="website" widget="url"/>
-                    </group>
+                    <notebook>
+                        <page name="page_info" string="Info">
+                            <group>
+                                <group>
+                                    <field name="website" widget="url"/>
+                                    <field name="author_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                    <field name="license_id"/>
+                                    <field name="category_id"/>
+                                </group>
+                                <group>
+                                    <field name="application"/>
+                                    <field name="installable"/>
+                                    <field name="auto_install"/>
+                                </group>
+                                <group name="group_price">
+                                    <field name="price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                    <field name="currency_id" invisible="1"/>
+                                </group>
+                                <group name="group_dates">
+                                    <field name="date_added"/>
+                                    <field name="date_updated"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page name="page_dependencies" string="Dependencies">
+                            <group name="group_direct_deps" string="Direct Dependencies">
+                                <field name="dependency_ids" nolabel="1"/>
+                            </group>
+                            <group name="group_python_dependencies" string="Python Dependencies">
+                                <field name="dependency_python_ids" nolabel="1"/>
+                            </group>
+                            <group name="group_binary_dependencies" string="Binary Dependencies">
+                                <field name="dependency_bin_ids" nolabel="1"/>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
