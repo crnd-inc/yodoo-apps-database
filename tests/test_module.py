@@ -42,6 +42,10 @@ class TestModule(SavepointCase):
         self.assertEqual(module_version.version_patch, 3)
         self.assertFalse(module_version.version_non_standard)
 
+        module_serie = module_version.module_serie_id
+        self.assertEqual(module_serie.serie_id.name, '12.0')
+        self.assertEqual(module_serie.version_count, 1)
+
         # Try to updae module with same version and check that module versiion
         # info updated
         # (arg 'no_update' is set to False by default)
@@ -70,6 +74,7 @@ class TestModule(SavepointCase):
         self.assertEqual(module_version2.version_minor, 2)
         self.assertEqual(module_version2.version_patch, 3)
         self.assertFalse(module_version2.version_non_standard)
+        self.assertEqual(module_serie.version_count, 1)
 
         # Try to update module with 'no_update' set to True (same version)
         # If version not changed, then module data will not be updated
@@ -100,6 +105,7 @@ class TestModule(SavepointCase):
         self.assertEqual(module_version3.version_minor, 2)
         self.assertEqual(module_version3.version_patch, 3)
         self.assertFalse(module_version3.version_non_standard)
+        self.assertEqual(module_serie.version_count, 1)
 
         # Try to update module with 'no_update' set to True (different version)
         # The version was changed, so module info have to be updated
@@ -130,3 +136,4 @@ class TestModule(SavepointCase):
         self.assertEqual(module_version4.version_minor, 2)
         self.assertEqual(module_version4.version_patch, 4)
         self.assertFalse(module_version4.version_non_standard)
+        self.assertEqual(module_serie.version_count, 2)
