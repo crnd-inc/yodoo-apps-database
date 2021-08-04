@@ -7,7 +7,7 @@
     'website': "https://crnd.pro",
 
     'category': 'Yodoo Apps',
-    'version': '12.0.0.33.0',
+    'version': '12.0.0.34.0',
 
     # any module necessary for this one to work correctly
     'depends': [
@@ -42,6 +42,7 @@
     # only loaded in demonstration mode
     'demo': [
     ],
+    'images': ['static/description/banner.png'],
     'installable': True,
     'application': True,
     'license': 'LGPL-3',
