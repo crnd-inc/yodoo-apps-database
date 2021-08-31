@@ -202,9 +202,12 @@
                     </group>
                 </page>
                 <page name="page_dependency_of" string="Dependency of">
-                    <field name="dependency_of_ids"
-                            nolabel="1"
-                            colspan="4"/>
+                    <group name="group_direct_deps_of" string="Direct Dependency of">
+                        <field name="dependency_of_ids" nolabel="1"/>
+                    </group>
+                    <group name="group_recursive_deps_of" string="Recursive Dependency of">
+                        <field name="dependency_of_all_ids" nolabel="1"/>
+                    </group>
                 </page>
                 <page name="page_external_dependencies" string="External Dependencies">
                     <group name="group_python_dependencies" string="Python Dependencies">

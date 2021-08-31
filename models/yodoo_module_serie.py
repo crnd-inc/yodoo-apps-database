@@ -49,12 +49,26 @@ class OdooModuleSerie(models.Model):
     dependency_ids = fields.Many2manyView(
         comodel_name='yodoo.module.serie',
         relation='yodoo_module_serie_dependency_rel_view',
-        column1='module_serie_id', column2='dependency_module_serie_id',
+        column1='module_serie_id',
+        column2='dependency_module_serie_id',
         readonly=True)
     dependency_all_ids = fields.Many2manyView(
         comodel_name='yodoo.module.serie',
         relation='yodoo_module_serie_dependency_all_rel_view',
-        column1='module_serie_id', column2='dependency_module_serie_id',
+        column1='module_serie_id',
+        column2='dependency_module_serie_id',
+        readonly=True)
+    dependency_of_ids = fields.Many2manyView(
+        comodel_name='yodoo.module.serie',
+        relation='yodoo_module_serie_dependency_rel_view',
+        column1='dependency_module_serie_id',
+        column2='module_serie_id',
+        readonly=True)
+    dependency_of_all_ids = fields.Many2manyView(
+        comodel_name='yodoo.module.serie',
+        relation='yodoo_module_serie_dependency_all_rel_view',
+        column1='dependency_module_serie_id',
+        column2='module_serie_id',
         readonly=True)
 
     # External dependencies

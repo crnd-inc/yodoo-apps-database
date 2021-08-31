@@ -91,28 +91,32 @@
                                         icon="fa-refresh"/>
                             </div>
                         </group>
-                        <group name="group_main_direct_deps"
-                               string="Direct dependencies"
-                               colspan="4">
-                            <field name="dependency_ids" nolabel="1"/>
-                        </group>
-                        <group name="group_main_recursive_deps"
-                               string="Recursive dependencies"
-                               colspan="4">
-                            <field name="dependency_all_ids" nolabel="1"/>
-                        </group>
-                        <group name="group_main_python_deps"
-                               string="Python dependencies"
-                               colspan="4">
-                            <field name="dependency_python_ids" nolabel="1"/>
-                        </group>
-                        <group name="group_main_binary_deps"
-                               string="Binary dependencies"
-                               colspan="4">
-                            <field name="dependency_bin_ids" nolabel="1"/>
-                        </group>
                     </group>
                     <notebook>
+                        <page name="page_dependencies" string="Dependencies">
+                            <group name="group_direct_deps" string="Direct Dependencies">
+                                <field name="dependency_ids" nolabel="1"/>
+                            </group>
+                            <group name="group_recursive_deps" string="Recursive Dependencies">
+                                <field name="dependency_all_ids" nolabel="1"/>
+                            </group>
+                        </page>
+                        <page name="page_dependency_of" string="Dependency of">
+                            <group name="group_direct_deps_of" string="Direct Dependency of">
+                                <field name="dependency_of_ids" nolabel="1"/>
+                            </group>
+                            <group name="group_recursive_deps_of" string="Recursive Dependency of">
+                                <field name="dependency_of_all_ids" nolabel="1"/>
+                            </group>
+                        </page>
+                        <page name="page_external_dependencies" string="External Dependencies">
+                            <group name="group_python_dependencies" string="Python Dependencies">
+                                <field name="dependency_python_ids" nolabel="1"/>
+                            </group>
+                            <group name="group_binary_dependencies" string="Binary Dependencies">
+                                <field name="dependency_bin_ids" nolabel="1"/>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>

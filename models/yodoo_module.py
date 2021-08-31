@@ -86,7 +86,8 @@ class OdooModule(models.Model):
     dependency_ids = fields.Many2manyView(
         comodel_name='yodoo.module',
         relation='yodoo_module_dependency_rel_view',
-        column1='module_id', column2='dependency_id',
+        column1='module_id',
+        column2='dependency_id',
         readonly=True)
     dependency_all_ids = fields.Many2manyView(
         comodel_name='yodoo.module',
@@ -95,6 +96,12 @@ class OdooModule(models.Model):
         column2='dependency_id',
         readonly=True)
     dependency_of_ids = fields.Many2manyView(
+        comodel_name='yodoo.module',
+        relation='yodoo_module_dependency_rel_view',
+        column1='dependency_id',
+        column2='module_id',
+        readonly=True)
+    dependency_of_all_ids = fields.Many2manyView(
         comodel_name='yodoo.module',
         relation='yodoo_module_dependency_all_rel_view',
         column1='dependency_id',
