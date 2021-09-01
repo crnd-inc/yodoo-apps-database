@@ -47,7 +47,6 @@
                 <field name="category_id"/>
                 <field name="license_id"/>
                 <field name="is_odoo_community_addon"/>
-                <field name="version_count"/>
             </tree>
         </field>
     </record>

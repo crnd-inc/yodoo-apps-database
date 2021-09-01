@@ -85,9 +85,6 @@
                 <field name="license_id"/>
                 <field name="category_id"/>
                 <field name="application"/>
-                <field name="resource_visibility"/>
-                <field name="version_count"
-                       string="versions"/>
                 <field name="price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                 <field name="tag_ids"
                        options="{'color_field': 'color'}"
