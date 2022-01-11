@@ -28,7 +28,12 @@
                         domain="[('auto_install','=',True)]"/>
 
                 <separator/>
-                <filter name="filter_application" string="Apps" domain="[('application', '=', True)]"/>
+                <filter name="filter_application"
+                        string="Apps"
+                        domain="[('application', '=', True)]"/>
+                <filter name="filter_theme"
+                        string="Themes"
+                        domain="[('system_name', '=like', 'theme_%')]"/>
 
                 <separator/>
                 <filter name="filter_published_on_odoo_apps"
