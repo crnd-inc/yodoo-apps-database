@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Top menu item -->
+    <menuitem name="Yodoo Apps"
+              id="menu_root"
+              groups="group_yodoo_apps_user"
+              web_icon="yodoo_apps_database,static/description/icon.png"/>
+
+    <!-- menu categories -->
+    <menuitem name="Apps"
+              id="menu_root_apps"
+              parent="menu_root"
+              sequence="10"/>
+
+    <menuitem name="Settings"
+              id="menu_root_settings"
+              parent="menu_root"
+              sequence="240"/>
+
+</odoo>

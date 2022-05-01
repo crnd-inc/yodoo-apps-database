@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="yodoo_module_dependency_binary_search">
+        <field name="model">yodoo.module.dependency.binary</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="apt_package"/>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="yodoo_module_dependency_binary_tree">
+        <field name="model">yodoo.module.dependency.binary</field>
+        <field name="arch" type="xml">
+            <tree create="false" delete="false">
+                <field name="display_name" string="Name"/>
+                <field name="apt_package"/>
+                <field name="module_count" string="Modules"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="yodoo_module_dependency_binary_form">
+        <field name="model">yodoo.module.dependency.binary</field>
+        <field name="arch" type="xml">
+            <form create="false" delete="false">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button"
+                                type="object"
+                                icon="fa-cubes"
+                                name="action_show_modules">
+                            <field name="module_count"
+                                   string="Modules"
+                                   aria-label="Modules"
+                                   title="Modules"
+                                   widget="statinfo"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Name..."/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="apt_package"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_yodoo_module_dependency_binary_view" model="ir.actions.act_window">
+        <field name="name">Binary Dependencies</field>
+        <field name="res_model">yodoo.module.dependency.binary</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem action="action_yodoo_module_dependency_binary_view"
+              id="menu_root_settings_module_dependency_binaries"
+              parent="menu_root_settings"
+              sequence="65"/>
+</odoo>

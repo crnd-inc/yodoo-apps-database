@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- module views -->
+    <record model="ir.ui.view" id="yodoo_module_version_search">
+        <field name="model">yodoo.module.version</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="system_name"/>
+                <field name="module_id"/>
+                <field name="serie_id"/>
+
+                <separator/>
+                <filter name="filter_odoo_community_modules"
+                        string="Odoo Community Modules"
+                        domain="[('is_odoo_community_addon', '=', True)]"/>
+                <filter name="filter_non_odoo_community_modules"
+                        string="Non Odoo Community Modules"
+                        domain="[('is_odoo_community_addon', '=', False)]"/>
+
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter name="group_by_serie"
+                            string="Serie"
+                            domain="[]"
+                            context="{'group_by':'serie_id'}"/>
+                    <filter name="group_by_module"
+                            string="Module"
+                            domain="[]"
+                            context="{'group_by':'module_id'}"/>
+                    <filter name="group_by_license"
+                            string="License"
+                            domain="[]"
+                            context="{'group_by':'license_id'}"/>
+                    <filter name="group_by_category"
+                            string="Category"
+                            domain="[]"
+                            context="{'group_by':'category_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="yodoo_module_version_tree">
+        <field name="model">yodoo.module.version</field>
+        <field name="arch" type="xml">
+            <tree create="false" edit="false" delete="false">
+                <field name="currency_id" invisible="1"/>
+                <field name="system_name"/>
+                <field name="name"/>
+                <field name="serie_id"/>
+                <field name="version"/>
+                <field name="author_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="license_id"/>
+                <field name="category_id"/>
+                <field name="application"/>
+                <field name="is_odoo_community_addon"/>
+                <field name="price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="yodoo_module_version_form">
+        <field name="model">yodoo.module.version</field>
+        <field name="arch" type="xml">
+            <form create="false" edit="false" delete="false">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                        <h3><field name="summary"/></h3>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="system_name"/>
+                            <field name="module_id"/>
+                            <field name="serie_id"/>
+                        </group>
+                        <group>
+                            <field name="version"/>
+                            <field name="version_non_standard"/>
+                            <field name="is_odoo_community_addon"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="page_info" string="Info">
+                            <group>
+                                <group>
+                                    <field name="website" widget="url"/>
+                                    <field name="author_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                    <field name="license_id"/>
+                                    <field name="category_id"/>
+                                </group>
+                                <group>
+                                    <field name="application"/>
+                                    <field name="installable"/>
+                                    <field name="auto_install"/>
+                                </group>
+                                <group name="group_price">
+                                    <field name="price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                    <field name="currency_id" invisible="1"/>
+                                </group>
+                                <group name="group_dates">
+                                    <field name="date_added"/>
+                                    <field name="date_updated"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page name="page_dependencies" string="Dependencies">
+                            <group name="group_direct_deps" string="Direct Dependencies">
+                                <field name="dependency_ids" nolabel="1"/>
+                            </group>
+                            <group name="group_python_dependencies" string="Python Dependencies">
+                                <field name="dependency_python_ids" nolabel="1"/>
+                            </group>
+                            <group name="group_binary_dependencies" string="Binary Dependencies">
+                                <field name="dependency_bin_ids" nolabel="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_yodoo_module_version_view" model="ir.actions.act_window">
+        <field name="name">Module Versions</field>
+        <field name="res_model">yodoo.module.version</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem action="action_yodoo_module_version_view"
+              id="menu_root_settings_versions"
+              parent="menu_root_settings"
+              sequence="30"/>
+</odoo>
+

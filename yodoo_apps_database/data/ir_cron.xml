@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="scheduler_check_modules_published_on_odoo_apps"
+            model="ir.cron">
+        <field name="name">Yodoo Apps: Update addons publication links</field>
+        <field name="state">code</field>
+        <field name="interval_number">7</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_yodoo_module_serie"/>
+        <field name="code">model.scheduler_test_odoo_apps_link()</field>
+        <field name="active" eval="True"/>
+        <field name="priority" eval="100"/>
+    </record>
+    <record id="scheduler_check_pypi_packages"
+            model="ir.cron">
+        <field name="name">Yodoo Apps: Check if py deps available on pypi</field>
+        <field name="state">code</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_yodoo_module_dependency_python"/>
+        <field name="code">model.scheduler_find_pypi_packages()</field>
+        <field name="active" eval="True"/>
+        <field name="priority" eval="100"/>
+    </record>
+</odoo>
