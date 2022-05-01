@@ -1,0 +1,4 @@
+--github straga/odoo_vik_main -m web_widget_colorpicker
+--github crnd-inc/generic-addons
+--github crnd-inc/crnd-web
+--oca web -m web_view_searchpanel
