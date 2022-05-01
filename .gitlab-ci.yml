@@ -75,6 +75,8 @@ bandit:
 
 check-versions:
     stage: static-test
+    before_script:
+        - git fetch origin $SERIES_BRANCH
     script:
         - odoo-helper ci check-versions-git . origin/$SERIES_BRANCH $CI_COMMIT_SHA
     <<: *only_dev_branch

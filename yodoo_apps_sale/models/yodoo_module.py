@@ -42,7 +42,7 @@ class YodooModule(models.Model):
             })
         else:
             self.product_template_id = self.env['product.template'].create({
-                'name': self.name,
+                'name': self.name if self.name else self.system_name,
                 'list_price': price,
                 'standard_price': price,
                 'type': 'service',
