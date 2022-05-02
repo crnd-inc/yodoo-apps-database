@@ -47,6 +47,33 @@ msgid "Default product category for products generated based on addons."
 msgstr ""
 
 #. module: yodoo_apps_sale
+#: model:ir.model.fields,field_description:yodoo_apps_sale.field_res_company__display_name
+#: model:ir.model.fields,field_description:yodoo_apps_sale.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:yodoo_apps_sale.field_yodoo_module__display_name
+#: model:ir.model.fields,field_description:yodoo_apps_sale.field_yodoo_module_serie__display_name
+#: model:ir.model.fields,field_description:yodoo_apps_sale.field_yodoo_serie__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: yodoo_apps_sale
+#: model:ir.model.fields,field_description:yodoo_apps_sale.field_res_company__id
+#: model:ir.model.fields,field_description:yodoo_apps_sale.field_res_config_settings__id
+#: model:ir.model.fields,field_description:yodoo_apps_sale.field_yodoo_module__id
+#: model:ir.model.fields,field_description:yodoo_apps_sale.field_yodoo_module_serie__id
+#: model:ir.model.fields,field_description:yodoo_apps_sale.field_yodoo_serie__id
+msgid "ID"
+msgstr ""
+
+#. module: yodoo_apps_sale
+#: model:ir.model.fields,field_description:yodoo_apps_sale.field_res_company____last_update
+#: model:ir.model.fields,field_description:yodoo_apps_sale.field_res_config_settings____last_update
+#: model:ir.model.fields,field_description:yodoo_apps_sale.field_yodoo_module____last_update
+#: model:ir.model.fields,field_description:yodoo_apps_sale.field_yodoo_module_serie____last_update
+#: model:ir.model.fields,field_description:yodoo_apps_sale.field_yodoo_serie____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: yodoo_apps_sale
 #: model:ir.model,name:yodoo_apps_sale.model_yodoo_module
 msgid "Odoo Module"
 msgstr ""

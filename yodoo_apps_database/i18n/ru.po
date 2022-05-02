@@ -17,7 +17,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: yodoo_apps_database
-#: sql_constraint:yodoo.module.version:0
+#: model:ir.model.constraint,message:yodoo_apps_database.constraint_yodoo_module_version_module_version_uniq
 msgid "(version, module) pair must be unique!"
 msgstr ""
 
@@ -41,8 +41,18 @@ msgid "Activities"
 msgstr ""
 
 #. module: yodoo_apps_database
+#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr ""
+
+#. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__activity_state
 msgid "Activity State"
+msgstr ""
+
+#. module: yodoo_apps_database
+#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__activity_type_icon
+msgid "Activity Type Icon"
 msgstr ""
 
 #. module: yodoo_apps_database
@@ -85,7 +95,7 @@ msgid "Author"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: sql_constraint:yodoo.module.author:0
+#: model:ir.model.constraint,message:yodoo_apps_database.constraint_yodoo_module_author_module_name_uniq
 msgid "Author name must be unique!"
 msgstr ""
 
@@ -134,7 +144,7 @@ msgid "Category"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: sql_constraint:yodoo.module.category:0
+#: model:ir.model.constraint,message:yodoo_apps_database.constraint_yodoo_module_category_module_name_uniq
 msgid "Category name must be unique!"
 msgstr ""
 
@@ -194,12 +204,14 @@ msgid "Currency"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: selection:yodoo.module.author,color:0 selection:yodoo.serie,color:0
+#: model:ir.model.fields.selection,name:yodoo_apps_database.selection__yodoo_module_author__color__8
+#: model:ir.model.fields.selection,name:yodoo_apps_database.selection__yodoo_serie__color__8
 msgid "Dark blue"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: selection:yodoo.module.author,color:0 selection:yodoo.serie,color:0
+#: model:ir.model.fields.selection,name:yodoo_apps_database.selection__yodoo_module_author__color__5
+#: model:ir.model.fields.selection,name:yodoo_apps_database.selection__yodoo_serie__color__5
 msgid "Dark purple"
 msgstr ""
 
@@ -265,6 +277,7 @@ msgid "Direct Dependency of"
 msgstr ""
 
 #. module: yodoo_apps_database
+#: model:ir.model.fields,field_description:yodoo_apps_database.field_res_config_settings__display_name
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__display_name
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_author__display_name
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_category__display_name
@@ -319,7 +332,13 @@ msgid "Followers (Partners)"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: selection:yodoo.module.author,color:0 selection:yodoo.serie,color:0
+#: model:ir.model.fields,help:yodoo_apps_database.field_yodoo_module__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
+msgstr ""
+
+#. module: yodoo_apps_database
+#: model:ir.model.fields.selection,name:yodoo_apps_database.selection__yodoo_module_author__color__9
+#: model:ir.model.fields.selection,name:yodoo_apps_database.selection__yodoo_serie__color__9
 msgid "Fushia"
 msgstr ""
 
@@ -329,7 +348,8 @@ msgid "Generic Resource"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: selection:yodoo.module.author,color:0 selection:yodoo.serie,color:0
+#: model:ir.model.fields.selection,name:yodoo_apps_database.selection__yodoo_module_author__color__10
+#: model:ir.model.fields.selection,name:yodoo_apps_database.selection__yodoo_serie__color__10
 msgid "Green"
 msgstr ""
 
@@ -346,6 +366,7 @@ msgid "Guess"
 msgstr ""
 
 #. module: yodoo_apps_database
+#: model:ir.model.fields,field_description:yodoo_apps_database.field_res_config_settings__id
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__id
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_author__id
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_category__id
@@ -359,22 +380,25 @@ msgid "ID"
 msgstr ""
 
 #. module: yodoo_apps_database
+#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__activity_exception_icon
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_version__icon
 msgid "Icon"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: model:ir.model.fields,help:yodoo_apps_database.field_yodoo_module__message_unread
-msgid "If checked new messages require your attention."
+#: model:ir.model.fields,help:yodoo_apps_database.field_yodoo_module__activity_exception_icon
+msgid "Icon to indicate an exception activity."
 msgstr ""
 
 #. module: yodoo_apps_database
 #: model:ir.model.fields,help:yodoo_apps_database.field_yodoo_module__message_needaction
+#: model:ir.model.fields,help:yodoo_apps_database.field_yodoo_module__message_unread
 msgid "If checked, new messages require your attention."
 msgstr ""
 
 #. module: yodoo_apps_database
 #: model:ir.model.fields,help:yodoo_apps_database.field_yodoo_module__message_has_error
+#: model:ir.model.fields,help:yodoo_apps_database.field_yodoo_module__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
 
@@ -415,6 +439,7 @@ msgid "Is Odoo Community Addon"
 msgstr ""
 
 #. module: yodoo_apps_database
+#: model:ir.model.fields,field_description:yodoo_apps_database.field_res_config_settings____last_update
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module____last_update
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_author____last_update
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_category____last_update
@@ -446,7 +471,7 @@ msgid "Last Version"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: selection:res.config.settings,yodoo_select_last_version_as:0
+#: model:ir.model.fields.selection,name:yodoo_apps_database.selection__res_config_settings__yodoo_select_last_version_as__latest
 msgid "Latest"
 msgstr ""
 
@@ -460,7 +485,7 @@ msgid "License"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: sql_constraint:yodoo.module.license:0
+#: model:ir.model.constraint,message:yodoo_apps_database.constraint_yodoo_module_license_module_code_uniq
 msgid "License code must be unique!"
 msgstr ""
 
@@ -471,7 +496,8 @@ msgid "Licenses"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: selection:yodoo.module.author,color:0 selection:yodoo.serie,color:0
+#: model:ir.model.fields.selection,name:yodoo_apps_database.selection__yodoo_module_author__color__4
+#: model:ir.model.fields.selection,name:yodoo_apps_database.selection__yodoo_serie__color__4
 msgid "Light blue"
 msgstr ""
 
@@ -507,7 +533,8 @@ msgid "Manager"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: selection:yodoo.module.author,color:0 selection:yodoo.serie,color:0
+#: model:ir.model.fields.selection,name:yodoo_apps_database.selection__yodoo_module_author__color__7
+#: model:ir.model.fields.selection,name:yodoo_apps_database.selection__yodoo_serie__color__7
 msgid "Medium blue"
 msgstr ""
 
@@ -566,12 +593,12 @@ msgid "Module Versions"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: sql_constraint:yodoo.module.serie:0
+#: model:ir.model.constraint,message:yodoo_apps_database.constraint_yodoo_module_serie_module_serie_uniq
 msgid "Module and serie must be unique!"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: sql_constraint:yodoo.module:0
+#: model:ir.model.constraint,message:yodoo_apps_database.constraint_yodoo_module_system_name_uniq
 msgid "Module system name must be uniqe!"
 msgstr ""
 
@@ -586,6 +613,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_dependency_python_tree
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_serie_form
 msgid "Modules"
+msgstr ""
+
+#. module: yodoo_apps_database
+#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__my_activity_date_deadline
+msgid "My Activity Deadline"
 msgstr ""
 
 #. module: yodoo_apps_database
@@ -637,11 +669,6 @@ msgid "No tag"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__no_tag_id
-msgid "No tag (deprecated)"
-msgstr ""
-
-#. module: yodoo_apps_database
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_search
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_serie_search
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_version_search
@@ -655,7 +682,7 @@ msgstr ""
 
 #. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__message_has_error_counter
-msgid "Number of error"
+msgid "Number of errors"
 msgstr ""
 
 #. module: yodoo_apps_database
@@ -693,7 +720,7 @@ msgstr ""
 
 #. module: yodoo_apps_database
 #: model:generic.tag.model,name:yodoo_apps_database.generic_tag_model_yodoo_module
-#: model:ir.model,name:yodoo_apps_database.generic_resource_type_yodoo_module_ir_model
+#: model:ir.model,name:yodoo_apps_database.model_yodoo_module
 msgid "Odoo Module"
 msgstr ""
 
@@ -713,18 +740,9 @@ msgid "Odoo Serie"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: selection:yodoo.module.author,color:0 selection:yodoo.serie,color:0
+#: model:ir.model.fields.selection,name:yodoo_apps_database.selection__yodoo_module_author__color__2
+#: model:ir.model.fields.selection,name:yodoo_apps_database.selection__yodoo_serie__color__2
 msgid "Orange"
-msgstr ""
-
-#. module: yodoo_apps_database
-#: selection:yodoo.module,activity_state:0
-msgid "Overdue"
-msgstr ""
-
-#. module: yodoo_apps_database
-#: selection:yodoo.module,activity_state:0
-msgid "Planned"
 msgstr ""
 
 #. module: yodoo_apps_database
@@ -740,7 +758,8 @@ msgid "Published on Odoo Apps"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: selection:yodoo.module.author,color:0 selection:yodoo.serie,color:0
+#: model:ir.model.fields.selection,name:yodoo_apps_database.selection__yodoo_module_author__color__11
+#: model:ir.model.fields.selection,name:yodoo_apps_database.selection__yodoo_serie__color__11
 msgid "Purple"
 msgstr ""
 
@@ -788,7 +807,8 @@ msgid "Recursive Dependency of"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: selection:yodoo.module.author,color:0 selection:yodoo.serie,color:0
+#: model:ir.model.fields.selection,name:yodoo_apps_database.selection__yodoo_module_author__color__1
+#: model:ir.model.fields.selection,name:yodoo_apps_database.selection__yodoo_serie__color__1
 msgid "Red"
 msgstr ""
 
@@ -824,6 +844,11 @@ msgid "Responsible User"
 msgstr ""
 
 #. module: yodoo_apps_database
+#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr ""
+
+#. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_res_config_settings__module_yodoo_apps_assembly_sale
 msgid "Sale Yodoo Assemblies"
 msgstr ""
@@ -834,7 +859,8 @@ msgid "Sale Yodoo Modules"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: selection:yodoo.module.author,color:0 selection:yodoo.serie,color:0
+#: model:ir.model.fields.selection,name:yodoo_apps_database.selection__yodoo_module_author__color__6
+#: model:ir.model.fields.selection,name:yodoo_apps_database.selection__yodoo_serie__color__6
 msgid "Salmon pink"
 msgstr ""
 
@@ -868,13 +894,13 @@ msgid "Serie Minor"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: code:addons/yodoo_apps_database/models/yodoo_serie.py:114
+#: code:addons/yodoo_apps_database/models/yodoo_serie.py:0
 #, python-format
 msgid "Serie name ('%s') is not valid"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: sql_constraint:yodoo.serie:0
+#: model:ir.model.constraint,message:yodoo_apps_database.constraint_yodoo_serie_name_uniq
 msgid "Serie name must be uniqe!"
 msgstr ""
 
@@ -934,13 +960,13 @@ msgid "Themes"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: selection:yodoo.module,activity_state:0
-msgid "Today"
+#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__total_price
+msgid "Total Price"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__total_price
-msgid "Total Price"
+#: model:ir.model.fields,help:yodoo_apps_database.field_yodoo_module__activity_exception_decoration
+msgid "Type of the exception activity on record."
 msgstr ""
 
 #. module: yodoo_apps_database
@@ -1032,7 +1058,8 @@ msgid "Website communication history"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: selection:yodoo.module.author,color:0 selection:yodoo.serie,color:0
+#: model:ir.model.fields.selection,name:yodoo_apps_database.selection__yodoo_module_author__color__3
+#: model:ir.model.fields.selection,name:yodoo_apps_database.selection__yodoo_serie__color__3
 msgid "Yellow"
 msgstr ""
 
@@ -1108,7 +1135,7 @@ msgid "Yodoo Select Last Version As"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: code:addons/yodoo_apps_database/models/yodoo_module_version.py:491
+#: code:addons/yodoo_apps_database/models/yodoo_module_version.py:0
 #, python-format
 msgid ""
 "cannot parse version (%(version)s) for module %(module_display_name)s "
