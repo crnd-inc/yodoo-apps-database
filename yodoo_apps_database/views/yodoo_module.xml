@@ -107,7 +107,7 @@
                 <attribute name="create">false</attribute>
                 <attribute name="delete">false</attribute>
             </xpath>
-            <xpath expr="//div[@name='button_box']/*[1]" position="before">
+            <xpath expr="//div[@name='button_box']" position="inside">
                 <button class="oe_stat_button"
                         type="object"
                         icon="fa-cube"
