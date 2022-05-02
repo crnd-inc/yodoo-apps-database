@@ -142,7 +142,7 @@ class OdooModuleVersion(models.Model):
          '(version, module) pair must be unique!')
     ]
 
-    @api.model_cr
+    @api.model
     def init(self):
         create_sql_view(
             self.env.cr, 'yodoo_module_dependency_rel_view',

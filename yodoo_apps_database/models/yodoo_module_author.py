@@ -10,17 +10,17 @@ class YodooModuleAuthor(models.Model):
 
     name = fields.Char(required=True, index=True)
     color = fields.Selection([
-        (1, "Red"),
-        (2, "Orange"),
-        (3, "Yellow"),
-        (4, "Light blue"),
-        (5, "Dark purple"),
-        (6, "Salmon pink"),
-        (7, "Medium blue"),
-        (8, "Dark blue"),
-        (9, "Fushia"),
-        (10, "Green"),
-        (11, "Purple")])
+        ('1', "Red"),
+        ('2', "Orange"),
+        ('3', "Yellow"),
+        ('4', "Light blue"),
+        ('5', "Dark purple"),
+        ('6', "Salmon pink"),
+        ('7', "Medium blue"),
+        ('8', "Dark blue"),
+        ('9', "Fushia"),
+        ('10', "Green"),
+        ('11', "Purple")])
     partner_id = fields.Many2one(
         'res.partner', 'Associated Partner')
 
@@ -48,7 +48,7 @@ class YodooModuleAuthor(models.Model):
         for record in self:
             record.module_count = len(record.module_ids)
 
-    @api.model_cr
+    @api.model
     def init(self):
         tools.drop_view_if_exists(self.env.cr, 'yodoo_module_author_rel_view')
         create_sql_view(

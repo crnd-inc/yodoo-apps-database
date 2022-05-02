@@ -1,10 +1,10 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* yodoo_apps_database
+#	* yodoo_apps_database
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0+e\n"
+"Project-Id-Version: Odoo Server 13.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-16 18:58+0000\n"
 "PO-Revision-Date: 2020-02-16 18:58+0000\n"
@@ -28,10 +28,7 @@ msgstr ""
 
 #. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__active
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_dependency_binary__active
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_dependency_python__active
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_serie__active
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_search
 msgid "Active"
 msgstr ""
 
@@ -43,6 +40,11 @@ msgstr ""
 #. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__activity_state
 msgid "Activity State"
+msgstr ""
+
+#. module: yodoo_apps_database
+#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__resource_request_count
+msgid "All Requests"
 msgstr ""
 
 #. module: yodoo_apps_database
@@ -58,16 +60,6 @@ msgid "Apps"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_dependency_binary__apt_package
-msgid "Apt Package"
-msgstr ""
-
-#. module: yodoo_apps_database
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_search
-msgid "Archived"
-msgstr ""
-
-#. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_author__partner_id
 msgid "Associated Partner"
 msgstr ""
@@ -78,8 +70,17 @@ msgid "Attachment Count"
 msgstr ""
 
 #. module: yodoo_apps_database
+#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__resource_attachment_ids
+msgid "Attachments"
+msgstr ""
+
+#. module: yodoo_apps_database
+#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__resource_attachment_count
+msgid "Attachments Count"
+msgstr ""
+
+#. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__author_ids
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__search_author_id
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_version__author_ids
 msgid "Author"
 msgstr ""
@@ -100,22 +101,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_version__auto_install
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_search
 msgid "Auto Install"
-msgstr ""
-
-#. module: yodoo_apps_database
-#: model:ir.actions.act_window,name:yodoo_apps_database.action_yodoo_module_dependency_binary_view
-#: model:ir.ui.menu,name:yodoo_apps_database.menu_root_settings_module_dependency_binaries
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_form
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_serie_form
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_version_form
-msgid "Binary Dependencies"
-msgstr ""
-
-#. module: yodoo_apps_database
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__dependency_bin_ids
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_serie__dependency_bin_ids
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_version__dependency_bin_ids
-msgid "Binary dependencies"
 msgstr ""
 
 #. module: yodoo_apps_database
@@ -145,11 +130,6 @@ msgid "Check publication state"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.res_config_settings_view_form
-msgid "Choose the way to select last version of module or module serie."
-msgstr ""
-
-#. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_license__code
 msgid "Code"
 msgstr ""
@@ -163,11 +143,6 @@ msgstr ""
 #. module: yodoo_apps_database
 #: model:ir.model,name:yodoo_apps_database.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
-
-#. module: yodoo_apps_database
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.res_config_settings_view_form
-msgid "Convert yodoo assemblies to products and sale them."
 msgstr ""
 
 #. module: yodoo_apps_database
@@ -194,103 +169,57 @@ msgid "Currency"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: selection:yodoo.module.author,color:0 selection:yodoo.serie,color:0
+#: selection:yodoo.module.author,color:0
+#: selection:yodoo.serie,color:0
 msgid "Dark blue"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: selection:yodoo.module.author,color:0 selection:yodoo.serie,color:0
+#: selection:yodoo.module.author,color:0
+#: selection:yodoo.serie,color:0
 msgid "Dark purple"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_version__date_added
-msgid "Date Added"
-msgstr ""
-
-#. module: yodoo_apps_database
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_version__date_updated
-msgid "Date Updated"
-msgstr ""
-
-#. module: yodoo_apps_database
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_form
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_serie_form
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_version_form
 msgid "Dependencies"
 msgstr ""
 
 #. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__dependency_ids
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_serie__dependency_ids
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_version__dependency_ids
 msgid "Dependency"
 msgstr ""
 
 #. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__dependency_all_ids
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_serie__dependency_all_ids
 msgid "Dependency All"
 msgstr ""
 
 #. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__dependency_of_ids
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_serie__dependency_of_ids
 msgid "Dependency Of"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__dependency_of_all_ids
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_serie__dependency_of_all_ids
-msgid "Dependency Of All"
-msgstr ""
-
-#. module: yodoo_apps_database
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_form
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_serie_form
 msgid "Dependency of"
 msgstr ""
 
 #. module: yodoo_apps_database
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_form
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_serie_form
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_version_form
 msgid "Direct Dependencies"
-msgstr ""
-
-#. module: yodoo_apps_database
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_form
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_serie_form
-msgid "Direct Dependency of"
 msgstr ""
 
 #. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__display_name
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_author__display_name
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_category__display_name
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_dependency_binary__display_name
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_dependency_python__display_name
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_license__display_name
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_serie__display_name
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_version__display_name
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_serie__display_name
 msgid "Display Name"
-msgstr ""
-
-#. module: yodoo_apps_database
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_form
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_serie_form
-msgid "External Dependencies"
-msgstr ""
-
-#. module: yodoo_apps_database
-#: model:ir.model.fields,help:yodoo_apps_database.field_yodoo_module__search_author_id
-msgid "Find all modules of this author."
-msgstr ""
-
-#. module: yodoo_apps_database
-#: model:ir.model.fields,help:yodoo_apps_database.field_yodoo_module__search_no_author_id
-msgid "Find all modules that do not have this author"
 msgstr ""
 
 #. module: yodoo_apps_database
@@ -319,7 +248,8 @@ msgid "Followers (Partners)"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: selection:yodoo.module.author,color:0 selection:yodoo.serie,color:0
+#: selection:yodoo.module.author,color:0
+#: selection:yodoo.serie,color:0
 msgid "Fushia"
 msgstr ""
 
@@ -329,7 +259,8 @@ msgid "Generic Resource"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: selection:yodoo.module.author,color:0 selection:yodoo.serie,color:0
+#: selection:yodoo.module.author,color:0
+#: selection:yodoo.serie,color:0
 msgid "Green"
 msgstr ""
 
@@ -341,16 +272,9 @@ msgid "Group By"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_dependency_python_form
-msgid "Guess"
-msgstr ""
-
-#. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__id
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_author__id
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_category__id
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_dependency_binary__id
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_dependency_python__id
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_license__id
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_serie__id
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_version__id
@@ -385,7 +309,6 @@ msgstr ""
 
 #. module: yodoo_apps_database
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_form
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_version_form
 msgid "Info"
 msgstr ""
 
@@ -396,7 +319,6 @@ msgstr ""
 
 #. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__installable
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_serie__installable
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_version__installable
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_search
 msgid "Installable"
@@ -410,7 +332,6 @@ msgstr ""
 #. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__is_odoo_community_addon
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_serie__is_odoo_community_addon
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_version__is_odoo_community_addon
 msgid "Is Odoo Community Addon"
 msgstr ""
 
@@ -418,8 +339,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module____last_update
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_author____last_update
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_category____last_update
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_dependency_binary____last_update
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_dependency_python____last_update
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_license____last_update
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_serie____last_update
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_version____last_update
@@ -446,11 +365,6 @@ msgid "Last Version"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: selection:res.config.settings,yodoo_select_last_version_as:0
-msgid "Latest"
-msgstr ""
-
-#. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__license_id
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_serie__license_id
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_version__license_id
@@ -471,7 +385,8 @@ msgid "Licenses"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: selection:yodoo.module.author,color:0 selection:yodoo.serie,color:0
+#: selection:yodoo.module.author,color:0
+#: selection:yodoo.serie,color:0
 msgid "Light blue"
 msgstr ""
 
@@ -507,7 +422,13 @@ msgid "Manager"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: selection:yodoo.module.author,color:0 selection:yodoo.serie,color:0
+#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__resource_role_manager_ids
+msgid "Manager Role Links"
+msgstr ""
+
+#. module: yodoo_apps_database
+#: selection:yodoo.module.author,color:0
+#: selection:yodoo.serie,color:0
 msgid "Medium blue"
 msgstr ""
 
@@ -541,8 +462,6 @@ msgstr ""
 #. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_author__module_count
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_category__module_count
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_dependency_binary__module_count
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_dependency_python__module_count
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_serie__module_count
 msgid "Module Count"
 msgstr ""
@@ -580,10 +499,6 @@ msgstr ""
 #: model:ir.ui.menu,name:yodoo_apps_database.menu_root_apps_all
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_author_form
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_category_form
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_dependency_binary_form
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_dependency_binary_tree
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_dependency_python_form
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_dependency_python_tree
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_serie_form
 msgid "Modules"
 msgstr ""
@@ -592,21 +507,15 @@ msgstr ""
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__name
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_author__name
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_category__name
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_dependency_binary__name
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_dependency_python__name
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_license__name
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_version__name
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_serie__name
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_dependency_binary_tree
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_dependency_python_tree
 msgid "Name"
 msgstr ""
 
 #. module: yodoo_apps_database
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_author_form
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_category_form
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_dependency_binary_form
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_dependency_python_form
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_license_form
 msgid "Name..."
 msgstr ""
@@ -627,11 +536,6 @@ msgid "Next Activity Type"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__search_no_author_id
-msgid "No Author"
-msgstr ""
-
-#. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__search_no_tag_id
 msgid "No tag"
 msgstr ""
@@ -644,7 +548,6 @@ msgstr ""
 #. module: yodoo_apps_database
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_search
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_serie_search
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_version_search
 msgid "Non Odoo Community Modules"
 msgstr ""
 
@@ -687,7 +590,6 @@ msgstr ""
 #. module: yodoo_apps_database
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_search
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_serie_search
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_version_search
 msgid "Odoo Community Modules"
 msgstr ""
 
@@ -713,7 +615,13 @@ msgid "Odoo Serie"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: selection:yodoo.module.author,color:0 selection:yodoo.serie,color:0
+#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__resource_request_open_count
+msgid "Open requests"
+msgstr ""
+
+#. module: yodoo_apps_database
+#: selection:yodoo.module.author,color:0
+#: selection:yodoo.serie,color:0
 msgid "Orange"
 msgstr ""
 
@@ -740,56 +648,25 @@ msgid "Published on Odoo Apps"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: selection:yodoo.module.author,color:0 selection:yodoo.serie,color:0
+#: selection:yodoo.module.author,color:0
+#: selection:yodoo.serie,color:0
 msgid "Purple"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_dependency_python__pypi_last_check
-msgid "Pypi Last Check"
-msgstr ""
-
-#. module: yodoo_apps_database
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_dependency_python__pypi_package
-msgid "Pypi Package"
-msgstr ""
-
-#. module: yodoo_apps_database
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_dependency_python__pypi_url
-msgid "Pypi Url"
-msgstr ""
-
-#. module: yodoo_apps_database
-#: model:ir.actions.act_window,name:yodoo_apps_database.action_yodoo_module_dependency_python_view
-#: model:ir.ui.menu,name:yodoo_apps_database.menu_root_settings_module_dependency_pythons
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_form
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_serie_form
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_version_form
-msgid "Python Dependencies"
-msgstr ""
-
-#. module: yodoo_apps_database
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__dependency_python_ids
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_serie__dependency_python_ids
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_version__dependency_python_ids
-msgid "Python dependencies"
-msgstr ""
-
-#. module: yodoo_apps_database
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_form
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_serie_form
 msgid "Recursive Dependencies"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_form
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_serie_form
-msgid "Recursive Dependency of"
+#: selection:yodoo.module.author,color:0
+#: selection:yodoo.serie,color:0
+msgid "Red"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: selection:yodoo.module.author,color:0 selection:yodoo.serie,color:0
-msgid "Red"
+#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__resource_request_ids
+msgid "Requests"
 msgstr ""
 
 #. module: yodoo_apps_database
@@ -803,8 +680,18 @@ msgid "Resource Model"
 msgstr ""
 
 #. module: yodoo_apps_database
+#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__resource_role_sec_view_ids
+msgid "Resource Role Sec View"
+msgstr ""
+
+#. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__res_type_id
 msgid "Resource Type"
+msgstr ""
+
+#. module: yodoo_apps_database
+#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__resource_user_role_ids
+msgid "Resource User Role"
 msgstr ""
 
 #. module: yodoo_apps_database
@@ -814,8 +701,7 @@ msgstr ""
 
 #. module: yodoo_apps_database
 #: model:ir.model.fields,help:yodoo_apps_database.field_yodoo_module__resource_visibility
-msgid ""
-"Resource visibility determines users that have read access for this resource."
+msgid "Resource visibility determines users that have read access for this resource."
 msgstr ""
 
 #. module: yodoo_apps_database
@@ -824,8 +710,18 @@ msgid "Responsible User"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_res_config_settings__module_yodoo_apps_assembly_sale
-msgid "Sale Yodoo Assemblies"
+#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__resource_role_link_ids
+msgid "Role links"
+msgstr ""
+
+#. module: yodoo_apps_database
+#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__resource_role_link_count
+msgid "Role links (Count)"
+msgstr ""
+
+#. module: yodoo_apps_database
+#: model:ir.model.fields,help:yodoo_apps_database.field_yodoo_module__resource_user_role_ids
+msgid "Roles that have current user for this resource"
 msgstr ""
 
 #. module: yodoo_apps_database
@@ -834,13 +730,9 @@ msgid "Sale Yodoo Modules"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: selection:yodoo.module.author,color:0 selection:yodoo.serie,color:0
+#: selection:yodoo.module.author,color:0
+#: selection:yodoo.serie,color:0
 msgid "Salmon pink"
-msgstr ""
-
-#. module: yodoo_apps_database
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.res_config_settings_view_form
-msgid "Select Last Version As"
 msgstr ""
 
 #. module: yodoo_apps_database
@@ -868,7 +760,7 @@ msgid "Serie Minor"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: code:addons/yodoo_apps_database/models/yodoo_serie.py:114
+#: code:addons/yodoo_apps_database/models/yodoo_serie.py:99
 #, python-format
 msgid "Serie name ('%s') is not valid"
 msgstr ""
@@ -894,8 +786,7 @@ msgstr ""
 
 #. module: yodoo_apps_database
 #: model:ir.model.fields,help:yodoo_apps_database.field_yodoo_module__activity_state
-msgid ""
-"Status based on activities\n"
+msgid "Status based on activities\n"
 "Overdue: Due date is already passed\n"
 "Today: Activity date is today\n"
 "Planned: Future activities."
@@ -926,11 +817,6 @@ msgstr ""
 #. module: yodoo_apps_database
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_form
 msgid "Tags..."
-msgstr ""
-
-#. module: yodoo_apps_database
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_search
-msgid "Themes"
 msgstr ""
 
 #. module: yodoo_apps_database
@@ -1032,7 +918,8 @@ msgid "Website communication history"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: selection:yodoo.module.author,color:0 selection:yodoo.serie,color:0
+#: selection:yodoo.module.author,color:0
+#: selection:yodoo.serie,color:0
 msgid "Yellow"
 msgstr ""
 
@@ -1043,20 +930,8 @@ msgid "Yodoo Apps"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.res_config_settings_view_form
-msgid "Yodoo Apps Configuration"
-msgstr ""
-
-#. module: yodoo_apps_database
 #: model:ir.actions.act_window,name:yodoo_apps_database.action_yodoo_apps_settings
 msgid "Yodoo Apps Settings"
-msgstr ""
-
-#. module: yodoo_apps_database
-#: model:ir.actions.server,name:yodoo_apps_database.scheduler_check_pypi_packages_ir_actions_server
-#: model:ir.cron,cron_name:yodoo_apps_database.scheduler_check_pypi_packages
-#: model:ir.cron,name:yodoo_apps_database.scheduler_check_pypi_packages
-msgid "Yodoo Apps: Check if py deps available on pypi"
 msgstr ""
 
 #. module: yodoo_apps_database
@@ -1077,11 +952,6 @@ msgid "Yodoo Module Author"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: model:ir.model,name:yodoo_apps_database.model_yodoo_module_dependency_binary
-msgid "Yodoo Module Binary Dependency"
-msgstr ""
-
-#. module: yodoo_apps_database
 #: model:ir.model,name:yodoo_apps_database.model_yodoo_module_category
 msgid "Yodoo Module Category"
 msgstr ""
@@ -1092,25 +962,12 @@ msgid "Yodoo Module License"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: model:ir.model,name:yodoo_apps_database.model_yodoo_module_dependency_python
-msgid "Yodoo Module Python Dependency"
-msgstr ""
-
-#. module: yodoo_apps_database
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_dependency_binary__module_ids
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_dependency_python__module_ids
-msgid "Yodoo Modules"
-msgstr ""
-
-#. module: yodoo_apps_database
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_res_config_settings__yodoo_select_last_version_as
-msgid "Yodoo Select Last Version As"
-msgstr ""
-
-#. module: yodoo_apps_database
-#: code:addons/yodoo_apps_database/models/yodoo_module_version.py:491
+#: code:addons/yodoo_apps_database/models/yodoo_module_version.py:324
 #, python-format
-msgid ""
-"cannot parse version (%(version)s) for module %(module_display_name)s "
-"[%(module_system_name)s]"
+msgid "cannot parse version (%s) for module %s [%s]"
+msgstr ""
+
+#. module: yodoo_apps_database
+#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_tree
+msgid "versions"
 msgstr ""
