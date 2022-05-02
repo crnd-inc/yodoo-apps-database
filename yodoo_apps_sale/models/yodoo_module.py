@@ -61,8 +61,11 @@ class YodooModule(models.Model):
 
         # Map product variant to module serie
         for product_variant in self.product_template_id.product_variant_ids:
-            serie_attr_val = product_variant.attribute_value_ids.filtered(
-                lambda r: r.attribute_id == serie_attribute)
+            serie_attr_val = (
+                product_variant.product_template_attribute_value_ids.filtered(
+                    lambda r: r.attribute_id == serie_attribute
+                ).mapped('product_attribute_value_id')
+            )
             if len(serie_attr_val) != 1:
                 # Strange variat that has no serie or has multiple series
                 continue
