@@ -7,7 +7,7 @@
     'website': "https://crnd.pro",
 
     'category': 'Yodoo Apps',
-    'version': '12.0.0.1.0',
+    'version': '12.0.0.2.0',
 
     # any module necessary for this one to work correctly
     'depends': [
@@ -27,6 +27,6 @@
     ],
     'installable': True,
     'application': False,
-    'license': 'Other proprietary',
+    'license': 'LGPL-3',
     'post_init_hook': '_post_init_hook',
 }
