@@ -147,21 +147,20 @@ class OdooModuleSerie(models.Model):
         )
 
         for record_ids in tools.split_every(1000, records.ids):
-            with api.Environment.manage():
-                with self.env.registry.cursor() as new_cr:
-                    new_env = api.Environment(new_cr, self.env.uid,
-                                              self.env.context.copy())
-                    try:
-                        new_env[self._name].browse(
-                            record_ids).check_odoo_apps_published_state()
-                    except Exception:
-                        _logger.error(
-                            "Error caught when trying to check publishing "
-                            "state of module series %s",
-                            record_ids, exc_info=True)
-                        new_cr.rollback()
-                    else:
-                        new_cr.commit()
+            with self.env.registry.cursor() as new_cr:
+                new_env = api.Environment(new_cr, self.env.uid,
+                                          self.env.context.copy())
+                try:
+                    new_env[self._name].browse(
+                        record_ids).check_odoo_apps_published_state()
+                except Exception:
+                    _logger.error(
+                        "Error caught when trying to check publishing "
+                        "state of module series %s",
+                        record_ids, exc_info=True)
+                    new_cr.rollback()
+                else:
+                    new_cr.commit()
 
     def action_show_versions(self):
         self.ensure_one()
