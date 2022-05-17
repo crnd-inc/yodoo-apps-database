@@ -280,7 +280,6 @@ msgid "Direct Dependency of"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_res_config_settings__display_name
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__display_name
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_author__display_name
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_category__display_name
@@ -325,11 +324,6 @@ msgid "Followers"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__message_channel_ids
-msgid "Followers (Channels)"
-msgstr ""
-
-#. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__message_partner_ids
 msgid "Followers (Partners)"
 msgstr ""
@@ -369,7 +363,11 @@ msgid "Guess"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_res_config_settings__id
+#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__has_message
+msgid "Has Message"
+msgstr ""
+
+#. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__id
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_author__id
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_category__id
@@ -442,7 +440,6 @@ msgid "Is Odoo Community Addon"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_res_config_settings____last_update
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module____last_update
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_author____last_update
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_category____last_update
@@ -1037,6 +1034,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_form
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_serie_form
 msgid "Versions"
+msgstr ""
+
+#. module: yodoo_apps_database
+#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_dependency_python_form
+#: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_dependency_python_tree
+msgid "View at PyPI"
 msgstr ""
 
 #. module: yodoo_apps_database
