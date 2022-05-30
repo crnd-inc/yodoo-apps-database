@@ -286,12 +286,20 @@ class OdooModule(models.Model):
 
     @api.model
     @api.returns('yodoo.module.version')
-    def create_or_update_module(self, system_name, data, no_update=False):
+    def create_or_update_module(self, system_name, data, no_update=False,
+                                enforce_serie=None):
         """ Create or update module and return created/updated version
+
+            :param str system_name: system name of module
+            :param dict data: data from module's manifest
+            :param bool no_update: do not update version if it is exists
+            :param str enforce_serie: suggest odoo serie to better detect
+                 odoo version
+            :return: Instance of created version
         """
         module = self.get_or_create_module(system_name)
         version = self.env['yodoo.module.version'].create_or_update_version(
-            module, data, no_update=no_update)
+            module, data, no_update=no_update, enforce_serie=enforce_serie)
         return version
 
     def check_odoo_apps_published_state(self):
