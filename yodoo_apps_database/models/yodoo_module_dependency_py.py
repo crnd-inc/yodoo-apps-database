@@ -98,7 +98,8 @@ class YodooModuleDependencyPython(models.Model):
 
             res = requests.head(
                 "https://pypi.org/project/%s/" % package_name,
-                allow_redirects=True)
+                allow_redirects=True,
+                timeout=5)
             if res.status_code == 200:
                 m = re.match("https://pypi.org/project/(.+)/", res.url)
                 if m:

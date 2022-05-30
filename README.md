@@ -1,4 +1,4 @@
-# Generic Addons
+# Yodoo Apps Database
 
 Yodoo Apps Database - a set of modules that provide utilities designed to easily
 manage odoo modules. This module is one of the core components of Yodoo Cockpit.
