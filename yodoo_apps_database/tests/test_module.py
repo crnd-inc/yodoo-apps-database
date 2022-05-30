@@ -232,3 +232,43 @@ class TestModule(SavepointCase):
         self.assertEqual(module_version.version_extra, '06.0')
         self.assertEqual(module_version.version, '15.0.15.21.10.06.0')
         self.assertFalse(module_version.version_non_standard)
+
+    def test_module_version_without_serie_2(self):
+        # We have to test case when at first version is added with serie
+        # in version and then without serie in version
+        module_version = self.env['yodoo.module'].create_or_update_module(
+            'my_super_module', {
+                'name': 'My Super Module',
+                'summary': 'Test module info',
+                'version': '12.0.1.2',
+            },)
+
+        self.assertEqual(module_version._name, 'yodoo.module.version')
+        self.assertEqual(module_version.system_name, 'my_super_module')
+        self.assertEqual(module_version.summary, 'Test module info')
+        self.assertEqual(module_version.version, '12.0.1.2')
+        self.assertEqual(module_version.serie_major, 12)
+        self.assertEqual(module_version.serie_minor, 0)
+        self.assertEqual(module_version.version_major, 1)
+        self.assertEqual(module_version.version_minor, 2)
+        self.assertEqual(module_version.version_patch, 0)
+        self.assertFalse(module_version.version_non_standard)
+
+        module_version2 = self.env['yodoo.module'].create_or_update_module(
+            'my_super_module', {
+                'name': 'My Super Module',
+                'summary': 'Test module info 2',
+                'version': '1.2',
+            },
+            enforce_serie='12.0')
+
+        self.assertEqual(module_version2._name, 'yodoo.module.version')
+        self.assertEqual(module_version2.system_name, 'my_super_module')
+        self.assertEqual(module_version2.summary, 'Test module info 2')
+        self.assertEqual(module_version2.version, '12.0.1.2')
+        self.assertEqual(module_version2.serie_major, 12)
+        self.assertEqual(module_version2.serie_minor, 0)
+        self.assertEqual(module_version2.version_major, 1)
+        self.assertEqual(module_version2.version_minor, 2)
+        self.assertEqual(module_version2.version_patch, 0)
+        self.assertFalse(module_version2.version_non_standard)

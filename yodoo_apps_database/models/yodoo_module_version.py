@@ -460,13 +460,10 @@ class OdooModuleVersion(models.Model):
             ]
         return result
 
-    def _create_or_update_prepare_version_data(self, module, data,
-                                               enforce_serie=None):
+    def _create_or_update_prepare_parse_version(self, module, data,
+                                                enforce_serie=None):
         version_name = data['version']
-        version_data = {
-            'module_id': module.id,
-            'system_name': module.system_name,
-        }
+        version_data = {}
 
         # add version info to data
         parsed_version = self._parse_version(version_name)
@@ -483,9 +480,9 @@ class OdooModuleVersion(models.Model):
             # https://github.com/odoo/odoo/blob/15.0/odoo/modules/module.py
             if parsed_version and parsed_version['serie'] != enforce_serie:
                 version_name = "%(serie)s.%(version)s" % {
-                        'serie': enforce_serie,
-                        'version': data['version'],
-                    }
+                    'serie': enforce_serie,
+                    'version': data['version'],
+                }
                 parsed_version = self._parse_version(version_name)
             elif not parsed_version:
                 version_name = "%(serie)s.%(version)s" % {
@@ -521,6 +518,13 @@ class OdooModuleVersion(models.Model):
                 'module_display_name': module.display_name,
                 'module_system_name': module.system_name,
             })
+        return version_data
+
+    def _create_or_update_prepare_version_data(self, module, data):
+        version_data = {
+            'module_id': module.id,
+            'system_name': module.system_name,
+        }
 
         # TODO: wrap parsing of each param in try/except
         version_data.update({
@@ -627,15 +631,19 @@ class OdooModuleVersion(models.Model):
             :return: Instance of created version
         """
         data = self._preprocess_module_data(data)
+        version_info = self._create_or_update_prepare_parse_version(
+            module, data, enforce_serie=enforce_serie)
         version = self.with_context(active_test=False).search(
             [('module_id', '=', module.id),
-             ('version', '=', data['version'])],
+             ('version', '=', version_info['version'])],
             limit=1)
         if version and no_update:
             return version
 
-        version_data = self._create_or_update_prepare_version_data(
-            module, data, enforce_serie=enforce_serie)
+        version_data = {}
+        version_data.update(version_info)
+        version_data.update(
+            self._create_or_update_prepare_version_data(module, data))
 
         if version:
             version.write(
