@@ -462,8 +462,9 @@ class OdooModuleVersion(models.Model):
 
     def _create_or_update_prepare_parse_version(self, module, data,
                                                 enforce_serie=None):
+        """ Parse version and prepare version info suitable for write
+        """
         version_name = data['version']
-        version_data = {}
 
         # add version info to data
         parsed_version = self._parse_version(version_name)
@@ -495,7 +496,7 @@ class OdooModuleVersion(models.Model):
                 parsed_version['serie'])
             module_serie = self.env['yodoo.module.serie'].get_or_create(
                 module.id, serie_id)
-            version_data.update({
+            return {
                 'module_serie_id': module_serie.id,
                 'module_id': module.id,
                 'serie_id': serie_id,
@@ -508,17 +509,15 @@ class OdooModuleVersion(models.Model):
                 'version_patch': parsed_version['version_patch'],
                 'version_extra': parsed_version['version_extra'],
                 'version_non_standard': parsed_version['version_non_standard'],
-            })
-        else:
-            raise exceptions.ValidationError(_(
-                'Cannot parse version (%(version)s) '
-                'for module %(module_display_name)s [%(module_system_name)s]'
-            ) % {
-                'version': data['version'],
-                'module_display_name': module.display_name,
-                'module_system_name': module.system_name,
-            })
-        return version_data
+            }
+        raise exceptions.ValidationError(_(
+            'Cannot parse version (%(version)s) '
+            'for module %(module_display_name)s [%(module_system_name)s]'
+        ) % {
+            'version': data['version'],
+            'module_display_name': module.display_name,
+            'module_system_name': module.system_name,
+        })
 
     def _create_or_update_prepare_version_data(self, module, data):
         version_data = {
