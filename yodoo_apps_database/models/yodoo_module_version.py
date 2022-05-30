@@ -460,42 +460,70 @@ class OdooModuleVersion(models.Model):
             ]
         return result
 
-    def _create_or_update_prepare_version_data(self, module, data):
-        version_data = {
-            'module_id': module.id,
-            'system_name': module.system_name,
-            'version': data['version'],
-        }
+    def _create_or_update_prepare_parse_version(self, module, data,
+                                                enforce_serie=None):
+        """ Parse version and prepare version info suitable for write
+        """
+        version_name = data['version']
 
         # add version info to data
-        parsed_version = self._parse_version(data['version'])
+        parsed_version = self._parse_version(version_name)
+        if enforce_serie:
+            # In case of enforce seria, we apply additional checks, to ensure
+            # that we parsed version correctly.
+            # If version has standard format, everything seems to be ok,
+            # because odoo serie is first two numbers of version.
+            # But in case of non-standard versions, we have to manually add
+            # odoo serie to such version to parse it properly. Also, we have to
+            # note that we do it in this way to be compatible with version
+            # numbers provided by odoo itself:
+            # see adapt_version func in odoo code:
+            # https://github.com/odoo/odoo/blob/15.0/odoo/modules/module.py
+            if parsed_version and parsed_version['serie'] != enforce_serie:
+                version_name = "%(serie)s.%(version)s" % {
+                    'serie': enforce_serie,
+                    'version': data['version'],
+                }
+                parsed_version = self._parse_version(version_name)
+            elif not parsed_version:
+                version_name = "%(serie)s.%(version)s" % {
+                    'serie': enforce_serie,
+                    'version': data['version'],
+                }
+                parsed_version = self._parse_version(version_name)
         if parsed_version:
             serie_id = self.env['yodoo.serie'].get_or_create(
                 parsed_version['serie'])
             module_serie = self.env['yodoo.module.serie'].get_or_create(
                 module.id, serie_id)
-            version_data.update({
+            return {
                 'module_serie_id': module_serie.id,
                 'module_id': module.id,
                 'serie_id': serie_id,
                 'serie': module_serie.serie_id.name,
                 'serie_major': module_serie.serie_id.major,
                 'serie_minor': module_serie.serie_id.minor,
+                'version': version_name,
                 'version_major': parsed_version['version_major'],
                 'version_minor': parsed_version['version_minor'],
                 'version_patch': parsed_version['version_patch'],
                 'version_extra': parsed_version['version_extra'],
                 'version_non_standard': parsed_version['version_non_standard'],
-            })
-        else:
-            raise exceptions.validationerror(_(
-                'cannot parse version (%(version)s) '
-                'for module %(module_display_name)s [%(module_system_name)s]'
-            ) % {
-                'version': data['version'],
-                'module_display_name': module.display_name,
-                'module_system_name': module.system_name,
-            })
+            }
+        raise exceptions.ValidationError(_(
+            'Cannot parse version (%(version)s) '
+            'for module %(module_display_name)s [%(module_system_name)s]'
+        ) % {
+            'version': data['version'],
+            'module_display_name': module.display_name,
+            'module_system_name': module.system_name,
+        })
+
+    def _create_or_update_prepare_version_data(self, module, data):
+        version_data = {
+            'module_id': module.id,
+            'system_name': module.system_name,
+        }
 
         # TODO: wrap parsing of each param in try/except
         version_data.update({
@@ -585,7 +613,8 @@ class OdooModuleVersion(models.Model):
         }
 
     @api.model
-    def create_or_update_version(self, module, data, no_update=False):
+    def create_or_update_version(self, module, data, no_update=False,
+                                 enforce_serie=None):
         """ This method have to be the single point to
             delete/update module versions
 
@@ -593,20 +622,27 @@ class OdooModuleVersion(models.Model):
                 - module
                 - module serie
 
-            :param module: Recordset of single module to update
-            :param data: dictionary with data to update module with
-            :param no_update: do not update version if it is exists
+            :param str module: Recordset of single module to update
+            :param dict data: dictionary with data to update module with
+            :param bool no_update: do not update version if it is exists
+            :param str enforce_serie: suggest odoo serie to better detect
+                 odoo version
+            :return: Instance of created version
         """
         data = self._preprocess_module_data(data)
+        version_info = self._create_or_update_prepare_parse_version(
+            module, data, enforce_serie=enforce_serie)
         version = self.with_context(active_test=False).search(
             [('module_id', '=', module.id),
-             ('version', '=', data['version'])],
+             ('version', '=', version_info['version'])],
             limit=1)
         if version and no_update:
             return version
 
-        version_data = self._create_or_update_prepare_version_data(
-            module, data)
+        version_data = {}
+        version_data.update(version_info)
+        version_data.update(
+            self._create_or_update_prepare_version_data(module, data))
 
         if version:
             version.write(
