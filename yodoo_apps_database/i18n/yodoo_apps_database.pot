@@ -126,6 +126,14 @@ msgid "Binary dependencies"
 msgstr ""
 
 #. module: yodoo_apps_database
+#: code:addons/yodoo_apps_database/models/yodoo_module_version.py:0
+#, python-format
+msgid ""
+"Cannot parse version (%(version)s) for module %(module_display_name)s "
+"[%(module_system_name)s]"
+msgstr ""
+
+#. module: yodoo_apps_database
 #: model:ir.actions.act_window,name:yodoo_apps_database.action_yodoo_module_category_view
 #: model:ir.ui.menu,name:yodoo_apps_database.menu_root_settings_module_categorys
 msgid "Categories"
@@ -1133,12 +1141,4 @@ msgstr ""
 #. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_res_config_settings__yodoo_select_last_version_as
 msgid "Yodoo Select Last Version As"
-msgstr ""
-
-#. module: yodoo_apps_database
-#: code:addons/yodoo_apps_database/models/yodoo_module_version.py:0
-#, python-format
-msgid ""
-"cannot parse version (%(version)s) for module %(module_display_name)s "
-"[%(module_system_name)s]"
 msgstr ""
