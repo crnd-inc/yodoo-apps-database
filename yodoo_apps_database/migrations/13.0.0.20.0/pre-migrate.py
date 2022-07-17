@@ -1,8 +1,9 @@
 import csv
-
 from odoo.tools.misc import file_open
+from odoo.addons.generic_mixin.tools.migration_utils import ensure_version
 
 
+@ensure_version('0.20.0')
 def migrate(cr, installed_version):
     with file_open('yodoo_apps_database/data/yodoo.module.csv') as f:
         for row in csv.DictReader(f):
