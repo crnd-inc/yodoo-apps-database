@@ -58,10 +58,12 @@ class OdooModuleVersion(models.Model):
     # Updated when version created
     module_id = fields.Many2one(
         'yodoo.module',
-        store=True, index=True, readonly=True, required=True)
+        store=True, index=True, readonly=True, required=True,
+        ondelete='cascade')
     serie_id = fields.Many2one(
         'yodoo.serie',
-        store=True, index=True, readonly=True, required=True)
+        store=True, index=True, readonly=True, required=True,
+        ondelete='cascade')
 
     # Odoo Serie info
     # Updated when version created
