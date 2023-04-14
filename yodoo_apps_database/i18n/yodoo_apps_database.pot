@@ -116,7 +116,7 @@ msgid "Binary dependencies"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: code:addons/yodoo_apps_database/models/yodoo_module_version.py:513
+#: code:addons/yodoo_apps_database/models/yodoo_module_version.py:515
 #, python-format
 msgid "Cannot parse version (%(version)s) for module %(module_display_name)s [%(module_system_name)s]"
 msgstr ""
