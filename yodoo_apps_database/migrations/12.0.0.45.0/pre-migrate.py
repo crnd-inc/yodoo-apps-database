@@ -17,4 +17,11 @@ def migrate(cr, installed_version):
         UPDATE yodoo_module
         SET is_odoo_community_addon = False
         WHERE system_name = 'website_animate';
+
+        UPDATE ir_model_data
+           SET noupdate = True
+        WHERE module = 'yodoo_apps_database'
+          AND name IN (
+              'odoo_community_module__website_animate',
+              'odoo_community_module__website_animate_generic_resource') ;
     """)
