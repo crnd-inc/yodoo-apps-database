@@ -7,7 +7,7 @@
     'website': "https://crnd.pro",
 
     'category': 'Yodoo Apps',
-    'version': '15.0.0.44.0',
+    'version': '15.0.0.47.0',
 
     # any module necessary for this one to work correctly
     'depends': [
