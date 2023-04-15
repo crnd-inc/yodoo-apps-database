@@ -24,9 +24,9 @@ function update_list_for_serie {
 
     if [ "$serie_major" -gt 10 ]; then
         # In case of odoo 11+ we have to use python3
-        mapfile -t addons < <(docker run -v "$PROJECT_DIR/.ci:/yodoo_tools/" --rm "odoo:$serie" python3 /yodoo_tools/find_odoo_addons.py);
+        mapfile -t addons < <(docker run --pull=always -v "$PROJECT_DIR/.ci:/yodoo_tools/" --rm "odoo:$serie" python3 /yodoo_tools/find_odoo_addons.py);
     else
-        mapfile -t addons < <(docker run -v "$PROJECT_DIR/.ci:/yodoo_tools/" --rm "odoo:$serie" python /yodoo_tools/find_odoo_addons.py);
+        mapfile -t addons < <(docker run --pull=always -v "$PROJECT_DIR/.ci:/yodoo_tools/" --rm "odoo:$serie" python /yodoo_tools/find_odoo_addons.py);
     fi
 
     for addon in "${addons[@]}"; do
@@ -35,6 +35,11 @@ function update_list_for_serie {
             # but they are included in odoo docker images
             continue
         fi
+        if [[ "$addon" == website_animate ]]; then
+            # Skip addon website_animate, because it is not included in standard odoo
+            continue;
+        fi
+
         if [ -n "$addon" ]; then
             echo "\"odoo_community_module__${addon}\",\"${addon}\"" >> "$modules_path";
             echo "\"odoo_community_module__${addon}__yodoo_serie__${serie_major}_${serie_minor}\",\"odoo_community_module__${addon}\",\"yodoo_serie__${serie_major}_${serie_minor}\",\"True\"" >> "$module_series_path";
