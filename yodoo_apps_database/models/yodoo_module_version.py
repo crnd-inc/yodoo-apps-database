@@ -169,8 +169,8 @@ class OdooModuleVersion(models.Model):
 
                     UNION
 
-                    SELECT DISTINCT v.module_id,
-                        all_deps.dependency_id
+                    SELECT v.module_id,
+                           all_deps.dependency_id
                     FROM yodoo_module_dependency_rel_view AS v
                     JOIN all_deps ON all_deps.module_id = v.dependency_id
                 )
@@ -203,8 +203,8 @@ class OdooModuleVersion(models.Model):
 
                     UNION
 
-                    SELECT DISTINCT v.module_serie_id,
-                        all_deps.dependency_module_serie_id
+                    SELECT v.module_serie_id,
+                           all_deps.dependency_module_serie_id
                     FROM yodoo_module_serie_dependency_rel_view AS v
                     JOIN all_deps
                         ON (all_deps.module_serie_id =

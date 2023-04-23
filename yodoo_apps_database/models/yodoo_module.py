@@ -46,7 +46,7 @@ class OdooModule(models.Model):
     version_count = fields.Integer(
         store=True, readonly=True)
     last_version_id = fields.Many2one(
-        'yodoo.module.version', readonly=True, store=True)
+        'yodoo.module.version', readonly=True, store=True, index=True)
     serie_ids = fields.Many2many(
         string="Series",
         comodel_name='yodoo.serie',
@@ -152,7 +152,7 @@ class OdooModule(models.Model):
         compute='_compute_odoo_apps_link', store=True, readonly=True)
 
     is_odoo_community_addon = fields.Boolean(
-        store=True, readonly=True,
+        store=True, readonly=True, index=True,
         compute='_compute_is_odoo_community_addon',
         help='If set, then this module is part of Odoo Community')
 
