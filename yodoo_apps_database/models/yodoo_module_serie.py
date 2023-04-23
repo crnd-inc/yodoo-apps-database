@@ -27,7 +27,7 @@ class OdooModuleSerie(models.Model):
     version_count = fields.Integer(
         store=True, readonly=True)
     last_version_id = fields.Many2one(
-        'yodoo.module.version', readonly=True, store=True)
+        'yodoo.module.version', readonly=True, store=True, index=True)
 
     # Following fields are not stored for performance reasons
     license_id = fields.Many2one(
@@ -44,7 +44,8 @@ class OdooModuleSerie(models.Model):
     odoo_apps_link = fields.Char(
         help="Link to addon's page on Odoo Apps",
         readonly=True)
-    is_odoo_community_addon = fields.Boolean(default=False, readonly=True)
+    is_odoo_community_addon = fields.Boolean(
+        default=False, readonly=True, index=True)
 
     dependency_ids = fields.Many2manyView(
         comodel_name='yodoo.module.serie',
