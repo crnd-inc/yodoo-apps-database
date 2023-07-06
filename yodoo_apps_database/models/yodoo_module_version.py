@@ -542,6 +542,7 @@ class OdooModuleVersion(models.Model):
             'dependency_ids': [
                 (6, 0, self._prepare_depends(data.get('depends', [])))],
         })
+        # TODO: parse tags
         version_data.update(self._prepare_external_dependencies(data))
         return version_data
 
@@ -550,25 +551,22 @@ class OdooModuleVersion(models.Model):
         """
         module_data = {}
 
-        if module_data:
-            module_data['version_count'] = self.search_count(
-                [('module_id', '=', module.id)])
-            for field_name in VERSION_TO_MODULE_SYNC_FIELDS:
-                module_data[field_name] = version_data[field_name]
+        for field_name in VERSION_TO_MODULE_SYNC_FIELDS:
+            module_data[field_name] = version_data[field_name]
         return module_data
 
     def _create_or_update_prepare_module_serie_data(self, module_serie,
                                                     version, version_data):
-        serie_data = {}
         if module_serie._check_need_update_last_version(version):
-            serie_data['last_version_id'] = version.id
-
-        if serie_data:
-            serie_data['version_count'] = self.search_count(
-                [('module_serie_id', '=', module_serie.id)])
-        return serie_data
+            return {
+                'last_version_id': version.id,
+            }
+        return {}
 
     def _preprocess_module_data(self, data):
+        """ Preprocess raw version data
+            (usually received from external source).
+        """
         version = data.get('version', '0.0.0')
         if not version:
             version = '0.0.0'
@@ -629,6 +627,7 @@ class OdooModuleVersion(models.Model):
         else:
             version = self.create(version_data)
 
+        # TODO: update module data only from latest version
         module_data = self._create_or_update_prepare_module_data(
             module, version_data)
         if module_data:

@@ -1,5 +1,6 @@
 import logging
 from odoo import models, fields, api, tools
+from odoo.addons.generic_mixin.tools.x2m_agg_utils import read_counts_for_o2m
 
 _logger = logging.getLogger(__name__)
 
@@ -47,7 +48,8 @@ class OdooModule(models.Model):
         string="Versions",
         readonly=True)
     version_count = fields.Integer(
-        store=True, readonly=True)
+        compute='_compute_version_count',
+        store=False, readonly=True)
     last_module_serie_id = fields.Many2one(
         'yodoo.module.serie', readonly=True, store=True, index=True,
         compute='_compute_last_module_serie_id')
@@ -170,6 +172,15 @@ class OdooModule(models.Model):
          'unique(system_name)',
          'Module system name must be uniqe!')
     ]
+
+    @api.depends('version_ids')
+    def _compute_version_count(self):
+        mapped_data = read_counts_for_o2m(
+            records=self,
+            field_name='version_ids',
+        )
+        for record in self:
+            record.version_count = mapped_data.get(record.id, 0)
 
     @api.depends('serie_ids', 'serie_ids.active')
     def _compute_last_module_serie_id(self):
