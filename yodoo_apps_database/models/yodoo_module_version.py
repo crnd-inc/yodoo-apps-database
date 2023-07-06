@@ -1,6 +1,5 @@
 import re
 import logging
-from pkg_resources import parse_version as V
 from odoo import models, fields, api, tools, exceptions, _
 from ..tools import create_sql_view
 
@@ -77,7 +76,7 @@ class OdooModuleVersion(models.Model):
         store=True, index=True, readonly=True)
 
     # Version parts
-    version = fields.Char(readonly=True, index=True)
+    version = fields.Char(readonly=True, index=True, required=True)
     version_major = fields.Integer(index=True, readonly=True)
     version_minor = fields.Integer(index=True, readonly=True)
     version_patch = fields.Integer(index=True, readonly=True)
@@ -546,30 +545,10 @@ class OdooModuleVersion(models.Model):
         version_data.update(self._prepare_external_dependencies(data))
         return version_data
 
-    def _choose_last_version(self, for_obj, old_version, new_version):
-        """ Determine last version between provided versions
-
-            :param Record for_obj: compute last version for this object
-            :param Record old_version: Record that represents old version
-            :param Record new_version: Record that represents new version
-            :returns Record: Record of computed last version
+    def _create_or_update_prepare_module_data(self, module, version_data):
+        """ Prepare data to create or update module
         """
-        if not old_version:
-            return new_version
-        if V(old_version.version) < V(new_version.version):
-            return new_version
-        return old_version
-
-    def _create_or_update_prepare_module_data(self, module,
-                                              version, version_data):
-        new_version = self._choose_last_version(
-            module, module.last_version_id, version)
-
         module_data = {}
-        if module.last_version_id != new_version:
-            module_data = {
-                'last_version_id': new_version.id
-            }
 
         if module_data:
             module_data['version_count'] = self.search_count(
@@ -580,11 +559,9 @@ class OdooModuleVersion(models.Model):
 
     def _create_or_update_prepare_module_serie_data(self, module_serie,
                                                     version, version_data):
-        new_version = self._choose_last_version(
-            module_serie, module_serie.last_version_id, version)
         serie_data = {}
-        if module_serie.last_version_id != new_version:
-            serie_data['last_version_id'] = new_version.id
+        if module_serie._check_need_update_last_version(version):
+            serie_data['last_version_id'] = version.id
 
         if serie_data:
             serie_data['version_count'] = self.search_count(
@@ -624,7 +601,7 @@ class OdooModuleVersion(models.Model):
                 - module
                 - module serie
 
-            :param str module: Recordset of single module to update
+            :param Recordset module: Recordset of single module to update
             :param dict data: dictionary with data to update module with
             :param bool no_update: do not update version if it is exists
             :param str enforce_serie: suggest odoo serie to better detect
@@ -653,7 +630,7 @@ class OdooModuleVersion(models.Model):
             version = self.create(version_data)
 
         module_data = self._create_or_update_prepare_module_data(
-            module, version, version_data)
+            module, version_data)
         if module_data:
             module.write(module_data)
 

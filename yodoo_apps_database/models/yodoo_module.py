@@ -42,11 +42,20 @@ class OdooModule(models.Model):
     module_serie_ids = fields.One2many(
         'yodoo.module.serie', 'module_id', readonly=False)
     version_ids = fields.One2many(
-        'yodoo.module.version', 'module_id', readonly=True)
+        comodel_name='yodoo.module.version',
+        inverse_name='module_id',
+        string="Versions",
+        readonly=True)
     version_count = fields.Integer(
         store=True, readonly=True)
+    last_module_serie_id = fields.Many2one(
+        'yodoo.module.serie', readonly=True, store=True, index=True,
+        compute='_compute_last_module_serie_id')
     last_version_id = fields.Many2one(
-        'yodoo.module.version', readonly=True, store=True, index=True)
+        'yodoo.module.version',
+        related='last_module_serie_id.last_version_id',
+        string="Last Version",
+        readonly=True, store=True, index=True)
     serie_ids = fields.Many2many(
         string="Series",
         comodel_name='yodoo.serie',
@@ -72,13 +81,13 @@ class OdooModule(models.Model):
     # Additional search capabilities for author
     search_author_id = fields.Many2one(
         'yodoo.module.author', string='Author',
-        compute='_compute_search_author',
+        compute='_compute_search_author_id',
         search='_search_author_id',
         store=False, readonly=True,
         help="Find all modules of this author.")
     search_no_author_id = fields.Many2one(
         'yodoo.module.author', string='No Author',
-        compute='_compute_search_author',
+        compute='_compute_search_author_id',
         search='_search_no_author_id',
         store=False, readonly=True,
         help="Find all modules that do not have this author")
@@ -162,6 +171,15 @@ class OdooModule(models.Model):
          'Module system name must be uniqe!')
     ]
 
+    @api.depends('serie_ids', 'serie_ids.active')
+    def _compute_last_module_serie_id(self):
+        for record in self:
+            if record.module_serie_ids:
+                record.last_module_serie_id = (
+                    record.module_serie_ids.sorted()[0])
+            else:
+                record.last_module_serie_id = False
+
     @api.depends('module_serie_ids', 'module_serie_ids.odoo_apps_link')
     def _compute_odoo_apps_link(self):
         for record in self:
@@ -178,17 +196,14 @@ class OdooModule(models.Model):
             record.serie_ids = record.module_serie_ids.mapped('serie_id')
             record.serie_count = len(record.serie_ids)
 
-    @api.depends('module_serie_ids.is_odoo_community_addon')
+    @api.depends('last_module_serie_id.is_odoo_community_addon')
     def _compute_is_odoo_community_addon(self):
         for record in self:
-            module_series = record.with_context(
-                active_test=False
-            ).module_serie_ids
-            if not module_series:
-                record.is_odoo_community_addon = False
-            else:
+            if record.last_module_serie_id:
                 record.is_odoo_community_addon = (
-                    module_series.sorted()[0].is_odoo_community_addon)
+                    record.last_module_serie_id.is_odoo_community_addon)
+            else:
+                record.is_odoo_community_addon = False
 
     @api.depends('dependency_ids', 'dependency_all_ids.price',
                  'dependency_all_ids.currency_id',
@@ -220,10 +235,26 @@ class OdooModule(models.Model):
         return [('author_ids', operator, value)]
 
     @api.depends()
-    def _compute_search_tag(self):
+    def _compute_search_author_id(self):
         for rec in self:
             rec.search_author_id = False
             rec.search_no_author_id = False
+
+    @api.model_create_multi
+    def create(self, vals):
+        # Disable mail tracking for better performance
+        return super(
+            OdooModule,
+            self.with_context(tracking_disable=True),
+        ).create(vals)
+
+    def write(self, vals):
+        # Disable mail tracking for better performance
+        # pylint: disable=useless-super-delegation
+        return super(
+            OdooModule,
+            self.with_context(tracking_disable=True),
+        ).write(vals)
 
     def name_get(self):
         res = []
@@ -254,11 +285,7 @@ class OdooModule(models.Model):
     def get_or_create_module(self, system_name):
         module = self.get_module(system_name)
         if not module:
-            module = self.with_context(
-                mail_create_nosubscribe=True,
-                mail_create_nolog=True,
-                mail_notrack=True,
-            ).create({
+            module = self.create({
                 'system_name': system_name,
                 'active': True,
             })
@@ -275,14 +302,14 @@ class OdooModule(models.Model):
         """
         self.ensure_one()
         if isinstance(serie, int):
-            serie_obj = self.env['yodoo.serie'].browse(serie)
+            serie_id = self.env['yodoo.serie'].browse(serie).id
         elif isinstance(serie, str):
-            serie_obj = self.env['yodoo.serie'].get_serie(serie)
+            serie_id = self.env['yodoo.serie'].get_serie(serie).id
         elif isinstance(serie, models.Model) and serie._name == 'yodoo.serie':
-            serie_obj = serie
+            serie_id = serie.id
 
         return self.env['yodoo.module.serie'].get_module_serie(
-            self.id, serie_obj.id)
+            self.id, serie_id)
 
     @api.model
     @api.returns('yodoo.module.version')

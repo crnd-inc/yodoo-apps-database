@@ -1,4 +1,6 @@
 import logging
+from pkg_resources import parse_version as V
+
 from odoo import models, fields, api, tools
 
 _logger = logging.getLogger(__name__)
@@ -93,6 +95,20 @@ class OdooModuleSerie(models.Model):
          'unique(module_id, serie_id)',
          'Module and serie must be unique!'),
     ]
+
+    def _check_need_update_last_version(self, new_version):
+        """ Determine if we need to update last version of this module serie
+            or not.
+
+            :param Record new_version: Record that represents new version
+            :return bool: True if new version is good to update,
+                 otherwise False
+        """
+        if not self.last_version_id:
+            return True
+        if V(self.last_version_id.version) < V(new_version.version):
+            return True
+        return False
 
     def name_get(self):
         res = []
