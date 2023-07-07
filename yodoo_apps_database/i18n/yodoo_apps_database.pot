@@ -445,6 +445,11 @@ msgid "Last Modified on"
 msgstr ""
 
 #. module: yodoo_apps_database
+#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__last_module_serie_id
+msgid "Last Module Serie"
+msgstr ""
+
+#. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_category__write_uid
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_version__write_uid
 msgid "Last Updated by"
@@ -980,7 +985,6 @@ msgstr ""
 
 #. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__version
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__version_ids
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_author__version_ids
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_serie__version_ids
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_version__version
@@ -1019,6 +1023,7 @@ msgid "Version Patch"
 msgstr ""
 
 #. module: yodoo_apps_database
+#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__version_ids
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_form
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_serie_form
 msgid "Versions"
