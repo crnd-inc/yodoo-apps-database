@@ -15,10 +15,10 @@ class OdooModuleSerie(models.Model):
 
     module_id = fields.Many2one(
         'yodoo.module', required=True, readonly=True, index=True,
-        ondelete='cascade')
+        auto_join=True, ondelete='cascade')
     serie_id = fields.Many2one(
         'yodoo.serie', required=True, readonly=True, index=True,
-        ondelete='cascade')
+        auto_join=True, ondelete='cascade')
     serie_major = fields.Integer(
         related='serie_id.major', store=True, index=True, readonly=True)
     serie_minor = fields.Integer(
@@ -31,7 +31,8 @@ class OdooModuleSerie(models.Model):
         compute='_compute_version_count',
         store=False, readonly=True)
     last_version_id = fields.Many2one(
-        'yodoo.module.version', readonly=True, store=True, index=True)
+        comodel_name='yodoo.module.version',
+        readonly=True, store=True, index=True, auto_join=True)
 
     # Following fields are not stored for performance reasons
     # TODO: Make stored in 13.0+

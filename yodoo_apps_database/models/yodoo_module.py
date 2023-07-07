@@ -51,13 +51,14 @@ class OdooModule(models.Model):
         compute='_compute_version_count',
         store=False, readonly=True)
     last_module_serie_id = fields.Many2one(
-        'yodoo.module.serie', readonly=True, store=True, index=True,
+        'yodoo.module.serie',
+        readonly=True, store=True, index=True, auto_join=True,
         compute='_compute_last_module_serie_id')
     last_version_id = fields.Many2one(
         'yodoo.module.version',
-        related='last_module_serie_id.last_version_id',
+        compute='_compute_last_version_info',
         string="Last Version",
-        readonly=True, store=True, index=True)
+        readonly=True, store=True, index=True, auto_join=True)
     serie_ids = fields.Many2many(
         string="Series",
         comodel_name='yodoo.serie',
@@ -68,11 +69,6 @@ class OdooModule(models.Model):
     serie_count = fields.Integer(
         compute='_compute_serie_ids', store=True,
         readonly=True, compute_sudo=True)
-
-    license_id = fields.Many2one(
-        'yodoo.module.license', index=True, store=True, readonly=True)
-    category_id = fields.Many2one(
-        'yodoo.module.category', index=True, store=True, readonly=True)
 
     author_ids = fields.Many2manyView(
         comodel_name='yodoo.module.author',
@@ -135,37 +131,54 @@ class OdooModule(models.Model):
         string="Binary dependencies",
         readonly=True)
 
-    # This fields will be computed automatically on version update
-    # They are not related nor computed because of performance reasons
+    # Fields computed from latest version
+    license_id = fields.Many2one(
+        comodel_name='yodoo.module.license',
+        compute='_compute_last_version_info',
+        index=True, store=True, readonly=True)
+    category_id = fields.Many2one(
+        comodel_name='yodoo.module.category',
+        compute='_compute_last_version_info',
+        index=True, store=True, readonly=True)
     name = fields.Char(
+        compute='_compute_last_version_info',
         store=True, readonly=True, index=True)
     version = fields.Char(
+        compute='_compute_last_version_info',
         store=True, readonly=True)
     summary = fields.Char(
+        compute='_compute_last_version_info',
         store=True, readonly=True)
     application = fields.Boolean(
+        compute='_compute_last_version_info',
         store=True, readonly=True)
     installable = fields.Boolean(
+        compute='_compute_last_version_info',
         store=True, readonly=True)
     auto_install = fields.Boolean(
+        compute='_compute_last_version_info',
         store=True, readonly=True)
     # icon = fields.Char(readonly=True)
     website = fields.Char(
+        compute='_compute_last_version_info',
         store=True, readonly=True)
     price = fields.Monetary(
+        compute='_compute_last_version_info',
         store=True, readonly=True)
+    currency_id = fields.Many2one(
+        comodel_name='res.currency',
+        compute='_compute_last_version_info',
+        store=True, readonly=True)
+    is_odoo_community_addon = fields.Boolean(
+        store=True, readonly=True, index=True,
+        compute='_compute_last_version_info',
+        help='If set, then this module is part of Odoo Community')
+
     total_price = fields.Monetary(
         compute='_compute_total_price', readonly=True)
-    currency_id = fields.Many2one(
-        'res.currency', store=True, readonly=True)
 
     odoo_apps_link = fields.Char(
         compute='_compute_odoo_apps_link', store=True, readonly=True)
-
-    is_odoo_community_addon = fields.Boolean(
-        store=True, readonly=True, index=True,
-        compute='_compute_is_odoo_community_addon',
-        help='If set, then this module is part of Odoo Community')
 
     _sql_constraints = [
         ('system_name_uniq',
@@ -191,6 +204,42 @@ class OdooModule(models.Model):
             else:
                 record.last_module_serie_id = False
 
+    @api.depends('last_module_serie_id.last_version_id',
+                 'last_module_serie_id.is_odoo_community_addon',
+                 'last_module_serie_id.last_version_id.license_id',
+                 'last_module_serie_id.last_version_id.category_id',
+                 'last_module_serie_id.last_version_id.name',
+                 'last_module_serie_id.last_version_id.version',
+                 'last_module_serie_id.last_version_id.summary',
+                 'last_module_serie_id.last_version_id.application',
+                 'last_module_serie_id.last_version_id.installable',
+                 'last_module_serie_id.last_version_id.auto_install',
+                 # 'last_module_serie_id.last_version_id.icon',
+                 'last_module_serie_id.last_version_id.website',
+                 'last_module_serie_id.last_version_id.price',
+                 'last_module_serie_id.last_version_id.currency_id',
+                 )
+    def _compute_last_version_info(self):
+        for record in self:
+            v = record.last_module_serie_id.last_version_id
+            record.update({
+                'last_version_id': v.id,
+                'license_id': v.license_id.id,
+                'category_id': v.category_id.id,
+                'name': v.name,
+                'version': v.version,
+                'summary': v.summary,
+                'application': v.application,
+                'installable': v.installable,
+                'auto_install': v.auto_install,
+                # 'icon',
+                'website': v.website,
+                'price': v.price,
+                'currency_id': v.currency_id,
+                'is_odoo_community_addon': (
+                    record.last_module_serie_id.is_odoo_community_addon),
+            })
+
     @api.depends('module_serie_ids', 'module_serie_ids.odoo_apps_link')
     def _compute_odoo_apps_link(self):
         for record in self:
@@ -207,16 +256,8 @@ class OdooModule(models.Model):
             record.serie_ids = record.module_serie_ids.mapped('serie_id')
             record.serie_count = len(record.serie_ids)
 
-    @api.depends('last_module_serie_id.is_odoo_community_addon')
-    def _compute_is_odoo_community_addon(self):
-        for record in self:
-            if record.last_module_serie_id:
-                record.is_odoo_community_addon = (
-                    record.last_module_serie_id.is_odoo_community_addon)
-            else:
-                record.is_odoo_community_addon = False
-
-    @api.depends('dependency_ids', 'dependency_all_ids.price',
+    @api.depends('price', 'currency_id',
+                 'dependency_ids', 'dependency_all_ids.price',
                  'dependency_all_ids.currency_id',
                  'dependency_all_ids.last_version_id.dependency_ids',
                  'last_version_id.dependency_ids')
