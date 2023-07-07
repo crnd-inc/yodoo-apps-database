@@ -116,7 +116,7 @@ msgid "Binary dependencies"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: code:addons/yodoo_apps_database/models/yodoo_module_version.py:515
+#: code:addons/yodoo_apps_database/models/yodoo_module_version.py:514
 #, python-format
 msgid "Cannot parse version (%(version)s) for module %(module_display_name)s [%(module_system_name)s]"
 msgstr ""
@@ -432,6 +432,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_version____last_update
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_serie____last_update
 msgid "Last Modified on"
+msgstr ""
+
+#. module: yodoo_apps_database
+#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__last_module_serie_id
+msgid "Last Module Serie"
 msgstr ""
 
 #. module: yodoo_apps_database
@@ -977,7 +982,6 @@ msgstr ""
 
 #. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__version
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__version_ids
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_author__version_ids
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_serie__version_ids
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_version__version
@@ -1016,6 +1020,7 @@ msgid "Version Patch"
 msgstr ""
 
 #. module: yodoo_apps_database
+#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__version_ids
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_form
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_serie_form
 msgid "Versions"
