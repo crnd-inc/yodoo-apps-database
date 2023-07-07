@@ -1,5 +1,8 @@
 import logging
+from pkg_resources import parse_version as V
+
 from odoo import models, fields, api, tools
+from odoo.addons.generic_mixin.tools.x2m_agg_utils import read_counts_for_o2m
 
 _logger = logging.getLogger(__name__)
 
@@ -12,10 +15,10 @@ class OdooModuleSerie(models.Model):
 
     module_id = fields.Many2one(
         'yodoo.module', required=True, readonly=True, index=True,
-        ondelete='cascade')
+        auto_join=True, ondelete='cascade')
     serie_id = fields.Many2one(
         'yodoo.serie', required=True, readonly=True, index=True,
-        ondelete='cascade')
+        auto_join=True, ondelete='cascade')
     serie_major = fields.Integer(
         related='serie_id.major', store=True, index=True, readonly=True)
     serie_minor = fields.Integer(
@@ -25,11 +28,14 @@ class OdooModuleSerie(models.Model):
     version_ids = fields.One2many(
         'yodoo.module.version', 'module_serie_id', readonly=True)
     version_count = fields.Integer(
-        store=True, readonly=True)
+        compute='_compute_version_count',
+        store=False, readonly=True)
     last_version_id = fields.Many2one(
-        'yodoo.module.version', readonly=True, store=True, index=True)
+        comodel_name='yodoo.module.version',
+        readonly=True, store=True, index=True, auto_join=True)
 
     # Following fields are not stored for performance reasons
+    # TODO: Make stored in 13.0+
     license_id = fields.Many2one(
         'yodoo.module.license', index=False, store=False,
         related='last_version_id.license_id',
@@ -93,6 +99,29 @@ class OdooModuleSerie(models.Model):
          'unique(module_id, serie_id)',
          'Module and serie must be unique!'),
     ]
+
+    @api.depends('version_ids')
+    def _compute_version_count(self):
+        mapped_data = read_counts_for_o2m(
+            records=self,
+            field_name='version_ids',
+        )
+        for record in self:
+            record.version_count = mapped_data.get(record.id, 0)
+
+    def _check_need_update_last_version(self, new_version):
+        """ Determine if we need to update last version of this module serie
+            or not.
+
+            :param Record new_version: Record that represents new version
+            :return bool: True if new version is good to update,
+                 otherwise False
+        """
+        if not self.last_version_id:
+            return True
+        if V(self.last_version_id.version) < V(new_version.version):
+            return True
+        return False
 
     def name_get(self):
         res = []
