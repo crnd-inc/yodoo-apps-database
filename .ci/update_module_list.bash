@@ -61,6 +61,7 @@ update_list_for_serie 13 0 "$MODULES_PATH.tmp" "$MODULE_SERIES_PATH.tmp";
 update_list_for_serie 14 0 "$MODULES_PATH.tmp" "$MODULE_SERIES_PATH.tmp";
 update_list_for_serie 15 0 "$MODULES_PATH.tmp" "$MODULE_SERIES_PATH.tmp";
 update_list_for_serie 16 0 "$MODULES_PATH.tmp" "$MODULE_SERIES_PATH.tmp";
+update_list_for_serie 17 0 "$MODULES_PATH.tmp" "$MODULE_SERIES_PATH.tmp";
 
 # Remove duplicates from files
 cat "$MODULES_PATH.tmp" | sort -u > "$MODULES_PATH";
