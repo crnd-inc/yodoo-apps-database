@@ -12,13 +12,12 @@ class YodooModule(models.Model):
     def _create_or_update_product_template(self):
         self.ensure_one()
 
-        company = self.env.user.company_id
+        company = self.env.company
         date = self._context.get('date') or fields.Date.today()
         uom = self.env.ref('uom.product_uom_unit')
         serie_attribute = self.env.ref(
             'yodoo_apps_sale.product_attribute_odoo_serie')
 
-        # Prepare data for mapping serie - variant
         module_serie_by_attr_value_map = {}
         serie_attribute_values = self.env['product.attribute.value'].browse()
         for module_serie in self.module_serie_ids:
@@ -26,11 +25,9 @@ class YodooModule(models.Model):
             module_serie_by_attr_value_map[serie_attr_val] = module_serie
             serie_attribute_values += serie_attr_val
 
-        # Convert price to company price
         price = self.currency_id._convert(
             self.price, company.currency_id, company, date)
 
-        # Update or create product
         if self.product_template_id:
             self.product_template_id.write({
                 'list_price': price,
@@ -59,7 +56,6 @@ class YodooModule(models.Model):
                 self.product_template_id.attribute_line_ids.filtered(
                     lambda r: r.attribute_id == serie_attribute))
 
-        # Map product variant to module serie
         for product_variant in self.product_template_id.product_variant_ids:
             serie_attr_val = (
                 product_variant.product_template_attribute_value_ids.filtered(
@@ -67,7 +63,6 @@ class YodooModule(models.Model):
                 ).mapped('product_attribute_value_id')
             )
             if len(serie_attr_val) != 1:
-                # Strange variat that has no serie or has multiple series
                 continue
             module_serie = module_serie_by_attr_value_map[serie_attr_val]
             module_serie.product_variant_id = product_variant

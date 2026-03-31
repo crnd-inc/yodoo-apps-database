@@ -45,7 +45,7 @@ RE_VERSION_NOT_STANDARD = re.compile(
 class OdooModuleVersion(models.Model):
     _name = 'yodoo.module.version'
     _description = 'Odoo Module Version'
-    _log_acces = False
+    _log_access = False
     _order = (
         "module_id, serie_major DESC, serie_minor DESC, "
         "version_major DESC, version_minor DESC, version_patch DESC"
@@ -452,14 +452,11 @@ class OdooModuleVersion(models.Model):
             res += [module.id]
         return res
 
-    def name_get(self):
-        result = []
+    @api.depends('module_id', 'module_id.display_name', 'version')
+    def _compute_display_name(self):
         for record in self:
-            result += [
-                (record.id, "%s [%s]" % (
-                    record.module_id.display_name, record.version)),
-            ]
-        return result
+            record.display_name = "%s [%s]" % (
+                record.module_id.display_name, record.version)
 
     def _create_or_update_prepare_parse_version(self, module, data,
                                                 enforce_serie=None):

@@ -39,7 +39,7 @@ class YodooModuleCategory(models.Model):
             category_id = self.create({
                 'name': name,
             }).id
-            self._get_category.clear_cache(self)
+            self.env.registry.clear_cache()
         return category_id
 
     def action_show_modules(self):

@@ -19,14 +19,14 @@ class YodooModuleLicense(models.Model):
          'License code must be unique!'),
     ]
 
-    def name_get(self):
-        res = []
+    @api.depends('name', 'code')
+    def _compute_display_name(self):
         for record in self:
             if record.name:
-                res += [(record.id, "%s [%s]" % (record.name, record.code))]
+                record.display_name = "%s [%s]" % (
+                    record.name, record.code)
             else:
-                res += [(record.id, record.code)]
-        return res
+                record.display_name = record.code
 
     @api.model
     @tools.ormcache('code')
@@ -44,5 +44,5 @@ class YodooModuleLicense(models.Model):
             license_id = self.create({
                 'code': code,
             }).id
-            self._get_license.clear_cache(self)
+            self.env.registry.clear_cache()
         return license_id

@@ -1,5 +1,5 @@
 import logging
-from pkg_resources import parse_version as V
+from packaging.version import Version as V
 
 from odoo import models, fields, api, tools
 from odoo.addons.generic_mixin.tools.x2m_agg_utils import read_counts_for_o2m
@@ -123,15 +123,13 @@ class OdooModuleSerie(models.Model):
             return True
         return False
 
-    def name_get(self):
-        res = []
+    @api.depends('module_id', 'module_id.system_name',
+                 'serie_id', 'serie_id.display_name')
+    def _compute_display_name(self):
         for record in self:
-            res += [(
-                record.id,
-                "%s [%s]" % (record.module_id.system_name,
-                             record.serie_id.display_name),
-            )]
-        return res
+            record.display_name = "%s [%s]" % (
+                record.module_id.system_name,
+                record.serie_id.display_name)
 
     @api.model
     def get_module_serie(self, module_id, serie_id):

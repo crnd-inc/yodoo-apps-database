@@ -288,7 +288,7 @@ class TestModule(TransactionCase):
         self.assertFalse(module_version5.version_non_standard)
 
         # Test that module info was updated
-        module.invalidate_cache(ids=module.ids)
+        module.invalidate_recordset()
         self.assertEqual(module.system_name, 'my_super_module')
         self.assertEqual(module.summary, 'This module do cool things.')
         self.assertEqual(module.version, '12.0.2.1.0')
@@ -381,7 +381,7 @@ class TestModule(TransactionCase):
         self.assertFalse(module_version6.version_non_standard)
 
         # Test that module info was updated
-        module.invalidate_cache(ids=module.ids)
+        module.invalidate_recordset()
         self.assertEqual(module.system_name, 'my_super_module')
         self.assertEqual(module.summary, 'This module do cool things.')
         self.assertEqual(module.version, '13.0.2.1.0')

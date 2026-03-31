@@ -308,14 +308,11 @@ class OdooModule(models.Model):
             self.with_context(tracking_disable=True),
         ).write(vals)
 
-    def name_get(self):
-        res = []
+    @api.depends('name', 'system_name')
+    def _compute_display_name(self):
         for record in self:
-            res += [(
-                record.id,
-                "%s" % (record.name or record.system_name),
-            )]
-        return res
+            record.display_name = "%s" % (
+                record.name or record.system_name)
 
     @api.model
     @tools.ormcache('system_name')
@@ -341,7 +338,7 @@ class OdooModule(models.Model):
                 'system_name': system_name,
                 'active': True,
             })
-            self._get_module_id.clear_cache(self)
+            self.env.registry.clear_cache()
         return module
 
     def get_module_serie(self, serie):

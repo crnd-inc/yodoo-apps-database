@@ -116,7 +116,7 @@ class YodooSerie(models.Model):
         serie_id = self._get_serie(name)
         if not serie_id:
             serie_id = self._create_serie(name).id
-            self._get_serie.clear_cache(self)
+            self.env.registry.clear_cache()
         return serie_id
 
     def action_show_modules(self):

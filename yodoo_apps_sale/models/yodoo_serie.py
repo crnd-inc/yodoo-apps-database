@@ -24,12 +24,11 @@ class YodooSerie(models.Model):
             })
         return attribute_value
 
-    @api.model
-    def create(self, vals):
-        name = vals.get('name', False)
-        attribute_value = self._generate_product_attribute(name)
-        vals = dict(
-            vals,
-            product_attribute_value_id=attribute_value.id)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            name = vals.get('name', False)
+            attribute_value = self._generate_product_attribute(name)
+            vals['product_attribute_value_id'] = attribute_value.id
 
-        return super(YodooSerie, self).create(vals)
+        return super().create(vals_list)

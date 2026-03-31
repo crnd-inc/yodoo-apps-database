@@ -12,11 +12,11 @@
     <record model="ir.ui.view" id="yodoo_serie_tree">
         <field name="model">yodoo.serie</field>
         <field name="arch" type="xml">
-            <tree create="false" edit="false" delete="false">
+            <list create="false" edit="false" delete="false">
                 <field name="name"/>
                 <field name="major"/>
                 <field name="minor"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -36,8 +36,7 @@
                         </button>
                         <button name="toggle_active" type="object" groups="base.group_user"
                                 class="oe_stat_button" icon="fa-archive">
-                            <field name="active" widget="boolean_button"
-                                   options='{"terminology": "archive"}'/>
+                            <field name="active" widget="boolean_toggle"/>
                         </button>
                     </div>
                     <div class="oe_title">
@@ -46,7 +45,7 @@
                     <group>
                         <group>
                             <field name="major"/>
-                            <field name="minor" widget="many2many_tags"/>
+                            <field name="minor"/>
                         </group>
                         <group>
                             <field name="color"/>
@@ -60,7 +59,7 @@
     <record id="action_yodoo_serie_view" model="ir.actions.act_window">
         <field name="name">Series</field>
         <field name="res_model">yodoo.serie</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <menuitem action="action_yodoo_serie_view"
@@ -68,4 +67,3 @@
               parent="menu_root_settings"
               sequence="30"/>
 </odoo>
-

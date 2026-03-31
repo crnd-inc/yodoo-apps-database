@@ -51,16 +51,14 @@ class YodooModuleDependencyPython(models.Model):
         for record in self:
             record.module_count = len(record.module_ids)
 
-    def name_get(self):
-        res = []
+    @api.depends('name', 'pypi_package')
+    def _compute_display_name(self):
         for record in self:
             if record.pypi_package:
-                res += [
-                    (record.id, "%s [%s]" % (record.name, record.pypi_package))
-                ]
+                record.display_name = "%s [%s]" % (
+                    record.name, record.pypi_package)
             else:
-                res += [(record.id, record.name)]
-        return res
+                record.display_name = record.name
 
     @api.model
     @tools.ormcache('name')
@@ -78,7 +76,7 @@ class YodooModuleDependencyPython(models.Model):
             dependency_id = self.create({
                 'name': name,
             }).id
-            self._get_python_dependency.clear_cache(self)
+            self.env.registry.clear_cache()
         return dependency_id
 
     def action_check_pypi(self):

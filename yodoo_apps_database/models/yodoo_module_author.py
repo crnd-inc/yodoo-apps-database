@@ -82,7 +82,7 @@ class YodooModuleAuthor(models.Model):
             author_id = self.create({
                 'name': name,
             }).id
-            self._get_author.clear_cache(self)
+            self.env.registry.clear_cache()
         return author_id
 
     def action_show_modules(self):
