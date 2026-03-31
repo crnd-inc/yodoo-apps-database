@@ -80,8 +80,8 @@
     <record model="ir.ui.view" id="yodoo_module_tree">
         <field name="model">yodoo.module</field>
         <field name="arch" type="xml">
-            <tree create="false" edit="false" delete="false">
-                <field name="currency_id" invisible="1"/>
+            <list create="false" edit="false" delete="false">
+                <field name="currency_id" column_invisible="1"/>
                 <field name="system_name"/>
                 <field name="name"/>
                 <field name="serie_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
@@ -94,7 +94,7 @@
                 <field name="tag_ids"
                        options="{'color_field': 'color'}"
                        widget="many2many_tags"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -186,13 +186,13 @@
                     </group>
                 </page>
                 <page name="page_series" string="Series">
-                    <field name="module_serie_ids" nolabel="1" mode="tree">
-                        <tree editable="bottom" create="false" delete="false" options="{'no_open': True}">
+                    <field name="module_serie_ids" nolabel="1" mode="list">
+                        <list editable="bottom" create="false" delete="false" options="{'no_open': True}">
                             <field name="serie_id"/>
                             <field name="last_version_id"/>
                             <field name="license_id"/>
                             <field name="is_odoo_community_addon"/>
-                        </tree>
+                        </list>
                     </field>
                 </page>
                 <page name="page_dependencies" string="Dependencies">
@@ -233,7 +233,7 @@
     <record id="action_yodoo_module_view" model="ir.actions.act_window">
         <field name="name">Modules</field>
         <field name="res_model">yodoo.module</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="context">{'search_default_filter_application': True}</field>
     </record>
 

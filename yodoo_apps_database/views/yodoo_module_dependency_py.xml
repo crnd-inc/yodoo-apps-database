@@ -13,12 +13,12 @@
     <record model="ir.ui.view" id="yodoo_module_dependency_python_tree">
         <field name="model">yodoo.module.dependency.python</field>
         <field name="arch" type="xml">
-            <tree create="false" delete="false">
+            <list create="false" delete="false">
                 <field name="display_name" string="Name"/>
                 <field name="pypi_package"/>
                 <field name="pypi_url" widget="url" text='View at PyPI'/>
                 <field name="module_count" string="Modules"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -50,7 +50,7 @@
                                     string="Guess"
                                     icon="fa-question"
                                     class="btn-sm btn-warning"
-                                    attrs="{'invisible': [('pypi_package', '!=', False)]}"/>
+                                    invisible="pypi_package"/>
                         </group>
                         <group>
                             <field name="pypi_url"
@@ -66,7 +66,7 @@
     <record id="action_yodoo_module_dependency_python_view" model="ir.actions.act_window">
         <field name="name">Python Dependencies</field>
         <field name="res_model">yodoo.module.dependency.python</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <menuitem action="action_yodoo_module_dependency_python_view"

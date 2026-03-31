@@ -30,16 +30,14 @@ class YodooModuleDependencyBinary(models.Model):
         for record in self:
             record.module_count = len(record.module_ids)
 
-    def name_get(self):
-        res = []
+    @api.depends('name', 'apt_package')
+    def _compute_display_name(self):
         for record in self:
             if record.apt_package:
-                res += [
-                    (record.id, "%s [%s]" % (record.name, record.apt_package))
-                ]
+                record.display_name = "%s [%s]" % (
+                    record.name, record.apt_package)
             else:
-                res += [(record.id, record.name)]
-        return res
+                record.display_name = record.name
 
     @api.model
     @tools.ormcache('name')
@@ -57,7 +55,7 @@ class YodooModuleDependencyBinary(models.Model):
             dependency_id = self.create({
                 'name': name,
             }).id
-            self._get_bin_dependency.clear_cache(self)
+            self.env.registry.clear_cache()
         return dependency_id
 
     def action_show_modules(self):

@@ -7,7 +7,7 @@
     'website': "https://crnd.pro",
 
     'category': 'Yodoo Apps',
-    'version': '15.0.0.56.0',
+    'version': '18.0.0.56.0',
 
     # any module necessary for this one to work correctly
     'depends': [
@@ -16,6 +16,9 @@
         'base_field_m2m_view',
         'generic_resource',
     ],
+    'external_dependencies': {
+        'python': ['packaging'],
+    },
 
     # always loaded
     'data': [

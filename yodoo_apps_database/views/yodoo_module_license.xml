@@ -13,10 +13,10 @@
     <record model="ir.ui.view" id="yodoo_module_license_tree">
         <field name="model">yodoo.module.license</field>
         <field name="arch" type="xml">
-            <tree create="false" edit="false" delete="false">
+            <list create="false" edit="false" delete="false">
                 <field name="display_name"/>
                 <field name="code"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -43,7 +43,7 @@
     <record id="action_yodoo_module_license_view" model="ir.actions.act_window">
         <field name="name">Licenses</field>
         <field name="res_model">yodoo.module.license</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <menuitem action="action_yodoo_module_license_view"
@@ -51,5 +51,3 @@
               parent="menu_root_settings"
               sequence="50"/>
 </odoo>
-
-
