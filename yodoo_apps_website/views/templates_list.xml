@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="modules_list" name="Modules Catalog">
+        <t t-call="website.layout">
+            <div id="wrap" class="container py-4">
+                <div class="row mb-4 align-items-center">
+                    <div class="col-md-4">
+                        <form action="/modules" method="get" class="input-group">
+                            <input type="text" name="search" class="form-control"
+                                   placeholder="Search..."
+                                   t-att-value="search"/>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa fa-search"/>
+                            </button>
+                        </form>
+                    </div>
+                    <div class="col-md-8 d-flex gap-2 justify-content-end align-items-center">
+                        <select name="category" class="form-select form-select-sm w-auto"
+                                onchange="window.location.href='/modules?category='+this.value
+                                    +'&amp;search='+encodeURIComponent(document.querySelector('[name=search]').value||'')">
+                            <option value="">All Categories</option>
+                            <t t-foreach="categories" t-as="cat">
+                                <option t-att-value="cat.id"
+                                        t-att-selected="current_category == cat.id">
+                                    <t t-out="cat.name"/>
+                                </option>
+                            </t>
+                        </select>
+                        <select name="serie_select" class="form-select form-select-sm w-auto"
+                                onchange="window.location.href='/modules?serie='+this.value
+                                    +'&amp;search='+encodeURIComponent(document.querySelector('[name=search]').value||'')">
+                            <option value="">All Versions</option>
+                            <t t-foreach="series" t-as="s">
+                                <option t-att-value="s.id"
+                                        t-att-selected="current_serie == s.id">
+                                    <t t-out="s.name"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                </div>
+
+                <section class="o_yodoo_modules_grid grid"
+                         style="--o-yodoo-grid-gap: 16px; grid-template-columns: repeat(4, 1fr); gap: var(--o-yodoo-grid-gap);">
+                    <t t-foreach="modules" t-as="mod">
+                        <div class="o_yodoo_module_card h-100 d-flex flex-column">
+                            <div class="position-relative flex-grow-0 overflow-hidden">
+                                <a t-att-href="mod.website_url"
+                                   class="d-block position-relative"
+                                   style="aspect-ratio: 16/9; background: #f8f9fa;">
+                                    <span class="d-flex h-100 justify-content-center align-items-center position-absolute w-100">
+                                        <t t-if="mod.yodoo_apps_website_cover">
+                                            <img t-att-src="'/web/image/yodoo.module/%s/yodoo_apps_website_cover' % mod.id"
+                                                 class="img img-fluid h-100 w-100 position-absolute"
+                                                 style="object-fit: cover;"
+                                                 t-att-alt="mod.name"
+                                                 loading="lazy"/>
+                                        </t>
+                                        <t t-elif="mod.yodoo_apps_website_icon">
+                                            <img t-att-src="'/web/image/yodoo.module/%s/yodoo_apps_website_icon/128x128' % mod.id"
+                                                 style="max-width: 80px;"
+                                                 t-att-alt="mod.name"/>
+                                        </t>
+                                        <t t-else="">
+                                            <i class="fa fa-cube fa-4x text-muted"/>
+                                        </t>
+                                    </span>
+                                    <div class="o_yodoo_module_overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-end p-2"
+                                         style="background: linear-gradient(transparent 30%, rgba(0,0,0,0.8)); opacity: 0; transition: opacity 0.2s; pointer-events: none; z-index: 1;">
+                                        <p class="text-white small mb-0 w-100"
+                                           t-out="mod.summary"/>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="position-relative d-flex flex-column flex-grow-1 flex-shrink-1">
+                                <div class="pt-2">
+                                    <h6 class="mb-2 text-break">
+                                        <a t-att-href="mod.website_url"
+                                           class="text-primary text-decoration-none text-primary-emphasis">
+                                            <t t-out="mod.name"/>
+                                        </a>
+                                    </h6>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-end gap-2 flex-wrap mt-auto">
+                                    <div>
+                                        <t t-if="mod.total_price">
+                                            <span class="h6 mb-0"
+                                                  t-out="mod.total_price"
+                                                  t-options="{'widget': 'monetary', 'display_currency': mod.currency_id}"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span class="h6 mb-0 text-success">FREE</span>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </section>
+
+                <t t-if="not modules">
+                    <div class="text-center py-5 text-muted">
+                        <i class="fa fa-search fa-3x mb-3 d-block"/>
+                        <h3>No modules found</h3>
+                    </div>
+                </t>
+
+                <div class="d-flex justify-content-center mt-4">
+                    <t t-call="website.pager"/>
+                </div>
+            </div>
+
+            <style>
+                .o_yodoo_module_card a:hover .o_yodoo_module_overlay {
+                    opacity: 1 !important;
+                }
+                .o_yodoo_module_card {
+                    padding-bottom: 16px;
+                    border-bottom: 1px solid #dee2e6;
+                    margin-bottom: -1px;
+                }
+                @media (max-width: 991.98px) {
+                    .o_yodoo_modules_grid {
+                        grid-template-columns: repeat(3, 1fr) !important;
+                    }
+                }
+                @media (max-width: 767.98px) {
+                    .o_yodoo_modules_grid {
+                        grid-template-columns: repeat(2, 1fr) !important;
+                    }
+                }
+            </style>
+        </t>
+    </template>
+</odoo>

@@ -35,7 +35,7 @@ class OdooModule(models.Model):
     ]
     _description = "Odoo Module"
     _order = 'name, system_name'
-    _log_access = False
+    _log_access = True
 
     _generic_namesearch_fields = ['name', 'system_name']
 
