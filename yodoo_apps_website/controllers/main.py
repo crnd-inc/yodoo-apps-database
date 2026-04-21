@@ -1,10 +1,31 @@
+from werkzeug.exceptions import NotFound
+
 from odoo import http
 from odoo.http import request
-from odoo.exceptions import AccessError
-from werkzeug.exceptions import NotFound
 
 
 class YodooAppsWebsite(http.Controller):
+
+    def _modules_listing_domain(self):
+        return [
+            ('is_published', '=', True),
+            '|', ('category_id', '=', False),
+            '&', ('category_id.is_published', '=', True),
+                 ('category_id.is_listed_on_website', '=', True),
+            '|', ('author_ids', '=', False),
+            '&', ('author_ids.is_published', '=', True),
+                 ('author_ids.is_listed_on_website', '=', True),
+        ]
+
+    def _module_is_hidden_hard(self, module):
+        if not module.is_published:
+            return True
+        if module.category_id and not module.category_id.is_published:
+            return True
+        if module.author_ids and not any(
+                a.is_published for a in module.author_ids):
+            return True
+        return False
 
     @http.route([
         '/modules',
@@ -14,7 +35,7 @@ class YodooAppsWebsite(http.Controller):
     def modules_list(self, page=1, category=None, serie=None,
                      author=None, search=None, **kwargs):
         Module = request.env['yodoo.module'].sudo()
-        domain = [('is_published', '=', True)]
+        domain = self._modules_listing_domain()
 
         if category:
             domain.append(('category_id', '=', int(category)))
@@ -48,9 +69,15 @@ class YodooAppsWebsite(http.Controller):
             domain, limit=step, offset=pager['offset'],
             order='name ASC')
 
-        categories = request.env['yodoo.module.category'].sudo().search([])
+        listed_domain = [
+            ('is_published', '=', True),
+            ('is_listed_on_website', '=', True),
+        ]
+        categories = request.env[
+            'yodoo.module.category'].sudo().search(listed_domain)
         series = request.env['yodoo.serie'].sudo().search([])
-        authors = request.env['yodoo.module.author'].sudo().search([])
+        authors = request.env[
+            'yodoo.module.author'].sudo().search(listed_domain)
 
         values = {
             'modules': modules,
@@ -67,17 +94,18 @@ class YodooAppsWebsite(http.Controller):
             'yodoo_apps_website.modules_list', values)
 
     @http.route([
-        '''/modules/<model("yodoo.module"):module>''',
+        '/modules/<string:system_name>',
     ], type='http', auth='public', website=True,
         sitemap=True, readonly=True)
-    def module_detail(self, module, **kwargs):
-        try:
-            module = module.sudo()
-        except AccessError:
+    def module_detail(self, system_name, **kwargs):
+        module = request.env['yodoo.module'].sudo().search(
+            [('system_name', '=', system_name)], limit=1)
+        if not module:
             raise NotFound()
 
-        if not module.is_published and not request.env.user.has_group(
-                'website.group_website_designer'):
+        is_designer = request.env.user.has_group(
+            'website.group_website_designer')
+        if self._module_is_hidden_hard(module) and not is_designer:
             raise NotFound()
 
         values = {

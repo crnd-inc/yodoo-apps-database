@@ -1,5 +1,6 @@
 import base64
 import logging
+import posixpath
 import re
 
 from odoo import models
@@ -16,14 +17,74 @@ try:
 except (ImportError, IOError):
     github_lib = None
 
-RE_RELATIVE_IMG_SRC = re.compile(
-    r'(src=["\'])(?!https?://|/|data:)([^"\']+)(["\'])')
+RE_IMG_SRC = re.compile(
+    r'<img\b[^>]*?\bsrc=["\']([^"\']+)["\']', re.IGNORECASE)
 
-GITLAB_RAW_URL = 'https://gitlab.crnd.pro'
+IMAGE_TASK_XMLID = (
+    'yodoo_apps_website.kw_html_image2attachment_task_module_description')
 
 
 class YodooGitSourceBranch(models.Model):
     _inherit = 'yodoo.git.source.branch'
+
+    def _yodoo_apps_website_enqueue_image_task(self, module):
+        task = self.env.ref(IMAGE_TASK_XMLID, raise_if_not_found=False)
+        if not task:
+            return
+        Line = self.env['kw.html_image2attachment.task.line'].sudo()
+        existing = Line.search([
+            ('task_id', '=', task.id),
+            ('res_id', '=', module.id),
+            ('state', 'in', ('new', 'error')),
+        ], limit=1)
+        if existing:
+            existing.write({'state': 'new', 'result': False})
+        else:
+            Line.create({'task_id': task.id, 'res_id': module.id})
+
+    def _yodoo_apps_website_resolve_repo_path(self, src, module_name):
+        if src.startswith(('http://', 'https://', 'data:', '/')):
+            return None
+        base = '%s/static/description' % module_name
+        return posixpath.normpath(posixpath.join(base, src))
+
+    def _yodoo_apps_website_create_image_attachment(
+            self, module, filename, data_b64):
+        return self.env['ir.attachment'].sudo().create({
+            'name': filename,
+            'type': 'binary',
+            'datas': data_b64,
+            'res_model': module._name,
+            'res_id': module.id,
+            'kw_is_html2attachment_image': True,
+        })
+
+    def _yodoo_apps_website_inline_images(
+            self, module, module_name, html, fetch_binary):
+        if not html:
+            return html
+        replacements = {}
+        for src in set(RE_IMG_SRC.findall(html)):
+            if src in replacements:
+                continue
+            repo_path = self._yodoo_apps_website_resolve_repo_path(
+                src, module_name)
+            if not repo_path:
+                continue
+            data_b64 = fetch_binary(repo_path)
+            if not data_b64:
+                continue
+            filename = posixpath.basename(repo_path) or 'image.png'
+            attachment = self._yodoo_apps_website_create_image_attachment(
+                module, filename, data_b64)
+            replacements[src] = '/web/image/%s' % attachment.id
+        for src, local_url in replacements.items():
+            html = re.sub(
+                r'(src=["\'])%s(["\'])' % re.escape(src),
+                r'\g<1>%s\g<2>' % local_url,
+                html,
+            )
+        return html
 
     def _yodoo_apps_website_fetch_branch_descriptions_gitlab(
             self, git, project_path):
@@ -38,8 +99,10 @@ class YodooGitSourceBranch(models.Model):
             except Exception:
                 continue
 
-            html = self._yodoo_apps_website_rewrite_img_urls_gitlab(
-                html, project_path, branch_name, module_name)
+            html = self._yodoo_apps_website_inline_images(
+                module.sudo(), module_name, html,
+                lambda p: self._yodoo_apps_website_gl_fetch_binary(
+                    git, branch_name, p))
 
             vals = {
                 'yodoo_apps_website_description_html': html,
@@ -58,14 +121,13 @@ class YodooGitSourceBranch(models.Model):
                 vals['yodoo_apps_website_cover'] = cover_data
 
             module.sudo().write(vals)
+            self._yodoo_apps_website_enqueue_image_task(module)
 
     def _yodoo_apps_website_fetch_branch_descriptions_github(self, git):
         for mod in self.git_module_ids:
             module = mod.module_id
             module_name = mod.system_name
             branch_name = self.name
-            owner = self.git_source_id.github_owner
-            repo = self.git_source_id.github_repository
             try:
                 html = self._yodoo_apps_website_gh_fetch_file(
                     git, branch_name,
@@ -73,8 +135,10 @@ class YodooGitSourceBranch(models.Model):
             except Exception:
                 continue
 
-            html = self._yodoo_apps_website_rewrite_img_urls_github(
-                html, owner, repo, branch_name, module_name)
+            html = self._yodoo_apps_website_inline_images(
+                module.sudo(), module_name, html,
+                lambda p: self._yodoo_apps_website_gh_fetch_binary(
+                    git, branch_name, p))
 
             vals = {
                 'yodoo_apps_website_description_html': html,
@@ -93,6 +157,7 @@ class YodooGitSourceBranch(models.Model):
                 vals['yodoo_apps_website_cover'] = cover_data
 
             module.sudo().write(vals)
+            self._yodoo_apps_website_enqueue_image_task(module)
 
     def _yodoo_apps_website_gl_fetch_file(self, git, branch, path):
         f = git.gl_project.files.get(ref=branch, file_path=path)
@@ -115,18 +180,3 @@ class YodooGitSourceBranch(models.Model):
             return base64.b64encode(content.decoded_content)
         except Exception:
             return False
-
-    def _yodoo_apps_website_rewrite_img_urls_gitlab(
-            self, html, project_path, branch, module_name):
-        base_url = '%s/%s/-/raw/%s/%s/static/description/' % (
-            GITLAB_RAW_URL, project_path, branch, module_name)
-        return RE_RELATIVE_IMG_SRC.sub(
-            r'\g<1>%s\2\3' % base_url.replace('\\', '\\\\'), html)
-
-    def _yodoo_apps_website_rewrite_img_urls_github(
-            self, html, owner, repo, branch, module_name):
-        base_url = (
-            'https://raw.githubusercontent.com/%s/%s/%s/'
-            '%s/static/description/' % (owner, repo, branch, module_name))
-        return RE_RELATIVE_IMG_SRC.sub(
-            r'\g<1>%s\2\3' % base_url.replace('\\', '\\\\'), html)

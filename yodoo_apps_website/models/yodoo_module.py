@@ -7,11 +7,6 @@ class YodooModule(models.Model):
         'yodoo.module',
         'website.published.mixin',
         'website.seo.metadata',
-        'kw.html_image2attachment.mixin',
-    ]
-
-    _kw_html_image2attachment_fields = [
-        'yodoo_apps_website_description_html',
     ]
 
     yodoo_apps_website_description_html = fields.Html(
@@ -30,11 +25,10 @@ class YodooModule(models.Model):
         help='Module cover image from static/description/cover.png',
     )
 
-    @api.depends('name', 'system_name')
+    @api.depends('system_name')
     def _compute_website_url(self):
         for record in self:
-            if record.id:
-                record.website_url = '/modules/%s' % (
-                    self.env['ir.http']._slug(record))
+            if record.id and record.system_name:
+                record.website_url = '/modules/%s' % record.system_name
             else:
                 record.website_url = '#'

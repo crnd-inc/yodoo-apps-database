@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="yodoo_module_author_tree_website">
+        <field name="model">yodoo.module.author</field>
+        <field name="inherit_id"
+               ref="yodoo_apps_database.yodoo_module_author_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='module_count']" position="after">
+                <field name="is_published"/>
+                <field name="is_listed_on_website"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="yodoo_module_author_form_website">
+        <field name="model">yodoo.module.author</field>
+        <field name="inherit_id"
+               ref="yodoo_apps_database.yodoo_module_author_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='color']" position="after">
+                <field name="is_published"/>
+                <field name="is_listed_on_website"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="yodoo_module_author_search_website">
+        <field name="model">yodoo.module.author</field>
+        <field name="inherit_id"
+               ref="yodoo_apps_database.yodoo_author_module_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <filter name="unpublished"
+                        string="Unpublished"
+                        domain="[('is_published','=',False)]"/>
+                <filter name="unlisted"
+                        string="Unlisted"
+                        domain="[('is_listed_on_website','=',False)]"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

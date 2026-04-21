@@ -52,7 +52,7 @@
                                         <t t-if="mod.yodoo_apps_website_cover">
                                             <img t-att-src="'/web/image/yodoo.module/%s/yodoo_apps_website_cover' % mod.id"
                                                  class="img img-fluid h-100 w-100 position-absolute"
-                                                 style="object-fit: cover;"
+                                                 style="object-fit: contain;"
                                                  t-att-alt="mod.name"
                                                  loading="lazy"/>
                                         </t>

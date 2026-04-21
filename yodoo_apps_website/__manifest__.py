@@ -7,7 +7,7 @@
     'website': 'https://crnd.pro',
 
     'category': 'Yodoo Apps',
-    'version': '18.0.1.0.0',
+    'version': '18.0.1.4.0',
 
     'depends': [
         'website',
@@ -19,9 +19,12 @@
     'data': [
         'security/ir.model.access.csv',
         'views/yodoo_module_views.xml',
+        'views/yodoo_module_category_views.xml',
+        'views/yodoo_module_author_views.xml',
         'views/templates_list.xml',
         'views/templates_detail.xml',
         'data/website_menu.xml',
+        'data/image_task.xml',
     ],
 
     'installable': True,

@@ -16,18 +16,18 @@
                     <div class="col-md-7 col-xl-6 mb-3">
                         <t t-if="module.yodoo_apps_website_cover">
                             <img t-att-src="'/web/image/yodoo.module/%s/yodoo_apps_website_cover' % module.id"
-                                 class="img-fluid rounded shadow-sm w-100"
+                                 class="img-fluid shadow-sm w-100"
                                  t-att-alt="module.name"/>
                         </t>
                         <t t-elif="module.yodoo_apps_website_icon">
-                            <div class="d-flex align-items-center justify-content-center bg-light rounded shadow-sm"
+                            <div class="d-flex align-items-center justify-content-center bg-light shadow-sm"
                                  style="aspect-ratio: 16/9;">
                                 <img t-att-src="'/web/image/yodoo.module/%s/yodoo_apps_website_icon/128x128' % module.id"
                                      t-att-alt="module.name"/>
                             </div>
                         </t>
                         <t t-else="">
-                            <div class="d-flex align-items-center justify-content-center bg-light rounded shadow-sm"
+                            <div class="d-flex align-items-center justify-content-center bg-light shadow-sm"
                                  style="aspect-ratio: 16/9;">
                                 <i class="fa fa-cube fa-5x text-muted"/>
                             </div>
@@ -38,7 +38,7 @@
                         <div class="d-flex align-items-start gap-3">
                             <t t-if="module.yodoo_apps_website_icon">
                                 <img t-att-src="'/web/image/yodoo.module/%s/yodoo_apps_website_icon/84x84' % module.id"
-                                     class="rounded shadow-sm"
+                                     class="shadow-sm"
                                      style="width: 84px; height: 84px; min-width: 84px;"
                                      t-att-alt="module.name"/>
                             </t>
@@ -65,29 +65,14 @@
                             </div>
                         </div>
 
-                        <div class="d-flex flex-wrap gap-2 mt-2 mb-3">
-                            <t t-foreach="module.serie_ids" t-as="serie">
-                                <span class="badge bg-primary">
-                                    v <t t-out="serie.name"/>
-                                </span>
-                            </t>
-                        </div>
-
                         <t t-set="odoo_deps" t-value="module.dependency_all_ids.filtered(lambda d: d.is_odoo_community_addon)"/>
                         <t t-set="community_deps" t-value="module.dependency_all_ids.filtered(lambda d: not d.is_odoo_community_addon)"/>
 
                         <table class="table table-sm small mt-2">
                             <tr t-if="odoo_deps">
                                 <td class="text-muted">Odoo Apps Dependencies</td>
-                                <td class="text-end">
-                                    <t t-foreach="odoo_deps" t-as="dep">
-                                        <a t-att-href="dep.website_url"
-                                           class="text-primary">
-                                            <t t-out="dep.name"/>
-                                        </a>
-                                        <t t-if="not dep_last">, </t>
-                                    </t>
-                                </td>
+                                <td class="text-end"
+                                    t-out="', '.join(d.name or d.system_name for d in odoo_deps)"/>
                             </tr>
                             <tr t-if="community_deps">
                                 <td class="text-muted">Community Apps Dependencies</td>
@@ -100,12 +85,12 @@
                                        aria-expanded="false">
                                         Show
                                     </a>
-                                    <div class="collapse text-start" id="community_deps_list">
+                                    <div class="collapse text-end" id="community_deps_list">
                                         <t t-foreach="community_deps" t-as="dep">
                                             <div>
                                                 <a t-att-href="dep.website_url"
                                                    class="text-primary">
-                                                    <t t-out="dep.name"/>
+                                                    <t t-out="dep.name or dep.system_name"/>
                                                 </a>
                                             </div>
                                         </t>
@@ -145,7 +130,7 @@
                             <tr t-if="module.serie_ids">
                                 <td class="text-muted">Versions</td>
                                 <td class="text-end">
-                                    <t t-foreach="module.serie_ids" t-as="serie">
+                                    <t t-foreach="module.serie_ids.sorted(key=lambda s: float(s.name))" t-as="serie">
                                         <span class="badge bg-primary">
                                             <t t-out="serie.name"/>
                                         </span>
