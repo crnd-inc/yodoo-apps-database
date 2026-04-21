@@ -7,13 +7,14 @@
     'website': 'https://crnd.pro',
 
     'category': 'Yodoo Apps',
-    'version': '18.0.1.4.1',
+    'version': '18.0.1.5.2',
 
     'depends': [
         'website',
         'yodoo_apps_database',
         'yodoo_apps_git_source',
         'kw_html_image2attachment',
+        'generic_task_queue',
     ],
 
     'data': [
@@ -21,6 +22,7 @@
         'views/yodoo_module_views.xml',
         'views/yodoo_module_category_views.xml',
         'views/yodoo_module_author_views.xml',
+        'views/yodoo_git_source_views.xml',
         'views/templates_list.xml',
         'views/templates_detail.xml',
         'data/website_menu.xml',
