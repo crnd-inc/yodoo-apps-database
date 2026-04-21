@@ -27,6 +27,10 @@ IMAGE_TASK_XMLID = (
 class YodooGitSourceBranch(models.Model):
     _inherit = 'yodoo.git.source.branch'
 
+    # Restores BaseModel.CONCURRENCY_CHECK_FIELD removed in Odoo 18;
+    # referenced by generic.mixin.refresh.view on every write.
+    CONCURRENCY_CHECK_FIELD = '__last_update'
+
     def _yodoo_apps_website_enqueue_image_task(self, module):
         task = self.env.ref(IMAGE_TASK_XMLID, raise_if_not_found=False)
         if not task:

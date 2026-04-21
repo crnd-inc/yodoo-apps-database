@@ -20,6 +20,10 @@ except (ImportError, IOError):
 class YodooGitSource(models.Model):
     _inherit = 'yodoo.git.source'
 
+    # Restores the constant removed from BaseModel in Odoo 18; referenced
+    # by generic.mixin.refresh.view._auto_refresh_view_on_field_changes_system.
+    CONCURRENCY_CHECK_FIELD = '__last_update'
+
     def _action_sync_gitlab(self, branch_names=None):
         super()._action_sync_gitlab(branch_names=branch_names)
         if not self.gitlab_project_path:

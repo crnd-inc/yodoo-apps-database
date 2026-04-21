@@ -7,7 +7,7 @@
     'website': 'https://crnd.pro',
 
     'category': 'Yodoo Apps',
-    'version': '18.0.1.4.0',
+    'version': '18.0.1.4.1',
 
     'depends': [
         'website',

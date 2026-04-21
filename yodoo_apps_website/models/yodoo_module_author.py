@@ -4,6 +4,10 @@ from odoo import models, fields
 class YodooModuleAuthor(models.Model):
     _inherit = 'yodoo.module.author'
 
+    # Restores BaseModel.CONCURRENCY_CHECK_FIELD removed in Odoo 18;
+    # referenced by generic.mixin.refresh.view on every write.
+    CONCURRENCY_CHECK_FIELD = '__last_update'
+
     is_published = fields.Boolean(
         string='Published',
         default=True,

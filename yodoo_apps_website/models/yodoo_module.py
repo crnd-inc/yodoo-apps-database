@@ -9,6 +9,10 @@ class YodooModule(models.Model):
         'website.seo.metadata',
     ]
 
+    # Restores BaseModel.CONCURRENCY_CHECK_FIELD removed in Odoo 18;
+    # referenced by generic.mixin.refresh.view on every write.
+    CONCURRENCY_CHECK_FIELD = '__last_update'
+
     yodoo_apps_website_description_html = fields.Html(
         string='Website Description',
         sanitize=False,
