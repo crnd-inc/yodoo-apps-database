@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.0\n"
+"Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -126,8 +126,8 @@ msgid "Binary dependencies"
 msgstr ""
 
 #. module: yodoo_apps_database
+#. odoo-python
 #: code:addons/yodoo_apps_database/models/yodoo_module_version.py:0
-#, python-format
 msgid ""
 "Cannot parse version (%(version)s) for module %(module_display_name)s "
 "[%(module_system_name)s]"
@@ -192,13 +192,11 @@ msgstr ""
 
 #. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_category__create_uid
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_version__create_uid
 msgid "Created by"
 msgstr ""
 
 #. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_category__create_date
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_version__create_date
 msgid "Created on"
 msgstr ""
 
@@ -395,7 +393,6 @@ msgstr ""
 
 #. module: yodoo_apps_database
 #: model:ir.model.fields,help:yodoo_apps_database.field_yodoo_module__message_needaction
-#: model:ir.model.fields,help:yodoo_apps_database.field_yodoo_module__message_unread
 msgid "If checked, new messages require your attention."
 msgstr ""
 
@@ -442,32 +439,17 @@ msgid "Is Odoo Community Addon"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module____last_update
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_author____last_update
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_category____last_update
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_dependency_binary____last_update
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_dependency_python____last_update
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_license____last_update
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_serie____last_update
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_version____last_update
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_serie____last_update
-msgid "Last Modified on"
-msgstr ""
-
-#. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__last_module_serie_id
 msgid "Last Module Serie"
 msgstr ""
 
 #. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_category__write_uid
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_version__write_uid
 msgid "Last Updated by"
 msgstr ""
 
 #. module: yodoo_apps_database
 #: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_category__write_date
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module_version__write_date
 msgid "Last Updated on"
 msgstr ""
 
@@ -511,11 +493,6 @@ msgstr ""
 #. module: yodoo_apps_database
 #: model:ir.model.fields,help:yodoo_apps_database.field_yodoo_module_serie__odoo_apps_link
 msgid "Link to addon's page on Odoo Apps"
-msgstr ""
-
-#. module: yodoo_apps_database
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__message_main_attachment_id
-msgid "Main Attachment"
 msgstr ""
 
 #. module: yodoo_apps_database
@@ -694,17 +671,12 @@ msgstr ""
 
 #. module: yodoo_apps_database
 #: model:ir.model.fields,help:yodoo_apps_database.field_yodoo_module__message_needaction_counter
-msgid "Number of messages which requires an action"
+msgid "Number of messages requiring action"
 msgstr ""
 
 #. module: yodoo_apps_database
 #: model:ir.model.fields,help:yodoo_apps_database.field_yodoo_module__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
-
-#. module: yodoo_apps_database
-#: model:ir.model.fields,help:yodoo_apps_database.field_yodoo_module__message_unread_counter
-msgid "Number of unread messages"
 msgstr ""
 
 #. module: yodoo_apps_database
@@ -726,7 +698,6 @@ msgid "Odoo Community Modules"
 msgstr ""
 
 #. module: yodoo_apps_database
-#: model:generic.tag.model,name:yodoo_apps_database.generic_tag_model_yodoo_module
 #: model:ir.model,name:yodoo_apps_database.model_yodoo_module
 msgid "Odoo Module"
 msgstr ""
@@ -902,8 +873,8 @@ msgid "Serie Minor"
 msgstr ""
 
 #. module: yodoo_apps_database
+#. odoo-python
 #: code:addons/yodoo_apps_database/models/yodoo_serie.py:0
-#, python-format
 msgid "Serie name ('%s') is not valid"
 msgstr ""
 
@@ -981,16 +952,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_search
 #: model_terms:ir.ui.view,arch_db:yodoo_apps_database.yodoo_module_serie_search
 msgid "Unpublished on Odoo Apps"
-msgstr ""
-
-#. module: yodoo_apps_database
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__message_unread
-msgid "Unread Messages"
-msgstr ""
-
-#. module: yodoo_apps_database
-#: model:ir.model.fields,field_description:yodoo_apps_database.field_yodoo_module__message_unread_counter
-msgid "Unread Messages Counter"
 msgstr ""
 
 #. module: yodoo_apps_database
@@ -1095,15 +1056,11 @@ msgstr ""
 
 #. module: yodoo_apps_database
 #: model:ir.actions.server,name:yodoo_apps_database.scheduler_check_pypi_packages_ir_actions_server
-#: model:ir.cron,cron_name:yodoo_apps_database.scheduler_check_pypi_packages
-#: model:ir.cron,name:yodoo_apps_database.scheduler_check_pypi_packages
 msgid "Yodoo Apps: Check if py deps available on pypi"
 msgstr ""
 
 #. module: yodoo_apps_database
 #: model:ir.actions.server,name:yodoo_apps_database.scheduler_check_modules_published_on_odoo_apps_ir_actions_server
-#: model:ir.cron,cron_name:yodoo_apps_database.scheduler_check_modules_published_on_odoo_apps
-#: model:ir.cron,name:yodoo_apps_database.scheduler_check_modules_published_on_odoo_apps
 msgid "Yodoo Apps: Update addons publication links"
 msgstr ""
 
