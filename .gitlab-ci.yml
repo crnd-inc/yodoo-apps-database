@@ -78,7 +78,6 @@ check-versions:
         - git fetch origin $SERIES_BRANCH
     script:
         - odoo-helper ci check-versions-git . origin/$SERIES_BRANCH $CI_COMMIT_SHA
-    allow_failure: true
     <<: *only_dev_branch
     <<: *except_auto_commits
 
