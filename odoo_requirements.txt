@@ -1,2 +1,3 @@
 --github crnd-inc/generic-addons
 --github crnd-inc/crnd-web
+--repo git@gitlab.crnd.pro:crnd/bureaucrat-generics.git
