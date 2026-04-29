@@ -36,13 +36,23 @@ class YodooGitSource(models.Model):
 
     def action_sync(self):
         """ Override upstream: enqueue a background task instead of
-            running sync inline in the HTTP request. """
+            running sync inline in the HTTP request.
+
+            ``unique_key`` collapses concurrent triggers (manual click +
+            scheduler_sync_git_sources cron + queue retry) into one active
+            parent task per source — without it, multiple parents would
+            race on yodoo_git_source.last_time_synced in
+            _g_task__finalize_sync, returning SerializationFailure and
+            poisoning the worker connection pool.
+        """
         Task = self.env['generic.task.queue.task'].sudo()
         for source in self:
             task = Task.create_task(
                 SOURCE_SYNC_TASK_TYPE,
                 name=_('Sync %s') % source.display_name,
                 params={'source_id': source.id},
+                unique_key='source_sync:%d' % source.id,
+                on_conflict='reuse-running',
             )
             source.sudo().last_sync_task_id = task
         if len(self) == 1:
