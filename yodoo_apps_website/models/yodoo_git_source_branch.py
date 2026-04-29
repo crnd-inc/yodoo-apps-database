@@ -7,16 +7,6 @@ from odoo import models
 
 _logger = logging.getLogger(__name__)
 
-try:
-    import gitlab as gitlab_lib
-except (ImportError, IOError):
-    gitlab_lib = None
-
-try:
-    import github as github_lib
-except (ImportError, IOError):
-    github_lib = None
-
 RE_IMG_SRC = re.compile(
     r'<img\b[^>]*?\bsrc=["\']([^"\']+)["\']', re.IGNORECASE)
 
@@ -100,7 +90,10 @@ class YodooGitSourceBranch(models.Model):
                 html = self._yodoo_apps_website_gl_fetch_file(
                     git, branch_name,
                     '%s/static/description/index.html' % module_name)
-            except Exception:
+            except Exception as exc:
+                _logger.debug(
+                    "No description for %s on %s: %s",
+                    module_name, branch_name, exc)
                 continue
 
             html = self._yodoo_apps_website_inline_images(
@@ -136,7 +129,10 @@ class YodooGitSourceBranch(models.Model):
                 html = self._yodoo_apps_website_gh_fetch_file(
                     git, branch_name,
                     '%s/static/description/index.html' % module_name)
-            except Exception:
+            except Exception as exc:
+                _logger.debug(
+                    "No description for %s on %s: %s",
+                    module_name, branch_name, exc)
                 continue
 
             html = self._yodoo_apps_website_inline_images(

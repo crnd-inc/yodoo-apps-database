@@ -27,7 +27,7 @@ def parse_odoo_requirements(content):
         i = 0
         while i < len(tokens):
             token = tokens[i]
-            if token == '--github' and i + 1 < len(tokens):
+            if token == '--github' and i + 1 < len(tokens):  # nosec B105
                 i += 1
                 val = tokens[i]
                 if val.endswith('.git'):
@@ -39,7 +39,7 @@ def parse_odoo_requirements(content):
                         'owner': parts[0],
                         'repo': parts[1],
                     }
-            elif token == '--oca' and i + 1 < len(tokens):
+            elif token == '--oca' and i + 1 < len(tokens):  # nosec B105
                 i += 1
                 repo = tokens[i]
                 if repo.endswith('.git'):

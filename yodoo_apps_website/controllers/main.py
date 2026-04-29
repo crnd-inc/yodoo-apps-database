@@ -35,8 +35,35 @@ class YodooAppsWebsite(http.Controller):
     def modules_list(self, page=1, category=None, serie=None,
                      author=None, search=None, **kwargs):
         Module = request.env['yodoo.module'].sudo()
-        domain = self._modules_listing_domain()
+        domain = self._build_modules_list_domain(
+            category, serie, author, search)
+        step = 12
+        pager = request.website.pager(
+            url='/modules',
+            total=Module.search_count(domain),
+            page=page,
+            step=step,
+            url_args={
+                'category': category, 'serie': serie,
+                'author': author, 'search': search,
+            },
+        )
+        values = self._modules_list_sidebar()
+        values.update({
+            'modules': Module.search(
+                domain, limit=step, offset=pager['offset'],
+                order='name ASC'),
+            'pager': pager,
+            'current_category': int(category) if category else None,
+            'current_serie': int(serie) if serie else None,
+            'current_author': int(author) if author else None,
+            'search': search or '',
+        })
+        return request.render(
+            'yodoo_apps_website.modules_list', values)
 
+    def _build_modules_list_domain(self, category, serie, author, search):
+        domain = self._modules_listing_domain()
         if category:
             domain.append(('category_id', '=', int(category)))
         if serie:
@@ -50,48 +77,20 @@ class YodooAppsWebsite(http.Controller):
                 ('system_name', 'ilike', search),
                 ('summary', 'ilike', search),
             ])
+        return domain
 
-        step = 12
-        module_count = Module.search_count(domain)
-        pager = request.website.pager(
-            url='/modules',
-            total=module_count,
-            page=page,
-            step=step,
-            url_args={
-                'category': category,
-                'serie': serie,
-                'author': author,
-                'search': search,
-            },
-        )
-        modules = Module.search(
-            domain, limit=step, offset=pager['offset'],
-            order='name ASC')
-
+    def _modules_list_sidebar(self):
         listed_domain = [
             ('is_published', '=', True),
             ('is_listed_on_website', '=', True),
         ]
-        categories = request.env[
-            'yodoo.module.category'].sudo().search(listed_domain)
-        series = request.env['yodoo.serie'].sudo().search([])
-        authors = request.env[
-            'yodoo.module.author'].sudo().search(listed_domain)
-
-        values = {
-            'modules': modules,
-            'pager': pager,
-            'categories': categories,
-            'series': series,
-            'authors': authors,
-            'current_category': int(category) if category else None,
-            'current_serie': int(serie) if serie else None,
-            'current_author': int(author) if author else None,
-            'search': search or '',
+        return {
+            'categories': request.env[
+                'yodoo.module.category'].sudo().search(listed_domain),
+            'series': request.env['yodoo.serie'].sudo().search([]),
+            'authors': request.env[
+                'yodoo.module.author'].sudo().search(listed_domain),
         }
-        return request.render(
-            'yodoo_apps_website.modules_list', values)
 
     @http.route([
         '/modules/<string:system_name>',

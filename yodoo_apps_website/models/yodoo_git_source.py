@@ -319,7 +319,7 @@ class YodooGitSource(models.Model):
         except Exception:
             _logger.warning(
                 'GitLab project not found: %s', path)
-            return
+            return GitSource
 
         existing_by_id = GitSource.search([
             ('source_type', '=', 'crnd'),
