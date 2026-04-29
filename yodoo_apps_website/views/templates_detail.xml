@@ -149,9 +149,6 @@
             </div>
 
             <style>
-                .o_yodoo_module_description > section:first-child {
-                    display: none;
-                }
                 .o_yodoo_deps_toggle[aria-expanded="true"] {
                     display: none;
                 }
