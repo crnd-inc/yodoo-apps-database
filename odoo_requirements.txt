@@ -1,2 +1,6 @@
 --github crnd-inc/generic-addons
 --github crnd-inc/crnd-web
+--repo git@gitlab.crnd.pro:crnd/bureaucrat-generics.git
+--repo git@gitlab.crnd.pro:crnd/odoo-infrastructure.git
+--repo git@gitlab.crnd.pro:crnd/generic-background-service.git
+--repo git@gitlab.crnd.pro:kitworks/kitworks-opensource/base-addons.git

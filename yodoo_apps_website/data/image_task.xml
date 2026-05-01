@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="kw_html_image2attachment_task_module_description"
+            model="kw.html_image2attachment.task">
+        <field name="name">Yodoo Module Website Description</field>
+        <field name="model_id" ref="yodoo_apps_database.model_yodoo_module"/>
+        <field name="field_id"
+               ref="yodoo_apps_website.field_yodoo_module__yodoo_apps_website_description_html"/>
+    </record>
+
+</odoo>

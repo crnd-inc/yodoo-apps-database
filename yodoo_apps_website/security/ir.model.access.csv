@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_yodoo_module_category_website_admin,yodoo.module.category website admin,yodoo_apps_database.model_yodoo_module_category,base.group_system,1,1,0,0
+access_yodoo_module_author_website_admin,yodoo.module.author website admin,yodoo_apps_database.model_yodoo_module_author,base.group_system,1,1,0,0

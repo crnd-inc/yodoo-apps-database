@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="module_detail" name="Module Detail">
+        <t t-call="website.layout">
+            <div id="wrap" class="container py-4">
+                <nav aria-label="breadcrumb" class="mb-3">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="/modules">Modules</a>
+                        </li>
+                        <li class="breadcrumb-item active" t-out="module.name"/>
+                    </ol>
+                </nav>
+
+                <div class="row mb-4">
+                    <div class="col-md-7 col-xl-6 mb-3">
+                        <t t-if="module.yodoo_apps_website_cover">
+                            <img t-att-src="'/web/image/yodoo.module/%s/yodoo_apps_website_cover' % module.id"
+                                 class="img-fluid shadow-sm w-100"
+                                 t-att-alt="module.name"/>
+                        </t>
+                        <t t-elif="module.yodoo_apps_website_icon">
+                            <div class="d-flex align-items-center justify-content-center bg-light shadow-sm"
+                                 style="aspect-ratio: 16/9;">
+                                <img t-att-src="'/web/image/yodoo.module/%s/yodoo_apps_website_icon/128x128' % module.id"
+                                     t-att-alt="module.name"/>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="d-flex align-items-center justify-content-center bg-light shadow-sm"
+                                 style="aspect-ratio: 16/9;">
+                                <i class="fa fa-cube fa-5x text-muted"/>
+                            </div>
+                        </t>
+                    </div>
+
+                    <div class="col-md-5 col-xl-6 mb-3">
+                        <div class="d-flex align-items-start gap-3">
+                            <t t-if="module.yodoo_apps_website_icon">
+                                <img t-att-src="'/web/image/yodoo.module/%s/yodoo_apps_website_icon/84x84' % module.id"
+                                     class="shadow-sm"
+                                     style="width: 84px; height: 84px; min-width: 84px;"
+                                     t-att-alt="module.name"/>
+                            </t>
+                            <div class="flex-grow-1">
+                                <h1 class="h4 mb-0" t-out="module.name"/>
+                                <t t-if="module.author_ids">
+                                    <small class="text-muted">by
+                                        <t t-foreach="module.author_ids" t-as="author">
+                                            <span t-out="author.name"/>
+                                            <t t-if="not author_last">, </t>
+                                        </t>
+                                    </small>
+                                </t>
+                            </div>
+                            <div class="text-end ms-auto ps-3">
+                                <t t-if="module.total_price">
+                                    <span class="h4 mb-0 fw-bold text-nowrap"
+                                          t-out="module.total_price"
+                                          t-options="{'widget': 'monetary', 'display_currency': module.currency_id}"/>
+                                </t>
+                                <t t-else="">
+                                    <span class="h4 mb-0 fw-bold text-success">FREE</span>
+                                </t>
+                            </div>
+                        </div>
+
+                        <t t-set="odoo_deps" t-value="module.dependency_all_ids.filtered(lambda d: d.is_odoo_community_addon)"/>
+                        <t t-set="community_deps" t-value="module.dependency_all_ids.filtered(lambda d: not d.is_odoo_community_addon)"/>
+
+                        <table class="table table-sm small mt-2">
+                            <tr t-if="odoo_deps">
+                                <td class="text-muted">Odoo Apps Dependencies</td>
+                                <td class="text-end"
+                                    t-out="', '.join(d.name or d.system_name for d in odoo_deps)"/>
+                            </tr>
+                            <tr t-if="community_deps">
+                                <td class="text-muted">Community Apps Dependencies</td>
+                                <td class="text-end">
+                                    <a class="text-primary o_yodoo_deps_toggle"
+                                       href="#"
+                                       data-bs-toggle="collapse"
+                                       data-bs-target="#community_deps_list"
+                                       role="button"
+                                       aria-expanded="false">
+                                        Show
+                                    </a>
+                                    <div class="collapse text-end" id="community_deps_list">
+                                        <t t-foreach="community_deps" t-as="dep">
+                                            <div>
+                                                <a t-att-href="dep.website_url"
+                                                   class="text-primary">
+                                                    <t t-out="dep.name or dep.system_name"/>
+                                                </a>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </td>
+                            </tr>
+                            <t t-set="unloaded_deps" t-value="module.dependency_all_ids.filtered(lambda d: not d.is_odoo_community_addon and not d.git_source_ids)"/>
+                            <tr t-if="unloaded_deps" groups="base.group_user">
+                                <td colspan="2">
+                                    <div class="alert alert-warning small mb-0 p-2">
+                                        <strong>Missing repositories:</strong>
+                                        <t t-foreach="unloaded_deps" t-as="dep">
+                                            <span t-out="dep.system_name"/>
+                                            <t t-if="not dep_last">, </t>
+                                        </t>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr t-if="module.system_name">
+                                <td class="text-muted">Technical Name</td>
+                                <td class="text-end" t-out="module.system_name"/>
+                            </tr>
+                            <tr t-if="module.license_id">
+                                <td class="text-muted">License</td>
+                                <td class="text-end" t-out="module.license_id.code"/>
+                            </tr>
+                            <tr t-if="module.website">
+                                <td class="text-muted">Website</td>
+                                <td class="text-end">
+                                    <a t-att-href="module.website"
+                                       target="_blank" rel="noopener"
+                                       class="text-primary">
+                                        <t t-out="module.website"/>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr t-if="module.serie_ids">
+                                <td class="text-muted">Versions</td>
+                                <td class="text-end">
+                                    <t t-foreach="module.serie_ids.sorted(key=lambda s: float(s.name))" t-as="serie">
+                                        <span class="badge bg-primary">
+                                            <t t-out="serie.name"/>
+                                        </span>
+                                    </t>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <t t-if="module.yodoo_apps_website_description_html">
+                    <div class="o_yodoo_module_description">
+                        <t t-out="module.yodoo_apps_website_description_html"/>
+                    </div>
+                </t>
+            </div>
+
+            <style>
+                .o_yodoo_deps_toggle[aria-expanded="true"] {
+                    display: none;
+                }
+            </style>
+        </t>
+    </template>
+</odoo>

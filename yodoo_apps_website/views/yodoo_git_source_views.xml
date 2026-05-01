@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="yodoo_git_source_form_website">
+        <field name="model">yodoo.git.source</field>
+        <field name="inherit_id"
+               ref="yodoo_apps_git_source.yodoo_git_source_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='last_time_synced']" position="after">
+                <field name="last_sync_task_id"
+                       widget="gtq_task_auto_refresh"
+                       options="{
+                           'state_field': 'last_sync_task_id.state',
+                           'progress_field': 'last_sync_task_id.progress',
+                           'label': 'Sync in progress...'
+                       }"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
