@@ -182,6 +182,20 @@ class YodooGitSource(models.Model):
         self._yodoo_apps_website_fetch_descriptions_github(branch_names)
         self._yodoo_apps_website_sync_odoo_requirements_github()
 
+    def _yodoo_apps_website_iter_branches_oldest_first(
+            self, branch_names=None):
+        # Default _order on branches is version DESC; iterating in that order
+        # makes the OLDEST branch the last writer for module description /
+        # icon / cover, which leaves stale assets after a series upgrade.
+        # Reverse to oldest-first so the newest branch wins; older branches
+        # serve as fallback when newer ones lack static/description files.
+        branches = self.git_branch_ids.filtered(
+            lambda b: b.scan and b.is_standard)
+        if branch_names:
+            branches = branches.filtered(lambda b: b.name in branch_names)
+        return branches.sorted(
+            key=lambda b: (b.yodoo_serie_major, b.yodoo_serie_minor))
+
     def _yodoo_apps_website_fetch_descriptions_gitlab(self, branch_names=None):
         from odoo.addons.yodoo_apps_git_source.utils import GitlabWrapper
         try:
@@ -194,10 +208,8 @@ class YodooGitSource(models.Model):
                 self.name)
             return
 
-        for branch in self.git_branch_ids.filtered(
-                lambda b: b.scan and b.is_standard):
-            if branch_names and branch.name not in branch_names:
-                continue
+        for branch in self._yodoo_apps_website_iter_branches_oldest_first(
+                branch_names):
             branch._yodoo_apps_website_fetch_branch_descriptions_gitlab(
                 git, self.gitlab_project_path)
 
@@ -213,10 +225,8 @@ class YodooGitSource(models.Model):
                 self.name)
             return
 
-        for branch in self.git_branch_ids.filtered(
-                lambda b: b.scan and b.is_standard):
-            if branch_names and branch.name not in branch_names:
-                continue
+        for branch in self._yodoo_apps_website_iter_branches_oldest_first(
+                branch_names):
             branch._yodoo_apps_website_fetch_branch_descriptions_github(
                 git)
 
