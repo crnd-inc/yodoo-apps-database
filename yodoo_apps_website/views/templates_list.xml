@@ -65,9 +65,9 @@
                                             <i class="fa fa-cube fa-4x text-muted"/>
                                         </t>
                                     </span>
-                                    <div class="o_yodoo_module_overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-end p-2"
-                                         style="background: linear-gradient(transparent 30%, rgba(0,0,0,0.8)); opacity: 0; transition: opacity 0.2s; pointer-events: none; z-index: 1;">
-                                        <p class="text-white small mb-0 w-100"
+                                    <div class="o_yodoo_module_overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-start p-2"
+                                         style="background: #082567; opacity: 0; transition: opacity 0.2s; pointer-events: none; z-index: 1;">
+                                        <p class="o_yodoo_module_overlay_text text-white small mb-0 w-100"
                                            t-out="mod.summary"/>
                                     </div>
                                 </a>
@@ -113,6 +113,12 @@
             <style>
                 .o_yodoo_module_card a:hover .o_yodoo_module_overlay {
                     opacity: 1 !important;
+                }
+                .o_yodoo_module_overlay_text {
+                    display: -webkit-box;
+                    -webkit-line-clamp: 5;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
                 }
                 .o_yodoo_module_card {
                     padding-bottom: 16px;
