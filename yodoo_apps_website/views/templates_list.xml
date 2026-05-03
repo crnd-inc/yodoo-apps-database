@@ -47,12 +47,12 @@
                             <div class="position-relative flex-grow-0 overflow-hidden">
                                 <a t-att-href="mod.website_url"
                                    class="d-block position-relative"
-                                   style="aspect-ratio: 16/9; background: #f8f9fa;">
+                                   style="aspect-ratio: 2/1; background: #f8f9fa;">
                                     <span class="d-flex h-100 justify-content-center align-items-center position-absolute w-100">
                                         <t t-if="mod.yodoo_apps_website_cover">
                                             <img t-att-src="'/web/image/yodoo.module/%s/yodoo_apps_website_cover' % mod.id"
                                                  class="img img-fluid h-100 w-100 position-absolute"
-                                                 style="object-fit: contain;"
+                                                 style="object-fit: cover; object-position: center;"
                                                  t-att-alt="mod.name"
                                                  loading="lazy"/>
                                         </t>
