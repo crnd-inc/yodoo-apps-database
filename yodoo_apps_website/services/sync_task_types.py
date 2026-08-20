@@ -34,7 +34,9 @@ class YodooSourceSyncTaskType(AbstractTaskType):
             for bid in scannable_ids
         ]
         env['generic.task.queue.task'].sudo().create_children(
-            task, 'yodoo_apps_website.branch_sync', children_params,
+            task,
+            type_code='yodoo_apps_website.branch_sync',
+            params_list=children_params,
             channel=BRANCH_CHANNEL,
         )
         task.action_wait_children()
