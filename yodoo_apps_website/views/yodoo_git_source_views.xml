@@ -7,11 +7,13 @@
                ref="yodoo_apps_git_source.yodoo_git_source_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='last_time_synced']" position="after">
+                <field name="last_sync_task_state" invisible="1"/>
+                <field name="last_sync_task_progress" invisible="1"/>
                 <field name="last_sync_task_id"
                        widget="gtq_task_auto_refresh"
                        options="{
-                           'state_field': 'last_sync_task_id.state',
-                           'progress_field': 'last_sync_task_id.progress',
+                           'state_field': 'last_sync_task_state',
+                           'progress_field': 'last_sync_task_progress',
                            'label': 'Sync in progress...'
                        }"/>
             </xpath>
