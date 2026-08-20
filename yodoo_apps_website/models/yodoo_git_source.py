@@ -33,6 +33,18 @@ class YodooGitSource(models.Model):
         copy=False,
         help='Background task record of the most recent Sync click.',
     )
+    # These related fields exist so the gtq_task_auto_refresh widget's
+    # state_field/progress_field options can name a plain field on this
+    # record: task_auto_refresh_field.js reads record.data[key] literally
+    # and does not resolve dotted paths like "last_sync_task_id.state".
+    last_sync_task_state = fields.Selection(
+        related='last_sync_task_id.state',
+        string='Last Sync Task State',
+    )
+    last_sync_task_progress = fields.Integer(
+        related='last_sync_task_id.progress',
+        string='Last Sync Task Progress',
+    )
 
     def action_sync(self):
         """ Override upstream: enqueue a background task instead of
