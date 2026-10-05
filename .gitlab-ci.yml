@@ -109,9 +109,10 @@ tests:
     <<: *pip_cache_definition
     before_script:
         - sudo apt-get update && sudo apt-get install -y libmagic1
-        - odoo-helper link .
+        - odood addons add --single-branch --odoo-requirements=odoo_requirements.txt
+        - odood addons link -r .
     script:
-        - odoo-helper --use-unbuffer test --coverage --coverage-report --coverage-skip-covered --coverage-fail-under 60 --create-test-db --dir .
+        - odood test -t --isw --error-report --coverage --coverage-report --coverage-skip-covered --dir-r . | tail -n 1000
     <<: *except_auto_commits
     coverage: '/^TOTAL\s+\d+\s+\d+\s+(\d+\%)/'
 
@@ -123,10 +124,12 @@ test_installation_no_demo:
     <<: *pip_cache_definition
     before_script:
         - sudo apt-get update && sudo apt-get install -y libmagic1
-        - odoo-helper link .
-        - odoo-helper --use-unbuffer db create $ODOO_DB_NAME
+        - odood addons add --single-branch --odoo-requirements=odoo_requirements.txt
+        - odood addons link -r .
+        - odood db create $ODOO_DB_NAME
+
     script:
-        - odoo-helper addons install --db "$ODOO_DB_NAME" --dir-r . --show-log-on-error
+        - odood addons install --db "$ODOO_DB_NAME" --dir-r .
     <<: *except_auto_commits
 
 migration_tests:
