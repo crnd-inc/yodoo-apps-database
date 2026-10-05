@@ -23,7 +23,7 @@
                         string="Non Odoo Community Modules"
                         domain="[('is_odoo_community_addon', '=', False)]"/>
 
-                <group expand="0" string="Group By">
+                <group>
                     <filter name="group_by_serie"
                             string="Serie"
                             domain="[]"

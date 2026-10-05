@@ -53,16 +53,16 @@ class OdooModuleVersion(models.Model):
 
     module_serie_id = fields.Many2one(
         'yodoo.module.serie', required=True, readonly=True, index=True,
-        ondelete='cascade', auto_join=True)
+        ondelete='cascade')
     # Updated when version created
     module_id = fields.Many2one(
         'yodoo.module',
         store=True, index=True, readonly=True, required=True,
-        ondelete='cascade', auto_join=True)
+        ondelete='cascade')
     serie_id = fields.Many2one(
         'yodoo.serie',
         store=True, index=True, readonly=True, required=True,
-        ondelete='cascade', auto_join=True)
+        ondelete='cascade')
 
     # Odoo Serie info
     # Updated when version created
@@ -137,11 +137,9 @@ class OdooModuleVersion(models.Model):
     date_updated = fields.Datetime(
         default=fields.Datetime.now, readonly=True)
 
-    _sql_constraints = [
-        ('module_version_uniq',
-         'unique(module_id, version)',
-         '(version, module) pair must be unique!')
-    ]
+    _module_version_uniq = models.Constraint(
+        'unique(module_id, version)',
+        '(version, module) pair must be unique!')
 
     @api.model
     def init(self):

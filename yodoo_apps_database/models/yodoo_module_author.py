@@ -37,11 +37,9 @@ class YodooModuleAuthor(models.Model):
     module_count = fields.Integer(
         compute='_compute_module_count', readonly=True)
 
-    _sql_constraints = [
-        ('module_name_uniq',
-         'unique(name)',
-         'Author name must be unique!'),
-    ]
+    _module_name_uniq = models.Constraint(
+        'unique(name)',
+        'Author name must be unique!')
 
     @api.depends('module_ids')
     def _compute_module_count(self):

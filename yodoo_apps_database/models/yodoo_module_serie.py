@@ -15,10 +15,10 @@ class OdooModuleSerie(models.Model):
 
     module_id = fields.Many2one(
         'yodoo.module', required=True, readonly=True, index=True,
-        auto_join=True, ondelete='cascade')
+        ondelete='cascade')
     serie_id = fields.Many2one(
         'yodoo.serie', required=True, readonly=True, index=True,
-        auto_join=True, ondelete='cascade')
+        ondelete='cascade')
     serie_major = fields.Integer(
         related='serie_id.major', store=True, index=True, readonly=True)
     serie_minor = fields.Integer(
@@ -32,7 +32,7 @@ class OdooModuleSerie(models.Model):
         store=False, readonly=True)
     last_version_id = fields.Many2one(
         comodel_name='yodoo.module.version',
-        readonly=True, store=True, index=True, auto_join=True)
+        readonly=True, store=True, index=True)
 
     # Following fields are not stored for performance reasons
     # TODO: Make stored in 13.0+
@@ -94,11 +94,9 @@ class OdooModuleSerie(models.Model):
         string="Binary dependencies",
         readonly=True)
 
-    _sql_constraints = [
-        ('module_serie_uniq',
-         'unique(module_id, serie_id)',
-         'Module and serie must be unique!'),
-    ]
+    _module_serie_uniq = models.Constraint(
+        'unique(module_id, serie_id)',
+        'Module and serie must be unique!')
 
     @api.depends('version_ids')
     def _compute_version_count(self):

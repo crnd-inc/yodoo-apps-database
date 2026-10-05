@@ -52,13 +52,13 @@ class OdooModule(models.Model):
         store=False, readonly=True)
     last_module_serie_id = fields.Many2one(
         'yodoo.module.serie',
-        readonly=True, store=True, index=True, auto_join=True,
+        readonly=True, store=True, index=True,
         compute='_compute_last_module_serie_id')
     last_version_id = fields.Many2one(
         'yodoo.module.version',
         compute='_compute_last_version_info',
         string="Last Version",
-        readonly=True, store=True, index=True, auto_join=True)
+        readonly=True, store=True, index=True)
     serie_ids = fields.Many2many(
         string="Series",
         comodel_name='yodoo.serie',
@@ -180,11 +180,9 @@ class OdooModule(models.Model):
     odoo_apps_link = fields.Char(
         compute='_compute_odoo_apps_link', store=True, readonly=True)
 
-    _sql_constraints = [
-        ('system_name_uniq',
-         'unique(system_name)',
-         'Module system name must be uniqe!')
-    ]
+    _system_name_uniq = models.Constraint(
+        'unique(system_name)',
+        'Module system name must be uniqe!')
 
     @api.depends('version_ids')
     def _compute_version_count(self):
@@ -264,9 +262,9 @@ class OdooModule(models.Model):
     def _compute_total_price(self):
         Version = self.env['yodoo.module.version']
         default_currency = Version.get_default_currency()
-        date = self._context.get('date', fields.Date.today())
+        date = self.env.context.get('date', fields.Date.today())
         company = self.env['res.company'].browse(
-            self._context.get(
+            self.env.context.get(
                 'company_id', self.env.user.company_id.id))
         for record in self:
             price = record.price
@@ -361,7 +359,6 @@ class OdooModule(models.Model):
             self.id, serie_id)
 
     @api.model
-    @api.returns('yodoo.module.version')
     def create_or_update_module(self, system_name, data, no_update=False,
                                 enforce_serie=None):
         """ Create or update module and return created/updated version

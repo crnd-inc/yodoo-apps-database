@@ -13,11 +13,9 @@ class YodooModuleLicense(models.Model):
     name = fields.Char(index=True)
     code = fields.Char(required=True, index=True)
 
-    _sql_constraints = [
-        ('module_code_uniq',
-         'unique(code)',
-         'License code must be unique!'),
-    ]
+    _module_code_uniq = models.Constraint(
+        'unique(code)',
+        'License code must be unique!')
 
     @api.depends('name', 'code')
     def _compute_display_name(self):

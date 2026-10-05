@@ -39,11 +39,9 @@ class YodooSerie(models.Model):
         readonly=True)
     active = fields.Boolean(default=True, index=True)
 
-    _sql_constraints = [
-        ('name_uniq',
-         'unique(name)',
-         'Serie name must be uniqe!')
-    ]
+    _name_uniq = models.Constraint(
+        'unique(name)',
+        'Serie name must be uniqe!')
 
     @api.model
     def _parse_serie_name(self, name):
