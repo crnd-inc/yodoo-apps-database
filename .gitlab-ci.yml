@@ -125,6 +125,7 @@ tests:
     <<: *pip_cache_definition
     before_script:
         - sudo apt-get update && sudo apt-get install -y libmagic1
+        - odood addons add --single-branch --odoo-requirements=odoo_requirements.txt
         - odood addons link -r .
     script:
         - odood test --coverage --coverage-report --coverage-skip-covered --coverage-fail-under 60 -t --dir .
@@ -139,6 +140,7 @@ test_installation_no_demo:
     <<: *pip_cache_definition
     before_script:
         - sudo apt-get update && sudo apt-get install -y libmagic1
+        - odood addons add --single-branch --odoo-requirements=odoo_requirements.txt
         - odood addons link -r .
         - odood db create $ODOO_DB_NAME
     script:
@@ -153,6 +155,7 @@ migration_tests:
     <<: *pip_cache_definition
     before_script:
         - sudo apt-get update && sudo apt-get install -y libmagic1
+        - odood addons add --single-branch --odoo-requirements=odoo_requirements.txt
         - git fetch origin $SERIES_BRANCH
         - git checkout $SERIES_BRANCH
         - git pull
