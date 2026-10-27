@@ -1,14 +1,8 @@
-import datetime
 import logging
 
 import requests
 
 from odoo import _, api, exceptions, fields, models
-from odoo.addons.generic_mixin import with_delay_refresh
-from odoo.addons.yodoo_apps_git_source.models.yodoo_git_source import (
-    GIT_SOURCE_SYNC_COUNT,
-    GIT_SOURCE_SYNC_INTERVAL,
-)
 from odoo.addons.yodoo_apps_git_source.utils import GithubWrapper
 
 from ..tools.odoo_requirements import parse_odoo_requirements
@@ -26,6 +20,8 @@ except (ImportError, IOError):
     github_lib = None
 
 SOURCE_SYNC_TASK_TYPE = 'yodoo_apps_website.source_sync'
+SCHEDULER_ENQUEUE_LIMIT_PARAM = 'yodoo_apps_website.scheduler_enqueue_limit'
+SCHEDULER_ENQUEUE_LIMIT_DEFAULT = 10
 
 
 class YodooGitSource(models.Model):
@@ -110,11 +106,12 @@ class YodooGitSource(models.Model):
         }
 
     @api.model
-    @with_delay_refresh
-    def scheduler_sync_git_sources(self):
-        """ Override upstream: when GitHub is unavailable or rejects the
-            configured token, skip GitHub sources instead of enqueueing
-            a sync task per source that is certain to fail. """
+    def _scheduler_sync_git_sources_domain(self, outdated):
+        """ Skip GitHub sources when GitHub is unavailable or rejects the
+            configured token, instead of enqueueing a sync task per source
+            that is certain to fail. The check runs once per scheduler run.
+        """
+        domain = super()._scheduler_sync_git_sources_domain(outdated)
         try:
             GithubWrapper(self.env).connect()
         except (exceptions.UserError,
@@ -122,26 +119,19 @@ class YodooGitSource(models.Model):
             _logger.warning(
                 "GitHub is unavailable or rejected the token, "
                 "GitHub sources are skipped: %s", exc)
-        else:
-            super().scheduler_sync_git_sources()
-            return
+            domain = domain + [('source_type', '!=', 'github')]
+        return domain
 
-        # kw: copy of upstream scheduler body with source_type filter,
-        # drop when upstream scheduler gets a hook for the sources domain
-        outdated_date = datetime.datetime.now() - datetime.timedelta(
-            days=GIT_SOURCE_SYNC_INTERVAL)
-        sources = self.search([
-            ('enable_sync', '=', True),
-            ('source_type', '!=', 'github'),
-            '|', ('last_time_synced', '=', False),
-            ('last_time_synced', '<=', outdated_date),
-            '|', ('scan_request_date', '=', False),
-            ('scan_request_date', '<=', outdated_date),
-        ], limit=GIT_SOURCE_SYNC_COUNT, order='last_time_synced ASC')
-        for source in sources:
-            with source._in_new_transaction(lock=True,
-                                            no_raise=True) as nsource:
-                nsource.action_sync()
+    @api.model
+    def _scheduler_sync_git_sources_limit(self):
+        """ Upper bound of sync tasks enqueued by one scheduler run. """
+        value = self.env['ir.config_parameter'].sudo().get_param(
+            SCHEDULER_ENQUEUE_LIMIT_PARAM)
+        try:
+            limit = int(value)
+        except (TypeError, ValueError):
+            return SCHEDULER_ENQUEUE_LIMIT_DEFAULT
+        return limit if limit > 0 else SCHEDULER_ENQUEUE_LIMIT_DEFAULT
 
     def _g_task__prepare_sync(self, branch_names=None):
         """ Connect to git, discover branches, write connection metadata.

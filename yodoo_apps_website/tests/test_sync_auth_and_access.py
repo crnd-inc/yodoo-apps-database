@@ -43,9 +43,6 @@ class TestSchedulerGithubAuth(TransactionCase):
         with patch.object(
             type(self.Source), '_in_new_transaction', _same_transaction,
         ), patch.object(
-            type(self.env['generic.crypto.param']), 'get_param',
-            return_value='test-token',
-        ), patch.object(
             GithubWrapper, 'connect', side_effect=connect_side_effect,
         ):
             self.Source.scheduler_sync_git_sources()
@@ -84,6 +81,16 @@ class TestSchedulerGithubAuth(TransactionCase):
 
         self.assertTrue(self._task_for(self.github_source))
         self.assertTrue(self._task_for(self.generic_source))
+
+    def test_enqueue_limit_param_caps_selection(self):
+        self.env['ir.config_parameter'].sudo().set_param(
+            'yodoo_apps_website.scheduler_enqueue_limit', '1')
+
+        self._run_scheduler()
+
+        self.assertEqual(
+            len(self._task_for(self.github_source)
+                | self._task_for(self.generic_source)), 1)
 
 
 class TestActionSyncAccess(TransactionCase):

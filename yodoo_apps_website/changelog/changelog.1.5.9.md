@@ -1,0 +1,1 @@
+Git source scheduler enqueues at most 10 sync tasks per run (system parameter `yodoo_apps_website.scheduler_enqueue_limit`) and uses the hooks of `yodoo_apps_git_source` 18.0.1.6.0 instead of a copy of its cron body.
