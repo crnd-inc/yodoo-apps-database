@@ -1,6 +1,15 @@
+import datetime
 import logging
 
-from odoo import _, fields, models
+import requests
+
+from odoo import _, api, exceptions, fields, models
+from odoo.addons.generic_mixin import with_delay_refresh
+from odoo.addons.yodoo_apps_git_source.models.yodoo_git_source import (
+    GIT_SOURCE_SYNC_COUNT,
+    GIT_SOURCE_SYNC_INTERVAL,
+)
+from odoo.addons.yodoo_apps_git_source.utils import GithubWrapper
 
 from ..tools.odoo_requirements import parse_odoo_requirements
 
@@ -68,6 +77,19 @@ class YodooGitSource(models.Model):
             )
             source.sudo().last_sync_task_id = task
         if len(self) == 1:
+            if not self.last_sync_task_id.has_access('read'):
+                # The reused task was created by another user and the
+                # "own tasks" record rule hides it from the current one.
+                return {
+                    'type': 'ir.actions.client',
+                    'tag': 'display_notification',
+                    'params': {
+                        'type': 'warning',
+                        'title': _('Sync in progress'),
+                        'message': _('Synchronization is already running'),
+                        'sticky': False,
+                    },
+                }
             return {
                 'type': 'ir.actions.act_window',
                 'res_model': 'generic.task.queue.task',
@@ -87,6 +109,40 @@ class YodooGitSource(models.Model):
             },
         }
 
+    @api.model
+    @with_delay_refresh
+    def scheduler_sync_git_sources(self):
+        """ Override upstream: when GitHub is unavailable or rejects the
+            configured token, skip GitHub sources instead of enqueueing
+            a sync task per source that is certain to fail. """
+        try:
+            GithubWrapper(self.env).connect()
+        except (exceptions.UserError,
+                requests.exceptions.RequestException) as exc:
+            _logger.warning(
+                "GitHub is unavailable or rejected the token, "
+                "GitHub sources are skipped: %s", exc)
+        else:
+            super().scheduler_sync_git_sources()
+            return
+
+        # kw: copy of upstream scheduler body with source_type filter,
+        # drop when upstream scheduler gets a hook for the sources domain
+        outdated_date = datetime.datetime.now() - datetime.timedelta(
+            days=GIT_SOURCE_SYNC_INTERVAL)
+        sources = self.search([
+            ('enable_sync', '=', True),
+            ('source_type', '!=', 'github'),
+            '|', ('last_time_synced', '=', False),
+            ('last_time_synced', '<=', outdated_date),
+            '|', ('scan_request_date', '=', False),
+            ('scan_request_date', '<=', outdated_date),
+        ], limit=GIT_SOURCE_SYNC_COUNT, order='last_time_synced ASC')
+        for source in sources:
+            with source._in_new_transaction(lock=True,
+                                            no_raise=True) as nsource:
+                nsource.action_sync()
+
     def _g_task__prepare_sync(self, branch_names=None):
         """ Connect to git, discover branches, write connection metadata.
             Returns IDs of scannable branches to fan out into child tasks. """
@@ -100,7 +156,6 @@ class YodooGitSource(models.Model):
         return []
 
     def _g_task__prepare_github(self, branch_names=None):
-        from odoo.addons.yodoo_apps_git_source.utils import GithubWrapper
         git = GithubWrapper(self.env)
         git.connect()
         try:
@@ -147,7 +202,6 @@ class YodooGitSource(models.Model):
             self._g_task__sync_gitlab_branch(branch)
 
     def _g_task__sync_github_branch(self, branch):
-        from odoo.addons.yodoo_apps_git_source.utils import GithubWrapper
         git = GithubWrapper(self.env)
         git.connect()
         git.open_repo(self.github_owner, self.github_repository)
@@ -226,7 +280,6 @@ class YodooGitSource(models.Model):
                 git, self.gitlab_project_path)
 
     def _yodoo_apps_website_fetch_descriptions_github(self, branch_names=None):
-        from odoo.addons.yodoo_apps_git_source.utils import GithubWrapper
         try:
             git = GithubWrapper(self.env)
             git.connect()
@@ -268,7 +321,6 @@ class YodooGitSource(models.Model):
             requirements, git.connection)
 
     def _yodoo_apps_website_sync_odoo_requirements_github(self):
-        from odoo.addons.yodoo_apps_git_source.utils import GithubWrapper
         try:
             git = GithubWrapper(self.env)
             git.connect()
