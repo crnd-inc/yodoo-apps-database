@@ -51,6 +51,7 @@ class YodooGitSourceBranch(models.Model):
             'res_model': module._name,
             'res_id': module.id,
             'kw_is_html2attachment_image': True,
+            'public': True,
         })
 
     def _yodoo_apps_website_inline_images(
