@@ -24,6 +24,8 @@ try:
     # import odoo itself
     import odoo
     import odoo.release  # to avoid 9.0 with odoo.py on path
+    # Odoo 19.0+ does not import odoo.tools on 'import odoo'
+    import odoo.tools
 except (ImportError, KeyError):
     try:
         # Odoo 9.0 and less versions
@@ -51,14 +53,15 @@ def find_addons_in_path(path):
 
 
 def find_addons():
-    addons_paths = [
-        a.strip()
-        for a in odoo.tools.config.options.get('addons_path').split(',')
-    ]
-    addons_paths += os.path.abspath(
-        os.path.join(
-            os.path.dirname(odoo.__file__), 'addons')
-    )
+    addons_path = odoo.tools.config.options.get('addons_path') or []
+    # Odoo 19.0+ stores addons_path as list instead of comma-separated string
+    if isinstance(addons_path, str):
+        addons_path = addons_path.split(',')
+    addons_paths = [a.strip() for a in addons_path if a.strip()]
+    # Odoo 19.0+ is namespace package, thus odoo.__file__ is None
+    for odoo_path in odoo.__path__:
+        addons_paths.append(
+            os.path.abspath(os.path.join(odoo_path, 'addons')))
 
     for apath in addons_paths:
         for addon in find_addons_in_path(apath):
